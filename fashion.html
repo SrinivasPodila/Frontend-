@@ -32,6 +32,64 @@
         </section>
     </main>
 
+    <!-- Product Detail Modal -->
+    <div class="modal-overlay" id="productDetailModal" aria-hidden="true">
+        <div class="product-detail-modal" role="dialog" aria-modal="true" aria-labelledby="productDetailTitle">
+            <button type="button" class="modal-close" id="productDetailCloseBtn" aria-label="Close product details">&times;</button>
+            <div class="product-detail-content">
+                <div class="product-detail-image">
+                    <img id="productDetailImage" src="" alt="" class="detail-image">
+                </div>
+                <div class="product-detail-info">
+                    <h2 id="productDetailTitle" class="detail-title"></h2>
+                    <div class="detail-brand" id="productDetailBrand"></div>
+                    <div class="detail-rating" id="productDetailRating"></div>
+                    <div class="detail-price-section">
+                        <div class="detail-price" id="productDetailPrice"></div>
+                        <div class="detail-original-price" id="productDetailOriginalPrice"></div>
+                        <div class="detail-discount" id="productDetailDiscount"></div>
+                    </div>
+                    <div class="detail-features">
+                        <h3>Product Features</h3>
+                        <ul id="productDetailFeatures">
+                            <li>Premium quality fabric</li>
+                            <li>Comfortable fit</li>
+                            <li>Trendy and stylish design</li>
+                            <li>Easy care instructions</li>
+                            <li>Available in multiple sizes</li>
+                        </ul>
+                    </div>
+                    <div class="detail-actions">
+                        <button class="btn-primary detail-add-cart" id="detailAddToCart">Add to Cart</button>
+                        <button class="btn-secondary detail-wishlist" id="detailAddWishlist">
+                            <i class="fas fa-heart"></i> Add to Wishlist
+                        </button>
+                        <a class="btn-link detail-external-link" id="detailExternalLink" target="_blank" rel="noopener">
+                            <i class="fas fa-external-link-alt"></i> View on Store
+                        </a>
+                    </div>
+                    <div class="detail-specs" id="productDetailSpecs">
+                        <h3>Specifications</h3>
+                        <div class="specs-grid">
+                            <div class="spec-item">
+                                <span class="spec-label">Category:</span>
+                                <span class="spec-value" id="specCategory">Fashion</span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Brand:</span>
+                                <span class="spec-value" id="specBrand"></span>
+                            </div>
+                            <div class="spec-item">
+                                <span class="spec-label">Availability:</span>
+                                <span class="spec-value" id="specAvailability">In Stock</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
     // Simple reader for fashion.json (or inline fallback when using file://)
     const grid = document.getElementById('productGrid');
@@ -453,19 +511,31 @@
         const mrp = item['Original Price (INR)'] || item['Original Price'] || '';
         const rating = item['Customer Rating (Max 5)'] || '';
         const url = item['Product URL'] || '#';
+        const safeId = (item['Product Name'] || 'item').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        
         return `
-        <article class="product-card" role="listitem">
-            <a href="${url}" target="_blank" rel="noopener">
+        <article class="product-card" role="listitem" aria-labelledby="${safeId}-title">
+            <div class="product-image-container" onclick="showProductDetail(this)" data-product='${JSON.stringify(item).replace(/'/g, "&apos;")}'>
                 <img src="${item['Product Image']}" alt="${item['Product Name']}" class="product-image" onerror="this.src='https://via.placeholder.com/320x200?text=Image'" loading="lazy">
-            </a>
+                <div class="product-overlay">
+                    <i class="fas fa-eye"></i>
+                    <span>View Details</span>
+                </div>
+            </div>
             <div class="product-info">
-                <h3 class="product-name">${item['Product Name']}</h3>
+                <h3 class="product-name" id="${safeId}-title" onclick="showProductDetail(this.closest('.product-card').querySelector('.product-image-container'))">${item['Product Name']}</h3>
                 <div class="product-price-row">
                     ${price ? `<span class="product-price">₹${price}</span>` : ''}
                     ${mrp ? `<span class="product-original-price">₹${mrp}</span>` : ''}
                 </div>
                 ${rating ? `<div class="product-rating"><i class='fas fa-star'></i><span>${rating}</span></div>` : ''}
-                <button class="add-to-cart">Add to Cart</button>
+                <div class="product-actions">
+                    <button class="add-to-cart" onclick="addToCartFashion(this)" data-product='${JSON.stringify(item).replace(/'/g, "&apos;")}'>Add to Cart</button>
+                    <button class="view-details" onclick="showProductDetail(this.closest('.product-card').querySelector('.product-image-container'))" aria-label="View ${item['Product Name']} details">
+                        <i class="fas fa-info-circle"></i>
+                    </button>
+                    ${url !== '#' ? `<a href="${url}" target="_blank" rel="noopener" class="external-link" aria-label="Open ${item['Product Name']} on external site"><i class="fas fa-external-link-alt"></i></a>` : ''}
+                </div>
             </div>
         </article>`;
     }
@@ -517,12 +587,278 @@
                     };
                     r.readAsText(f);
                 });
+                document.body.appendChild(input);
                 input.click();
-            }, { once: true });
+                setTimeout(()=>input.remove(),0);
+            });
         }
     }
 
     loadFashion();
+
+    // Product Detail Modal Functions
+    let currentDetailProduct = null;
+    let cart = [];
+    let cartCount = 0;
+
+    function showProductDetail(element) {
+        const productData = element.getAttribute('data-product');
+        if (!productData) return;
+        
+        try {
+            currentDetailProduct = JSON.parse(productData);
+            populateProductDetail(currentDetailProduct);
+            openProductDetailModal();
+        } catch (e) {
+            console.error('Error parsing product data:', e);
+        }
+    }
+
+    function populateProductDetail(product) {
+        const modal = document.getElementById('productDetailModal');
+        if (!modal) return;
+
+        // Basic product info
+        const title = modal.querySelector('#productDetailTitle');
+        const image = modal.querySelector('#productDetailImage');
+        const brand = modal.querySelector('#productDetailBrand');
+        const rating = modal.querySelector('#productDetailRating');
+        const price = modal.querySelector('#productDetailPrice');
+        const originalPrice = modal.querySelector('#productDetailOriginalPrice');
+        const discount = modal.querySelector('#productDetailDiscount');
+        const externalLink = modal.querySelector('#detailExternalLink');
+
+        // Specifications
+        const specCategory = modal.querySelector('#specCategory');
+        const specBrand = modal.querySelector('#specBrand');
+        const specAvailability = modal.querySelector('#specAvailability');
+
+        // Populate data
+        if (title) title.textContent = product['Product Name'] || 'Product';
+        if (image) {
+            image.src = product['Product Image'] || 'https://via.placeholder.com/400x300?text=No+Image';
+            image.alt = product['Product Name'] || 'Product';
+        }
+
+        const brandName = product['Brand Name'] || product['Brand'] || '';
+        if (brand) {
+            brand.innerHTML = brandName ? `<strong>Brand:</strong> ${brandName}` : '';
+            brand.style.display = brandName ? 'block' : 'none';
+        }
+
+        const ratingValue = product['Customer Rating (Max 5)'] || '';
+        if (rating) {
+            if (ratingValue) {
+                rating.innerHTML = `
+                    <div class="rating-stars">
+                        ${generateStars(parseFloat(ratingValue))}
+                        <span class="rating-value">${ratingValue}</span>
+                    </div>
+                `;
+                rating.style.display = 'block';
+            } else {
+                rating.style.display = 'none';
+            }
+        }
+
+        const currentPrice = product['Selling Price (INR)'] || '';
+        const originalPriceValue = product['Original Price (INR)'] || '';
+        const discountValue = product['Discount Percentage'] || '';
+
+        if (price) {
+            price.innerHTML = currentPrice ? `₹${currentPrice}` : 'Price not available';
+        }
+
+        if (originalPrice) {
+            if (originalPriceValue && originalPriceValue !== currentPrice) {
+                originalPrice.innerHTML = `₹${originalPriceValue}`;
+                originalPrice.style.display = 'block';
+            } else {
+                originalPrice.style.display = 'none';
+            }
+        }
+
+        if (discount) {
+            if (discountValue) {
+                discount.innerHTML = `${discountValue}% OFF`;
+                discount.style.display = 'block';
+            } else {
+                discount.style.display = 'none';
+            }
+        }
+
+        if (externalLink && product['Product URL']) {
+            externalLink.href = product['Product URL'];
+            externalLink.style.display = 'inline-flex';
+        } else if (externalLink) {
+            externalLink.style.display = 'none';
+        }
+
+        // Specifications
+        if (specCategory) specCategory.textContent = 'Fashion';
+        if (specBrand) specBrand.textContent = brandName || 'Not specified';
+        if (specAvailability) {
+            specAvailability.textContent = 'In Stock';
+            specAvailability.className = 'spec-value in-stock';
+        }
+    }
+
+    function generateStars(rating) {
+        const fullStars = Math.floor(rating);
+        const hasHalfStar = rating % 1 >= 0.5;
+        const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+        
+        let stars = '';
+        for (let i = 0; i < fullStars; i++) {
+            stars += '<i class="fas fa-star"></i>';
+        }
+        if (hasHalfStar) {
+            stars += '<i class="fas fa-star-half-alt"></i>';
+        }
+        for (let i = 0; i < emptyStars; i++) {
+            stars += '<i class="far fa-star"></i>';
+        }
+        return stars;
+    }
+
+    function openProductDetailModal() {
+        const modal = document.getElementById('productDetailModal');
+        if (!modal) return;
+        
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        
+        // Focus on close button for accessibility
+        setTimeout(() => {
+            const closeBtn = modal.querySelector('#productDetailCloseBtn');
+            if (closeBtn) closeBtn.focus();
+        }, 100);
+    }
+
+    function closeProductDetailModal() {
+        const modal = document.getElementById('productDetailModal');
+        if (!modal) return;
+        
+        modal.classList.remove('open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        currentDetailProduct = null;
+    }
+
+    function addToCartFashion(button) {
+        const productData = button.getAttribute('data-product');
+        if (!productData) return;
+        
+        try {
+            const product = JSON.parse(productData);
+            cart.push({
+                name: product['Product Name'],
+                price: product['Selling Price (INR)'],
+                image: product['Product Image'],
+                quantity: 1
+            });
+            cartCount += 1;
+            showNotification(`${product['Product Name']} added to cart!`);
+        } catch (e) {
+            console.error('Error adding to cart:', e);
+        }
+    }
+
+    function showNotification(message) {
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+        notification.setAttribute('role', 'status');
+        notification.setAttribute('aria-live', 'polite');
+        notification.textContent = message;
+        notification.style.cssText = `
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 10000;
+            animation: slideIn 0.3s ease;
+        `;
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
+    }
+
+    // Setup event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('productDetailModal');
+        const closeBtn = document.getElementById('productDetailCloseBtn');
+        const addToCartBtn = document.getElementById('detailAddToCart');
+        const addToWishlistBtn = document.getElementById('detailAddWishlist');
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', closeProductDetailModal);
+        }
+
+        if (modal) {
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeProductDetailModal();
+                }
+            });
+        }
+
+        if (addToCartBtn) {
+            addToCartBtn.addEventListener('click', function() {
+                if (currentDetailProduct) {
+                    cart.push({
+                        name: currentDetailProduct['Product Name'],
+                        price: currentDetailProduct['Selling Price (INR)'],
+                        image: currentDetailProduct['Product Image'],
+                        quantity: 1
+                    });
+                    cartCount += 1;
+                    showNotification(`${currentDetailProduct['Product Name']} added to cart!`);
+                    closeProductDetailModal();
+                }
+            });
+        }
+
+        if (addToWishlistBtn) {
+            addToWishlistBtn.addEventListener('click', function() {
+                if (currentDetailProduct) {
+                    showNotification(`${currentDetailProduct['Product Name']} added to wishlist!`);
+                }
+            });
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeProductDetailModal();
+            }
+        });
+    });
     </script>
 </body>
 </html>
