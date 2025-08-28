@@ -1,25 +1,40 @@
-// Default products (used if products.json is unavailable)
+// Enhanced product data with more comprehensive e-commerce features
 let productsData = [
     {
-        "Product Name": "Best Truewireless Headphones",
+        "Product Name": "OnePlus Nord Buds CE True Wireless Earbuds",
         "Product Image": "https://rukminim2.flixcart.com/image/120/120/l58iaa80/headphone/k/z/m/nord-buds-ce-oneplus-original-imagfyk4hyvgg6ze.jpeg?q=90",
-        "Product Price (INR)": "500",
+        "Product Price (INR)": "2299",
+        "Original Price (INR)": "2999",
         "Product Category": "Electronics",
-        "Product Offer/Discount": "Grab Now"
+        "Product Offer/Discount": "23% Off",
+        "Rating (Max 5)": "4.2",
+        "Number of Reviews": "1847",
+        "Brand": "OnePlus",
+        "In Stock": true
     },
     {
-        "Product Name": "Monitors",
+        "Product Name": "Samsung 24 inch Full HD LED Monitor",
         "Product Image": "https://rukminim2.flixcart.com/image/120/120/xif0q/monitor/b/x/x/-original-imah7rn68zxjzbqx.jpeg?q=90",
-        "Product Price (INR)": "9999",
+        "Product Price (INR)": "8999",
+        "Original Price (INR)": "12999",
         "Product Category": "Electronics",
-        "Product Offer/Discount": "From ₹9999"
+        "Product Offer/Discount": "31% Off",
+        "Rating (Max 5)": "4.3",
+        "Number of Reviews": "2156",
+        "Brand": "Samsung",
+        "In Stock": true
     },
     {
-        "Product Name": "Printers",
+        "Product Name": "Canon PIXMA E477 All-in-One Inkjet Printer",
         "Product Image": "https://rukminim2.flixcart.com/image/120/120/kwl0akw0/printer/x/q/3/-original-imag989ygsdy6v6x.jpeg?q=90",
-        "Product Price (INR)": "10999",
+        "Product Price (INR)": "4999",
+        "Original Price (INR)": "7500",
         "Product Category": "Electronics",
-        "Product Offer/Discount": "From ₹10999"
+        "Product Offer/Discount": "33% Off",
+        "Rating (Max 5)": "4.1",
+        "Number of Reviews": "892",
+        "Brand": "Canon",
+        "In Stock": true
     },
     {
         "Product Name": "Monitor",
@@ -348,6 +363,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+
 // Setup event listeners
 function setupEventListeners() {
     // Search functionality
@@ -382,6 +398,38 @@ function setupEventListeners() {
             loadFashionData();
         });
     });
+
+    // Fashion dropdown functionality
+    const fashionDropdown = document.querySelector('.nav-item-dropdown');
+    const dropdownToggle = document.querySelector('.dropdown-toggle');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+
+    if (fashionDropdown && dropdownToggle && dropdownMenu) {
+        // Handle keyboard navigation
+        dropdownToggle.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                fashionDropdown.classList.toggle('dropdown-open');
+            }
+        });
+
+        // Handle click events for dropdown links
+        const dropdownLinks = dropdownMenu.querySelectorAll('.dropdown-link');
+        dropdownLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                console.log(`Navigating to: ${href}`);
+                // You can add custom navigation logic here if needed
+            });
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!fashionDropdown.contains(e.target)) {
+                fashionDropdown.classList.remove('dropdown-open');
+            }
+        });
+    }
 
     // When clicking top nav "Fashion" (link to fashion.html), persist pasted JSON so fashion page can render it
     const fashionTopNavLink = document.querySelector('nav .nav-menu a[href="fashion.html"]');
@@ -440,6 +488,7 @@ function displayProducts(products) {
         button.addEventListener('click', () => addToCart(products[index]));
     });
 }
+
 
 // Load fashion dataset from local JSON file
 async function loadFashionData() {
@@ -532,19 +581,29 @@ function createProductCard(product) {
     const safeId = (product['Product Name'] || 'item').toLowerCase().replace(/[^a-z0-9]+/g, '-');
     return `
         <article class="product-card" role="listitem" aria-labelledby="${safeId}-title" aria-describedby="${safeId}-price ${safeId}-qty ${safeId}-rating">
-            <a ${productUrl ? `href="${productUrl}" target="_blank" rel="noopener"` : ''} aria-label="Open ${product['Product Name']} details">
+            <div class="product-image-container" onclick="showProductDetail(this)" data-product='${JSON.stringify(product).replace(/'/g, "&apos;")}'>
                 <img src="${product['Product Image']}" alt="${product['Product Name']}" class="product-image" 
                      onerror="this.src='https://via.placeholder.com/320x200?text=Image'" loading="lazy">
-            </a>
+                <div class="product-overlay">
+                    <i class="fas fa-eye"></i>
+                    <span>View Details</span>
+                </div>
+            </div>
             <div class="product-info">
-                <h3 class="product-name" id="${safeId}-title">${product['Product Name']}</h3>
+                <h3 class="product-name" id="${safeId}-title" onclick="showProductDetail(this.closest('.product-card').querySelector('.product-image-container'))">${product['Product Name']}</h3>
                 <div class="product-price-row" id="${safeId}-price">
                     ${resolvedPrice ? `<span class="product-price" aria-label="Price">₹${resolvedPrice}</span>` : ''}
                     ${resolvedOriginal ? `<span class="product-original-price" aria-label="Original price">₹${resolvedOriginal}</span>` : ''}
                 </div>
                 ${quantity ? `<div class="product-quantity" id="${safeId}-qty" aria-label="Quantity">${quantity}</div>` : ''}
                 ${ratingValue ? `<div class="product-rating" id="${safeId}-rating" aria-label="Rating"><i class=\"fas fa-star\"></i><span>${ratingValue}</span> ${reviews}</div>` : ''}
-                <button class="add-to-cart" aria-label="Add ${product['Product Name']} to cart">Add to Cart</button>
+                <div class="product-actions">
+                    <button class="add-to-cart" aria-label="Add ${product['Product Name']} to cart">Add to Cart</button>
+                    <button class="view-details" onclick="showProductDetail(this.closest('.product-card').querySelector('.product-image-container'))" aria-label="View ${product['Product Name']} details">
+                        <i class="fas fa-info-circle"></i>
+                    </button>
+                    ${productUrl ? `<a href="${productUrl}" target="_blank" rel="noopener" class="external-link" aria-label="Open ${product['Product Name']} on external site"><i class="fas fa-external-link-alt"></i></a>` : ''}
+                </div>
             </div>
         </article>
     `;
@@ -599,6 +658,7 @@ function filterByCategory(category, e) {
         e.currentTarget.classList.add('active');
     }
 }
+
 
 // Add to cart functionality
 function addToCart(product) {
@@ -758,3 +818,263 @@ function getPastedFashionData() {
     } catch (_) {}
     return null;
 }
+
+// Product Detail Modal Functions
+let currentDetailProduct = null;
+
+function showProductDetail(element) {
+    const productData = element.getAttribute('data-product');
+    if (!productData) return;
+    
+    try {
+        currentDetailProduct = JSON.parse(productData);
+        populateProductDetail(currentDetailProduct);
+        openProductDetailModal();
+    } catch (e) {
+        console.error('Error parsing product data:', e);
+    }
+}
+
+function populateProductDetail(product) {
+    const modal = document.getElementById('productDetailModal');
+    if (!modal) return;
+
+    // Basic product info
+    const title = modal.querySelector('#productDetailTitle');
+    const image = modal.querySelector('#productDetailImage');
+    const brand = modal.querySelector('#productDetailBrand');
+    const rating = modal.querySelector('#productDetailRating');
+    const price = modal.querySelector('#productDetailPrice');
+    const originalPrice = modal.querySelector('#productDetailOriginalPrice');
+    const discount = modal.querySelector('#productDetailDiscount');
+    const externalLink = modal.querySelector('#detailExternalLink');
+
+    // Specifications
+    const specCategory = modal.querySelector('#specCategory');
+    const specBrand = modal.querySelector('#specBrand');
+    const specAvailability = modal.querySelector('#specAvailability');
+
+    // Populate data
+    if (title) title.textContent = product['Product Name'] || 'Product';
+    if (image) {
+        image.src = product['Product Image'] || 'https://via.placeholder.com/400x300?text=No+Image';
+        image.alt = product['Product Name'] || 'Product';
+    }
+
+    const brandName = product['Brand Name'] || product['Brand'] || '';
+    if (brand) {
+        brand.innerHTML = brandName ? `<strong>Brand:</strong> ${brandName}` : '';
+        brand.style.display = brandName ? 'block' : 'none';
+    }
+
+    const ratingValue = product['Rating (Max 5)'] || product['Customer Rating (Max 5)'] || '';
+    const reviewCount = product['Number of Reviews'] || '';
+    if (rating) {
+        if (ratingValue) {
+            rating.innerHTML = `
+                <div class="rating-stars">
+                    ${generateStars(parseFloat(ratingValue))}
+                    <span class="rating-value">${ratingValue}</span>
+                    ${reviewCount ? `<span class="review-count">(${reviewCount} reviews)</span>` : ''}
+                </div>
+            `;
+            rating.style.display = 'block';
+        } else {
+            rating.style.display = 'none';
+        }
+    }
+
+    const currentPrice = product['Price (INR)'] || product['Product Price (INR)'] || product['Selling Price (INR)'] || '';
+    const originalPriceValue = product['Original Price (INR)'] || product['MRP (INR)'] || product['Original Price'] || '';
+    const discountValue = product['Discount Percentage'] || product['Product Offer/Discount'] || '';
+
+    if (price) {
+        price.innerHTML = currentPrice ? `₹${currentPrice}` : 'Price not available';
+    }
+
+    if (originalPrice) {
+        if (originalPriceValue && originalPriceValue !== currentPrice) {
+            originalPrice.innerHTML = `₹${originalPriceValue}`;
+            originalPrice.style.display = 'block';
+        } else {
+            originalPrice.style.display = 'none';
+        }
+    }
+
+    if (discount) {
+        if (discountValue) {
+            discount.innerHTML = `${discountValue}`;
+            discount.style.display = 'block';
+        } else if (originalPriceValue && currentPrice) {
+            const discountPercent = Math.round(((originalPriceValue - currentPrice) / originalPriceValue) * 100);
+            if (discountPercent > 0) {
+                discount.innerHTML = `${discountPercent}% OFF`;
+                discount.style.display = 'block';
+            } else {
+                discount.style.display = 'none';
+            }
+        } else {
+            discount.style.display = 'none';
+        }
+    }
+
+    if (externalLink && product['Product URL']) {
+        externalLink.href = product['Product URL'];
+        externalLink.style.display = 'inline-flex';
+    } else if (externalLink) {
+        externalLink.style.display = 'none';
+    }
+
+    // Specifications
+    if (specCategory) specCategory.textContent = product['Product Category'] || 'General';
+    if (specBrand) specBrand.textContent = brandName || 'Not specified';
+    if (specAvailability) {
+        const inStock = product['In Stock'] !== false;
+        specAvailability.textContent = inStock ? 'In Stock' : 'Out of Stock';
+        specAvailability.className = `spec-value ${inStock ? 'in-stock' : 'out-of-stock'}`;
+    }
+
+    // Update features based on product category
+    updateProductFeatures(product);
+}
+
+function generateStars(rating) {
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
+    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+    
+    let stars = '';
+    for (let i = 0; i < fullStars; i++) {
+        stars += '<i class="fas fa-star"></i>';
+    }
+    if (hasHalfStar) {
+        stars += '<i class="fas fa-star-half-alt"></i>';
+    }
+    for (let i = 0; i < emptyStars; i++) {
+        stars += '<i class="far fa-star"></i>';
+    }
+    return stars;
+}
+
+function updateProductFeatures(product) {
+    const featuresContainer = document.querySelector('#productDetailFeatures');
+    if (!featuresContainer) return;
+
+    const category = product['Product Category'] || '';
+    const productName = product['Product Name'] || '';
+    
+    let features = [];
+    
+    if (category.includes('Electronics')) {
+        features = [
+            'Latest technology and features',
+            'Energy efficient design',
+            'Durable and long-lasting',
+            'Easy setup and installation',
+            'Warranty included'
+        ];
+    } else if (category.includes('Fashion') || productName.toLowerCase().includes('fashion')) {
+        features = [
+            'Premium quality fabric',
+            'Comfortable fit',
+            'Trendy and stylish design',
+            'Easy care instructions',
+            'Available in multiple sizes'
+        ];
+    } else if (category.includes('Beauty') || category.includes('Food')) {
+        features = [
+            'High quality ingredients',
+            'Safe and tested',
+            'Great value for money',
+            'Trusted brand',
+            'Customer satisfaction guaranteed'
+        ];
+    } else if (category.includes('Sports') || category.includes('Healthcare')) {
+        features = [
+            'Professional grade quality',
+            'Ergonomic design',
+            'Durable construction',
+            'Performance oriented',
+            'Health and safety certified'
+        ];
+    } else {
+        features = [
+            'High quality materials',
+            'Excellent craftsmanship',
+            'Great value for money',
+            'Customer satisfaction guaranteed',
+            'Trusted brand quality'
+        ];
+    }
+
+    featuresContainer.innerHTML = features.map(feature => `<li>${feature}</li>`).join('');
+}
+
+function openProductDetailModal() {
+    const modal = document.getElementById('productDetailModal');
+    if (!modal) return;
+    
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    
+    // Focus on close button for accessibility
+    setTimeout(() => {
+        const closeBtn = modal.querySelector('#productDetailCloseBtn');
+        if (closeBtn) closeBtn.focus();
+    }, 100);
+}
+
+function closeProductDetailModal() {
+    const modal = document.getElementById('productDetailModal');
+    if (!modal) return;
+    
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    currentDetailProduct = null;
+}
+
+// Setup product detail modal event listeners
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('productDetailModal');
+    const closeBtn = document.getElementById('productDetailCloseBtn');
+    const addToCartBtn = document.getElementById('detailAddToCart');
+    const addToWishlistBtn = document.getElementById('detailAddWishlist');
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeProductDetailModal);
+    }
+
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeProductDetailModal();
+            }
+        });
+    }
+
+    if (addToCartBtn) {
+        addToCartBtn.addEventListener('click', function() {
+            if (currentDetailProduct) {
+                addToCart(currentDetailProduct);
+                closeProductDetailModal();
+            }
+        });
+    }
+
+    if (addToWishlistBtn) {
+        addToWishlistBtn.addEventListener('click', function() {
+            if (currentDetailProduct) {
+                showNotification(`${currentDetailProduct['Product Name']} added to wishlist!`);
+            }
+        });
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeProductDetailModal();
+        }
+    });
+});
