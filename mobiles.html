@@ -138,6 +138,19 @@
             transition: opacity 0.3s ease;
         }
 
+        .discount-badge {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: var(--flipkart-orange);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 10;
+        }
+
         .product-image-container:hover .product-overlay {
             opacity: 1;
         }
@@ -855,15 +868,18 @@
     }
 
     function createProductCard(item){
-        const price = item['Selling Price (INR)'] || '';
+        const price = item['Price (INR)'] || '';
         const mrp = item['Original Price (INR)'] || '';
-        const rating = item['Customer Rating (Max 5)'] || '';
+        const rating = item['Rating (Max 5)'] || '';
+        const numRatings = item['Number of Ratings'] || '';
+        const discount = item['Discount Percentage'] || '';
         const url = item['Product URL'] || '#';
         const safeId = (item['Product Name'] || 'item').toLowerCase().replace(/[^a-z0-9]+/g, '-');
         
         return `
         <article class="product-card" role="listitem" aria-labelledby="${safeId}-title">
             <div class="product-image-container" onclick="showProductDetail(this)" data-product='${JSON.stringify(item).replace(/'/g, "&apos;")}'>
+                ${discount ? `<div class="discount-badge">${discount}% OFF</div>` : ''}
                 <img src="${item['Product Image']}" alt="${item['Product Name']}" class="product-image" onerror="this.src='https://via.placeholder.com/320x200?text=Image'" loading="lazy">
                 <div class="product-overlay">
                     <i class="fas fa-eye"></i>
@@ -874,9 +890,9 @@
                 <h3 class="product-name" id="${safeId}-title" onclick="showProductDetail(this.closest('.product-card').querySelector('.product-image-container'))">${item['Product Name']}</h3>
                 <div class="product-price-row">
                     ${price ? `<span class="product-price">₹${price}</span>` : ''}
-                    ${mrp ? `<span class="product-original-price">₹${mrp}</span>` : ''}
+                    ${mrp && mrp !== price ? `<span class="product-original-price">₹${mrp}</span>` : ''}
                 </div>
-                ${rating ? `<div class="product-rating"><i class='fas fa-star'></i><span>${rating}</span></div>` : ''}
+                ${rating ? `<div class="product-rating"><i class='fas fa-star'></i><span>${rating}</span>${numRatings ? ` (${numRatings})` : ''}</div>` : ''}
                 <div class="product-actions">
                     <button class="add-to-cart" onclick="addToCart(this)" data-product='${JSON.stringify(item).replace(/'/g, "&apos;")}'>Add to Cart</button>
                     <button class="view-details" onclick="showProductDetail(this.closest('.product-card').querySelector('.product-image-container'))" aria-label="View ${item['Product Name']} details">
