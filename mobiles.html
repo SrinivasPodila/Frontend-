@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axzora Mobiles</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="index.html" class="brand" aria-label="Axzora home">
+                    <span class="brand-glyph"><span class="brand-letter">A</span></span>
+                    <span class="brand-name">Axzora</span>
+                </a>
+            </div>
+            <h1 style="color:#fff; font-family:Inter, sans-serif; font-weight:800;">Mobiles</h1>
+        </div>
+    </header>
+
+    <main id="main-content" role="main">
+        <section class="products" id="products" aria-labelledby="products-title">
+            <div class="container">
+                <h2 class="section-title" id="products-title">Mobiles</h2>
+                <div class="product-grid" id="productGrid" role="list" aria-label="Product items" aria-busy="true"></div>
+                <div id="fallback" style="display:none; text-align:center; margin:24px 0;">
+                    <button id="loadJsonBtn">Load Mobiles Data</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+    // Sample mobiles data
+    const inlineMobilesData = [
+         {
+  "Product Name" : "Redmi A4 5G (Sparkle Purple, 4GB RAM, 64GB Storage)",
+  "Product URL" : "https://aax-eu-zaz.amazon.in/x/c/JOACEA0kH9i-Ba74bpsjkKIAAAGYvQE01AoAAAH2AQBvbm9fdHhuX2JpZDMgICBvbm9fdHhuX2ltcDEgICDPAEkJ/clv1_CEuOPUxokZA0iHrVBs4M-g7reX4hduYbrokH6Dmb0Npyx39UlRvYHv018HHz9hvVjq0yzpNb3X7OfU1hAmcAW2FCDg2qL8SpNx0jfF9xVl6wO797skfB8IkGXCRvU-W6XJeXalC7rdIQEQQ8kV_3ZVhXLA8QC8x8H15tWbp4Xgyay_2WjkwrSxutOI2vKbYuDzUcfMyagcpNBHhtJZhsefQQh8yliMIIKin6O61_zAYOsoJhkeWuV2gvjBmW5lJBN2PMN-SRnR9AjX0lL9xFahCwdXiTzSjwM7idy4j_a5sYLmef1aK1xkuNcA7FBIOT3_cq0eVrbNPflr30INuJNP9L6N5HTwUelYES3OZuHKUFtVMhIFeW_yWr3JYqfnqDdhxLjmOcuEw9_RLIB6ysZlYBfITVhPBne-wSBml9tlZkUux_rAVrRF9I0bxcInIFH-Gzc_r6mO-bWyVNaReipMUTeUmOnmCYQTtgTbV7n9mGD0dk7s2izRPtS0xNFricmfda3FxGEYwynzuAoU-5yQODWwRmcmo6djaNSR6rH7DofgKiPz1B7kQPBXjrdEHsefg0kPl-VBmGjLx6pM0NATfcADpCyR1V8u8umKazrWoovLyO4a4ZPXHk5F3eTZyUFmEaTc0_BDZj7M15O8tu4RAJ27f_ZzBDaWok4tYk48M7NmkOZ36Fl1Ebkg_eWdRJ6F4F1mJu4PcI-cklAyyUSHtG2abkbt7g3rrlfXRVPD7-2TbfYsZB0gNE2NoHS_--qKhNGCPDjknV7BO4C3zvJRNiqTjUCExQsMBHVOQLRAqN-FMsB_58jgRzoruOTVDEa-acQxJH6Q_wpt5iWsFzusf4ohk3kPmMQPaCnbOBhX-w2G-T93A06hPLh2C-4wmgiP8WusIimBHMAMslSNgRCtui7OOboCN1FB8LJSXilXPihxB1HWYEZm1oUCbM6W2alCqHL-XV7ouJs9a55j-aWJxHFOa7X4XP5me0eTB-OJ4WWyQlTlVod6r9xDL4E3Yjcn6N86hf_gwxap0R6r2Q8yA6tT9KV-eqh1dxz6x-hQt7CGeCVJGOCRK9Trxff_B7SmmQUJPMIQxeCYyHWZuKnOjlawj-m6BQXNcuLT4zGLW9GlOPJrxMi3wZIoqyvNvtuM0hdKH8lgxaR9thgAQgSw01edrUDVvYFpQDnrPppYmx8iD76HT8tusGszZJZ_t3K1a8KH3-1k2GXSwGuVz6EvSC2el8p6dMwD6j2sFMIEe6MloaRlOC1WyhvyIQIZXVRuoTr4jqWXzoFZBdQZowq0Ay7LFdnYuX_xubqXGNM8Dcc9JUEMXQwuwYoj2S4o88E6gNQzCm60b6iugLcVwDzL_q3YYL5HV1fdlnZLl-sto3z1u3Ak2Fgsm2KH-7ZYdKMRvddUu5Sxj6RygZB4CbbJvKtDOILGQv46kC6MLEg2RaZy58zLEoT-kJHh_cLDKL0y0wDXTij-O4pQqdCSnXSEDNyw3reO4P6KQSnIwl0G8eh2HkO1uRG3gm7okpw-6HsG78eRdbf-13N7bZRt42JRDit-PZLUuxHVWJKPUeu8Kq58bL5f69XaRjAtBTq_9CX8PzGFzn45flF__pHEcrSTBK5Mv9wrMI0p3E92zrxfO4fVyxKgqOkj9Ji3ZEQraCVCzPPUfC4r8RRlidhylpyotWTS_ELn8ZMvdKmPc0dPOqOPgKpI7mHF8tzfeeos6MnfxHX_SZuh5BvGW6n4wnEQHq8Blluwafq5dvA2vK4173kMjd5OU-NKhO9Ev2AdYlsaoZyTmigbZncdJlV9hzzHN2PcrTxW7ufd-bIib6lKqUSqW4zpIO46QMWdaKq_dYhgMCXehHGKcPvNnOImTIN6ONjKh0asOeHZpcRDFujjJRqNrRMe2Ggl16Q_bX1dcgqIHfWQwDkMmJ1zR7SCzKEfq9rhFV0doGbYbpnNY6oUZqZAcjhnh6n161dpIPg3U7dgkmp779OrpaBBQK-1azasYyB3Zv6gmVMPw_OkCIQ6y6ZGBEIpn6DsOZiAC6tHEmAdQ-CVRNWo8MukxvyPnFqMXjiudpCo-sSOYodYFjUrxDjplKaVEHZelsgzA8A5SbvHwbKkB7F9T4fzrHWBLXAlMnGJqrw5P-DpxtjGYpLPy-Hts2bDrNfKoytqQWjQaaTT48W0pb7hlNHm-PKi_gzw2XGrm4-DtvoRKPxOQ6Id-WZTqHK0BS8yYgQDhGKwGb/https://www.amazon.in/gp/aw/d/B0DLW427YG/?_encoding=UTF8&pd_rd_plhdr=t&aaxitk=6536c4470e394d4e79b99cac9ea350bf&hsa_cr_id=0&qid=1755517629&sr=1-1-e0fa1fdd-d857-4087-adda-5bd576b25987&ref_=sbx_be_s_sparkle_lsi4d_asin_0_img&pd_rd_w=fc85X&content-id=amzn1.sym.cbe1d71a-30e3-45dc-b787-bad221b13c68%3Aamzn1.sym.cbe1d71a-30e3-45dc-b787-bad221b13c68&pf_rd_p=cbe1d71a-30e3-45dc-b787-bad221b13c68&pf_rd_r=MP4974QRYT4AVDZP7ZSH&pd_rd_wg=MX5lO&pd_rd_r=c905acdc-3278-493f-a2a0-f934c44242ff",
+  "Product Image" : "https://m.media-amazon.com/images/I/81BGKLI+cWL._AC_SR160,134_CB1169409_QL70_.jpg",
+  "Price (INR)" : "7998",
+  "Original Price (INR)" : "10999",
+  "Discount Percentage" : "27",
+  "Rating (Max 5)" : "5",
+  "Number of Ratings" : "5"
+}, {
+  "Product Name" : "Redmi A4 5G (Starry Black, 4GB RAM, 64GB Storage)",
+  "Product URL" : "https://aax-eu-zaz.amazon.in/x/c/JOACEA0kH9i-Ba74bpsjkKIAAAGYvQE01AoAAAH2AQBvbm9fdHhuX2JpZDMgICBvbm9fdHhuX2ltcDEgICDPAEkJ/clv1_CEuOPUxokZA0iHrVBs4M-g7reX4hduYbrokH6Dmb0Npyx39UlRvYHv018HHz9hvVjq0yzpNb3X7OfU1hAmcAW2FCDg2qL8SpNx0jfF9xVl6wO797skfB8IkGXCRvU-W6XJeXalC7rdIQEQQ8kV_3ZVhXLA8QC8x8H15tWbp4Xgyay_2WjkwrSxutOI2vKbYuDzUcfMyagcpNBHhtJZhsefQQh8yliMIIKin6O61_zAYOsoJhkeWuV2gvjBmW5lJBN2PMN-SRnR9AjX0lL9xFahCwdXiTzSjwM7idy4j_a5sYLmef1aK1xkuNcA7FBIOT3_cq0eVrbNPflr30INuJNP9L6N5HTwUelYES3OZuHKUFtVMhIFeW_yWr3JYqfnqDdhxLjmOcuEw9_RLIB6ysZlYBfITVhPBne-wSBml9tlZkUux_rAVrRF9I0bxcInIFH-Gzc_r6mO-bWyVNaReipMUTeUmOnmCYQTtgTbV7n9mGD0dk7s2izRPtS0xNFricmfda3FxGEYwynzuAoU-5yQODWwRmcmo6djaNSR6rH7DofgKiPz1B7kQPBXjrdEHsefg0kPl-VBmGjLx6pM0NATfcADpCyR1V8u8umKazrWoovLyO4a4ZPXHk5F3eTZyUFmEaTc0_BDZj7M15O8tu4RAJ27f_ZzBDaWok4tYk48M7NmkOZ36Fl1Ebkg_eWdRJ6F4F1mJu4PcI-cklAyyUSHtG2abkbt7g3rrlfXRVPD7-2TbfYsZB0gNE2NoHS_--qKhNGCPDjknV7BO4C3zvJRNiqTjUCExQsMBHVOQLRAqN-FMsB_58jgRzoruOTVDEa-acQxJH6Q_wpt5iWsFzusf4ohk3kPmMQPaCnbOBhX-w2G-T93A06hPLh2C-4wmgiP8WusIimBHMAMslSNgRCtui7OOboCN1FB8LJSXilXPihxB1HWYEZm1oUCbM6W2alCqHL-XV7ouJs9a55j-aWJxHFOa7X4XP5me0eTB-OJ4WWyQlTlVod6r9xDL4E3Yjcn6N86hf_gwxap0R6r2Q8yA6tT9KV-eqh1dxz6x-hQt7CGeCVJGOCRK9Trxff_B7SmmQUJPMIQxeCYyHWZuKnOjlawj-m6BQXNcuLT4zGLW9GlOPJrxMi3wZIoqyvNvtuM0hdKH8lgxaR9thgAQgSw01edrUDVvYFpQDnrPppYmx8iD76HT8tusGszZJZ_t3K1a8KH3-1k2GXSwGuVz6EvSC2el8p6dMwD6j2sFMIEe6MloaRlOC1WyhvyIQIZXVRuoTr4jqWXzoFZBdQZowq0Ay7LFdnYuX_xubqXGNM8Dcc9JUEMXQwuwYoj2S4o88E6gNQzCm60b6iugLcVwDzL_q3YYL5HV1fdlnZLl-sto3z1u3Ak2Fgsm2KH-7ZYdKMRvddUu5Sxj6RygZB4CbbJvKtDOILGQv46kC6MLEg2RaZy58zLEoT-kJHh_cLDKL0y0wDXTij-O4pQqdCSnXSEDNyw3reO4P6KQSnIwl0G8eh2HkO1uRG3gm7okpw-6HsG78eRdbf-13N7bZRt42JRDit-PZLUuxHVWJKPUeu8Kq58bL5f69XaRjAtBTq_9CX8PzGFzn45flF__pHEcrSTBK5Mv9wrMI0p3E92zrxfO4fVyxKgqOkj9Ji3ZEQraCVCzPPUfC4r8RRlidhylpyotWTS_ELn8ZMvdKmPc0dPOqOPgKpI7mHF8tzfeeos6MnfxHX_SZuh5BvGW6n4wnEQHq8Blluwafq5dvA2vK4173kMjd5OU-NKhO9Ev2AdYlsaoZyTmigbZncdJlV9hzzHN2PcrTxW7ufd-bIib6lKqUSqW4zpIO46QMWdaKq_dYhgMCXehHGKcPvNnOImTIN6ONjKh0asOeHZpcRDFujjJRqNrRMe2Ggl16Q_bX1dcgqIHfWQwDkMmJ1zR7SCzKEfq9rhFV0doGbYbpnNY6oUZqZAcjhnh6n161dpIPg3U7dgkmp779OrpaBBQK-1azasYyB3Zv6gmVMPw_OkCIQ6y6ZGBEIpn6DsOZiAC6tHEmAdQ-CVRNWo8MukxvyPnFqMXjiudpCo-sSOYodYFjUrxDjplKaVEHZelsgzA8A5SbvHwbKkB7F9T4fzrHWBLXAlMnGJqrw5P-DpxtjGYpLPy-Hts2bDrNfKoytqQWjQaaTT48W0pb7hlNHm-PKi_gzw2XGrm4-DtvoRKPxOQ6Id-WZTqHK0BS8yYgQDhGKwGb/https://www.amazon.in/gp/aw/d/B0DLW1L5PR/?_encoding=UTF8&pd_rd_plhdr=t&aaxitk=6536c4470e394d4e79b99cac9ea350bf&hsa_cr_id=0&qid=1755517629&sr=1-2-e0fa1fdd-d857-4087-adda-5bd576b25987&ref_=sbx_be_s_sparkle_lsi4d_asin_1_img&pd_rd_w=fc85X&content-id=amzn1.sym.cbe1d71a-30e3-45dc-b787-bad221b13c68%3Aamzn1.sym.cbe1d71a-30e3-45dc-b787-bad221b13c68&pf_rd_p=cbe1d71a-30e3-45dc-b787-bad221b13c68&pf_rd_r=MP4974QRYT4AVDZP7ZSH&pd_rd_wg=MX5lO&pd_rd_r=c905acdc-3278-493f-a2a0-f934c44242ff",
+  "Product Image" : "https://m.media-amazon.com/images/I/718HzJbvY1L._AC_SR160,134_CB1169409_QL70_.jpg",
+  "Price (INR)" : "7998",
+  "Original Price (INR)" : "10999",
+  "Discount Percentage" : "27",
+  "Rating (Max 5)" : "4.5",
+  "Number of Ratings" : "4.5"
+}, {
+  "Product Name" : "Redmi A4 5G (Sparkle Purple, 4GB RAM, 128GB Storage)",
+  "Product URL" : "https://aax-eu-zaz.amazon.in/x/c/JOACEA0kH9i-Ba74bpsjkKIAAAGYvQE01AoAAAH2AQBvbm9fdHhuX2JpZDMgICBvbm9fdHhuX2ltcDEgICDPAEkJ/clv1_CEuOPUxokZA0iHrVBs4M-g7reX4hduYbrokH6Dmb0Npyx39UlRvYHv018HHz9hvVjq0yzpNb3X7OfU1hAmcAW2FCDg2qL8SpNx0jfF9xVl6wO797skfB8IkGXCRvU-W6XJeXalC7rdIQEQQ8kV_3ZVhXLA8QC8x8H15tWbp4Xgyay_2WjkwrSxutOI2vKbYuDzUcfMyagcpNBHhtJZhsefQQh8yliMIIKin6O61_zAYOsoJhkeWuV2gvjBmW5lJBN2PMN-SRnR9AjX0lL9xFahCwdXiTzSjwM7idy4j_a5sYLmef1aK1xkuNcA7FBIOT3_cq0eVrbNPflr30INuJNP9L6N5HTwUelYES3OZuHKUFtVMhIFeW_yWr3JYqfnqDdhxLjmOcuEw9_RLIB6ysZlYBfITVhPBne-wSBml9tlZkUux_rAVrRF9I0bxcInIFH-Gzc_r6mO-bWyVNaReipMUTeUmOnmCYQTtgTbV7n9mGD0dk7s2izRPtS0xNFricmfda3FxGEYwynzuAoU-5yQODWwRmcmo6djaNSR6rH7DofgKiPz1B7kQPBXjrdEHsefg0kPl-VBmGjLx6pM0NATfcADpCyR1V8u8umKazrWoovLyO4a4ZPXHk5F3eTZyUFmEaTc0_BDZj7M15O8tu4RAJ27f_ZzBDaWok4tYk48M7NmkOZ36Fl1Ebkg_eWdRJ6F4F1mJu4PcI-cklAyyUSHtG2abkbt7g3rrlfXRVPD7-2TbfYsZB0gNE2NoHS_--qKhNGCPDjknV7BO4C3zvJRNiqTjUCExQsMBHVOQLRAqN-FMsB_58jgRzoruOTVDEa-acQxJH6Q_wpt5iWsFzusf4ohk3kPmMQPaCnbOBhX-w2G-T93A06hPLh2C-4wmgiP8WusIimBHMAMslSNgRCtui7OOboCN1FB8LJSXilXPihxB1HWYEZm1oUCbM6W2alCqHL-XV7ouJs9a55j-aWJxHFOa7X4XP5me0eTB-OJ4WWyQlTlVod6r9xDL4E3Yjcn6N86hf_gwxap0R6r2Q8yA6tT9KV-eqh1dxz6x-hQt7CGeCVJGOCRK9Trxff_B7SmmQUJPMIQxeCYyHWZuKnOjlawj-m6BQXNcuLT4zGLW9GlOPJrxMi3wZIoqyvNvtuM0hdKH8lgxaR9thgAQgSw01edrUDVvYFpQDnrPppYmx8iD76HT8tusGszZJZ_t3K1a8KH3-1k2GXSwGuVz6EvSC2el8p6dMwD6j2sFMIEe6MloaRlOC1WyhvyIQIZXVRuoTr4jqWXzoFZBdQZowq0Ay7LFdnYuX_xubqXGNM8Dcc9JUEMXQwuwYoj2S4o88E6gNQzCm60b6iugLcVwDzL_q3YYL5HV1fdlnZLl-sto3z1u3Ak2Fgsm2KH-7ZYdKMRvddUu5Sxj6RygZB4CbbJvKtDOILGQv46kC6MLEg2RaZy58zLEoT-kJHh_cLDKL0y0wDXTij-O4pQqdCSnXSEDNyw3reO4P6KQSnIwl0G8eh2HkO1uRG3gm7okpw-6HsG78eRdbf-13N7bZRt42JRDit-PZLUuxHVWJKPUeu8Kq58bL5f69XaRjAtBTq_9CX8PzGFzn45flF__pHEcrSTBK5Mv9wrMI0p3E92zrxfO4fVyxKgqOkj9Ji3ZEQraCVCzPPUfC4r8RRlidhylpyotWTS_ELn8ZMvdKmPc0dPOqOPgKpI7mHF8tzfeeos6MnfxHX_SZuh5BvGW6n4wnEQHq8Blluwafq5dvA2vK4173kMjd5OU-NKhO9Ev2AdYlsaoZyTmigbZncdJlV9hzzHN2PcrTxW7ufd-bIib6lKqUSqW4zpIO46QMWdaKq_dYhgMCXehHGKcPvNnOImTIN6ONjKh0asOeHZpcRDFujjJRqNrRMe2Ggl16Q_bX1dcgqIHfWQwDkMmJ1zR7SCzKEfq9rhFV0doGbYbpnNY6oUZqZAcjhnh6n161dpIPg3U7dgkmp779OrpaBBQK-1azasYyB3Zv6gmVMPw_OkCIQ6y6ZGBEIpn6DsOZiAC6tHEmAdQ-CVRNWo8MukxvyPnFqMXjiudpCo-sSOYodYFjUrxDjplKaVEHZelsgzA8A5SbvHwbKkB7F9T4fzrHWBLXAlMnGJqrw5P-DpxtjGYpLPy-Hts2bDrNfKoytqQWjQaaTT48W0pb7hlNHm-PKi_gzw2XGrm4-DtvoRKPxOQ6Id-WZTqHK0BS8yYgQDhGKwGb/https://www.amazon.in/gp/aw/d/B0DLW44CGS/?_encoding=UTF8&pd_rd_plhdr=t&aaxitk=6536c4470e394d4e79b99cac9ea350bf&hsa_cr_id=0&qid=1755517629&sr=1-3-e0fa1fdd-d857-4087-adda-5bd576b25987&ref_=sbx_be_s_sparkle_lsi4d_asin_2_img&pd_rd_w=fc85X&content-id=amzn1.sym.cbe1d71a-30e3-45dc-b787-bad221b13c68%3Aamzn1.sym.cbe1d71a-30e3-45dc-b787-bad221b13c68&pf_rd_p=cbe1d71a-30e3-45dc-b787-bad221b13c68&pf_rd_r=MP4974QRYT4AVDZP7ZSH&pd_rd_wg=MX5lO&pd_rd_r=c905acdc-3278-493f-a2a0-f934c44242ff",
+  "Product Image" : "https://m.media-amazon.com/images/I/81BGKLI+cWL._AC_SR160,134_CB1169409_QL70_.jpg",
+  "Price (INR)" : "8798",
+  "Original Price (INR)" : "11499",
+  "Discount Percentage" : "23",
+  "Rating (Max 5)" : "4",
+  "Number of Ratings" : "4"
+}, {
+  "Product Name" : "Apple iPhone 15 (128 GB) - Black",
+  "Product URL" : "https://www.amazon.in/sspa/click?ie=UTF8&spc=MTo3MDM0NTI5MzU1Nzk1NDEzOjE3NTU1MTc2Mjk6c3BfYXRmOjMwMDA1NzU5NDUzNzczMjo6MDo6&url=%2FApple-iPhone-15-128-GB%2Fdp%2FB0CHX1W1XY%2Fref%3Dsr_1_1_sspa%3Fcrid%3D2EI05AJSBCHZ0%26dib%3DeyJ2IjoiMSJ9.Zu16M0f4gcJTITvmFzGqs-VcrDQSbkLoQziIYYWLheceq4BjINcNA0ch7umzJRYsJM-u3d1ozPtg6TqCkFI0g-PS3gZ9mgtxjlvAlyGbkmY6QpABhQrEGNuYB4v0GGtHApFG_9lavasZpodAYaoMAdFBbKV-K45M3zQBJQOmKbo_OQto-EnLwa8XsLQqI4bhyA2gTn2bIdMy5sg-UREtUdevdnzeLhzIaaBe6K51cmo.7LNR3Man6Q3eIhMHC3aqQjQXjArcqwV3RL28tpsCg8c%26dib_tag%3Dse%26keywords%3Dmobiles%26qid%3D1755517629%26sprefix%3Dmobiles%252Caps%252C225%26sr%3D8-1-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9hdGY%26psc%3D1&sp_cr=ZAZ",
+  "Product Image" : "https://m.media-amazon.com/images/I/71657TiFeHL._AC_UY218_.jpg",
+  "Price (INR)" : "61499",
+  "Original Price (INR)" : "69900",
+  "Discount Percentage" : "12",
+  "Rating (Max 5)" : "4.5",
+  "Number of Ratings" : "4795"
+}, {
+  "Product Name" : "Apple iPhone 13 (128GB) - Blue",
+  "Product URL" : "https://www.amazon.in/sspa/click?ie=UTF8&spc=MTo3MDM0NTI5MzU1Nzk1NDEzOjE3NTU1MTc2Mjk6c3BfYXRmOjIwMDc5NjgyODUxMDAzOjowOjo&url=%2FApple-iPhone-13-128GB-Blue%2Fdp%2FB09G9BL5CP%2Fref%3Dsr_1_2_sspa%3Fcrid%3D2EI05AJSBCHZ0%26dib%3DeyJ2IjoiMSJ9.Zu16M0f4gcJTITvmFzGqs-VcrDQSbkLoQziIYYWLheceq4BjINcNA0ch7umzJRYsJM-u3d1ozPtg6TqCkFI0g-PS3gZ9mgtxjlvAlyGbkmY6QpABhQrEGNuYB4v0GGtHApFG_9lavasZpodAYaoMAdFBbKV-K45M3zQBJQOmKbo_OQto-EnLwa8XsLQqI4bhyA2gTn2bIdMy5sg-UREtUdevdnzeLhzIaaBe6K51cmo.7LNR3Man6Q3eIhMHC3aqQjQXjArcqwV3RL28tpsCg8c%26dib_tag%3Dse%26keywords%3Dmobiles%26qid%3D1755517629%26sprefix%3Dmobiles%252Caps%252C225%26sr%3D8-2-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9hdGY%26psc%3D1&sp_cr=ZAZ",
+  "Product Image" : "https://m.media-amazon.com/images/I/71xb2xkN5qL._AC_UY218_.jpg",
+  "Price (INR)" : "43900",
+  "Original Price (INR)" : "59900",
+  "Discount Percentage" : "27",
+  "Rating (Max 5)" : "4.5",
+  "Number of Ratings" : "35338"
+}, {
+  "Product Name" : "Samsung Galaxy M05 (Mint Green, 4GB RAM, 64 GB Storage)",
+  "Product URL" : "https://www.amazon.in/Samsung-Storage-Display-Charging-Security/dp/B0DFY3XCB6/ref=sr_1_3?crid=2EI05AJSBCHZ0&dib=eyJ2IjoiMSJ9.Zu16M0f4gcJTITvmFzGqs-VcrDQSbkLoQziIYYWLheceq4BjINcNA0ch7umzJRYsJM-u3d1ozPtg6TqCkFI0g-PS3gZ9mgtxjlvAlyGbkmY6QpABhQrEGNuYB4v0GGtHApFG_9lavasZpodAYaoMAdFBbKV-K45M3zQBJQOmKbo_OQto-EnLwa8XsLQqI4bhyA2gTn2bIdMy5sg-UREtUdevdnzeLhzIaaBe6K51cmo.7LNR3Man6Q3eIhMHC3aqQjQXjArcqwV3RL28tpsCg8c&dib_tag=se&keywords=mobiles&qid=1755517629&sprefix=mobiles%2Caps%2C225&sr=8-3",
+  "Product Image" : "https://m.media-amazon.com/images/I/81T3olLXpUL._AC_UY218_.jpg",
+  "Price (INR)" : "6499",
+  "Original Price (INR)" : "9999",
+  "Discount Percentage" : "35",
+  "Rating (Max 5)" : "4",
+  "Number of Ratings" : "5865"
+}, {
+  "Product Name" : "Redmi A4 5G (Starry Black, 4GB RAM, 128GB Storage)",
+  "Product URL" : "https://www.amazon.in/Redmi-A4-5G-Storage-Charging/dp/B0DLW4QD72/ref=sr_1_4?crid=2EI05AJSBCHZ0&dib=eyJ2IjoiMSJ9.Zu16M0f4gcJTITvmFzGqs-VcrDQSbkLoQziIYYWLheceq4BjINcNA0ch7umzJRYsJM-u3d1ozPtg6TqCkFI0g-PS3gZ9mgtxjlvAlyGbkmY6QpABhQrEGNuYB4v0GGtHApFG_9lavasZpodAYaoMAdFBbKV-K45M3zQBJQOmKbo_OQto-EnLwa8XsLQqI4bhyA2gTn2bIdMy5sg-UREtUdevdnzeLhzIaaBe6K51cmo.7LNR3Man6Q3eIhMHC3aqQjQXjArcqwV3RL28tpsCg8c&dib_tag=se&keywords=mobiles&qid=1755517629&sprefix=mobiles%2Caps%2C225&sr=8-4",
+  "Product Image" : "https://m.media-amazon.com/images/I/718HzJbvY1L._AC_UY218_.jpg",
+  "Price (INR)" : "8798",
+  "Original Price (INR)" : "11999",
+  "Discount Percentage" : "27",
+  "Rating (Max 5)" : "3.9",
+  "Number of Ratings" : "5752"
+}, {
+  "Product Name" : "Redmi 13 5G Prime Edition, Hawaiian Blue, 8GB+128GB",
+  "Product URL" : "https://www.amazon.in/Redmi-Hawaiian-Largest-Display-Segment/dp/B0D78X544X/ref=sr_1_5?crid=2EI05AJSBCHZ0&dib=eyJ2IjoiMSJ9.Zu16M0f4gcJTITvmFzGqs-VcrDQSbkLoQziIYYWLheceq4BjINcNA0ch7umzJRYsJM-u3d1ozPtg6TqCkFI0g-PS3gZ9mgtxjlvAlyGbkmY6QpABhQrEGNuYB4v0GGtHApFG_9lavasZpodAYaoMAdFBbKV-K45M3zQBJQOmKbo_OQto-EnLwa8XsLQqI4bhyA2gTn2bIdMy5sg-UREtUdevdnzeLhzIaaBe6K51cmo.7LNR3Man6Q3eIhMHC3aqQjQXjArcqwV3RL28tpsCg8c&dib_tag=se&keywords=mobiles&qid=1755517629&sprefix=mobiles%2Caps%2C225&sr=8-5",
+  "Product Image" : "https://m.media-amazon.com/images/I/81CQZB2t52L._AC_UY218_.jpg",
+  "Price (INR)" : "11999",
+  "Original Price (INR)" : "19999",
+  "Discount Percentage" : "40",
+  "Rating (Max 5)" : "4",
+  "Number of Ratings" : "1409"
+}, {
+  "Product Name" : "iPhone 16 Pro 128 GB: 5G Mobile Phone with Camera Control, 4K 120 fps Dolby Vision and a Huge Leap in Battery Life. Works with AirPods; Desert Titanium",
+  "Product URL" : "https://aax-eu-zaz.amazon.in/x/c/JBCY9T-D8P6i42AkuWuvWDsAAAGYvQE02woAAAH2AQBvbm9fdHhuX2JpZDEgICBvbm9fdHhuX2ltcDEgICB55kRy/clv1_CEuOPUxokZA0iHrVd8UvmhqMeG89S543hbw8qDXUptJS139TlRvYHv018HHz9hvVjq0yzpNb3X7OfU01AmcAKmphbhnNLtW1CmUPV2pKFlL_TbdbokfB8IkGXCQ3UuW6XJeXalC7rdIQEQQ8kV_3ZVhXLA8QC8x8H15tWbp4Xgyay_2WjkwrSxutOI2vKbYuDzUcfMyagcpNBHhtJZhsefQQh8yliMIIKin6O61_zAYOsoJhkeWuV2gvjBmW5lJBN2PMN-SRnR9AjX0lL9xFahCwdXiTzSjwM7idy4j_a5sYLmef1aK1xkuNcA7FBIOT3_cq0eVrbNPflqHkFuCRN-wv6MF9QzIPv7cm5_JVNqVxskhGCnGo_yWr3JYqfnqDdhxLjmOcuEwp_RD2Me6tZl4GfKrBhPBne-wSBml9tlZkUux_rAVrRF9I0bxcInIFH-Gzc_r6mO-bWyVNaReipMUTeUmOk2OYfChiJ4snkeH1E39g8pKg8xPmTmFjVYOMr_VkwTthKoxWmj2Ajw-85x_bWgR-Y2A4Ly61XW_0GbfWKhOMGTd0mEAZAg3OfkfrU_0Pj89oQgyJhpZTgsU3XVSZOi98lgp6zP47jZipuW8Vvb-f_ZYgVnHu5zjScpWFM2scS8o1ABhn481pGcxtqRMa26fRZzNteSMkhM159KYwJmseY3mEuV5AkWnjANde9F4G-Hky9fQ-_t0yEHWVPk4f2bbWbd7w7PjlC2sLPD3XgDbPfsRV_xwc2-cYWumQjbxcMhLTn2TR5RPMYAbeH3RllibLAkpWt8pDeNEBQSWC8nkvH_B8gRhjnKuSSVOtVuWyajNb6VDKpuVsRc5qk4SjjEYnzP6yFOOEm8C7vGmRxFXhynMh-1XVvGCUvTL5rqIvkfwinyTmQ_ALU7ssEdOE4MyY9TJfJi0RDlbZoRTQlDtxI3YcZk9rYym_92iaxW-OX_qawLKGs8DOzy-LcaZMB8WNfLPNw36bDRFuCfoOSDd9TRJ8ZJPE6iHJKVogDjei9IJf_gsQeLMP37yo8xZ9vDBSBM-YpkJf4IFskAx3R2eCdtuNNwa5TqtuKPRCSWqSVp_SGmg5C7GWQpynncG8fyHQ1aFsaskCPlo3D4e6FUecF9pYmH9dDKGXhOHtuMwqdsrzqwwhR-J18Ec2S3B7eeCYGV7zDYgGjtCgnby99CyexlDH3LYrhU1RZ8ASOyGFEmnS1me8XioshF3RP-OSyMBZoIlI0yGY9L5eI0XNI2UIQniE1Ua_vC1zIa3-Qogtleujb3zCTpBdQZowrFsp1rpZi6aWzguYzGWoMsDcadIxFO3Qn_B4kBio7LYHCKoYfwa8_Gjqju8LbUkW36T23tl0819YS55lFcZJsts3l2-4OFmWvs68LnisY4c5FzjgflCzSg7cWSgsZJOLNL2tuUG1Nklx2qg2-qH0mFtkVDUhr44nFNMDHh_cLDKL0zAJOEL-tL-8nTvrEjb6SEDN0jSpQugf4LsS6vcr1lIKhGHkO1uRG3gm7okpw-6HsG78eRdbf-13N7bZRt42JRDit-PZLUuxHVWJKPUeu8Kq58bL5f69XaRjAtBTq_9CX8PzGFzn45flF__pHEcrSTBK5Mv9wrMI0p3E92zrxfO4fVyxKgqOkj9Ji3ZEQraCVCzPPUfC4r8OXFyKsSNs_J8WdAXUaGkWFLt7_fdmZKqUNe1-6pTmaUMqzei8vvW9_vtHQouDvTQMp02lk5cdKx387xZ1sC6i8d94AxOH8wL-luX0-PwAQcdq_kb2MeF6qok34hS9q-9FP8JQQ4VwhlYKLufqwnTRVOqCDxfXpM25E5a1yroH78YJT9Dxr_F9owYpe9ldGKgXp8PzAHLlCrSGjbMPI-inHNhxbT1rtkZRiuDkD6m8u38FcKm01voNjoLydwMEgNuOjy9IbgrMKsyVqi1_0NE5WOHzjawRl0prNDFBxJDuep4kxgODFS1znIDHSmMmGvWm0Lmrd7qVHRuGie1uKW2pdIY1JwGLKtbGZhxDI8GvcKCDiTbe8Vc4O9JBYxJmZowmpWlditXytvLCqcI1ec2VGKchDfv_ml2W5-etoJrCvSAYqefOrxorVx1O757Mtn-R-A6cbHr_Ki1zWsH8hpGCeeYMjUYJUuCkH8dxE22XfqwzmYM2qgejUSU9myIgIAV7ZR60Pg_q_iKTVJe_03Q4lk7eXtAVWawhI9_iFIXOAPVBIDNADGQAj5yRAbrgrouDhYFjROVI-8-b8tdQ2z0r-v76MWd74tBJQocPc-yRqlGWEoiXuIFNAk-wXLCKvVL_zyk1X3RyNsqEusMAppG99iyJBMUHxDmMbw/https://www.amazon.in/iPhone-16-Pro-128-GB/dp/B0DGJ3THPR/ref=sxin_14_sbv_search_btf?content-id=amzn1.sym.7f127af2-01e9-4e9a-857b-f7f598682cc6%3Aamzn1.sym.7f127af2-01e9-4e9a-857b-f7f598682cc6&crid=2EI05AJSBCHZ0&cv_ct_cx=mobiles&keywords=mobiles&pd_rd_i=B0DGJ3THPR&pd_rd_r=7fedf7f4-7166-49e9-af95-53a82d865797&pd_rd_w=OdgPk&pd_rd_wg=ef11z&pf_rd_p=7f127af2-01e9-4e9a-857b-f7f598682cc6&pf_rd_r=MP4974QRYT4AVDZP7ZSH&qid=1755517629&sbo=RZvfv%2F%2FHxDF%2BO5021pAnSA%3D%3D&sprefix=mobiles%2Caps%2C225&sr=1-1-9131241a-a358-4619-a7b8-0f5a65d91d81",
+  "Product Image" : "https://m.media-amazon.com/images/I/61JvFLHZ6NL._AC_UL640_QL65_.jpg",
+  "Price (INR)" : "111900",
+  "Original Price (INR)" : "119900",
+  "Discount Percentage" : "7",
+  "Rating (Max 5)" : "4.4",
+  "Number of Ratings" : "424"
+}, {
+  "Product Name" : "Redmi 13 5G Prime Edition, Black Diamond, 8GB+128GB",
+  "Product URL" : "https://www.amazon.in/Redmi-Diamond-Largest-Display-Segment/dp/B0D78Y577J/ref=sr_1_6?crid=2EI05AJSBCHZ0&dib=eyJ2IjoiMSJ9.Zu16M0f4gcJTITvmFzGqs-VcrDQSbkLoQziIYYWLheceq4BjINcNA0ch7umzJRYsJM-u3d1ozPtg6TqCkFI0g-PS3gZ9mgtxjlvAlyGbkmY6QpABhQrEGNuYB4v0GGtHApFG_9lavasZpodAYaoMAdFBbKV-K45M3zQBJQOmKbo_OQto-EnLwa8XsLQqI4bhyA2gTn2bIdMy5sg-UREtUdevdnzeLhzIaaBe6K51cmo.7LNR3Man6Q3eIhMHC3aqQjQXjArcqwV3RL28tpsCg8c&dib_tag=se&keywords=mobiles&qid=1755517629&sprefix=mobiles%2Caps%2C225&sr=8-6",
+  "Product Image" : "https://m.media-amazon.com/images/I/819XqdkzjwL._AC_UY218_.jpg",
+  "Price (INR)" : "11999",
+  "Original Price (INR)" : "19999",
+  "Discount Percentage" : "40",
+  "Rating (Max 5)" : "4",
+  "Number of Ratings" : "1409"
+}, {
+  "Product Name" : "POCO M6 Plus 5G Misty Lavender 8GB RAM 128GB ROM",
+  "Product URL" : "https://www.amazon.in/POCO-Plus-Misty-Lavender-128GB/dp/B0D9KJXN82/ref=sr_1_7?crid=2EI05AJSBCHZ0&dib=eyJ2IjoiMSJ9.Zu16M0f4gcJTITvmFzGqs-VcrDQSbkLoQziIYYWLheceq4BjINcNA0ch7umzJRYsJM-u3d1ozPtg6TqCkFI0g-PS3gZ9mgtxjlvAlyGbkmY6QpABhQrEGNuYB4v0GGtHApFG_9lavasZpodAYaoMAdFBbKV-K45M3zQBJQOmKbo_OQto-EnLwa8XsLQqI4bhyA2gTn2bIdMy5sg-UREtUdevdnzeLhzIaaBe6K51cmo.7LNR3Man6Q3eIhMHC3aqQjQXjArcqwV3RL28tpsCg8c&dib_tag=se&keywords=mobiles&qid=1755517629&sprefix=mobiles%2Caps%2C225&sr=8-7",
+  "Product Image" : "https://m.media-amazon.com/images/I/71vkB1WIouL._AC_UY218_.jpg",
+  "Price (INR)" : "10499",
+  "Original Price (INR)" : "14499",
+  "Discount Percentage" : "28",
+  "Rating (Max 5)" : "3.9",
+  "Number of Ratings" : "795"
+}, {
+  "Product Name" : "OnePlus Nord CE4 Lite 5G (Super Silver, 8GB RAM, 128GB Storage)",
+  "Product URL" : "https://www.amazon.in/OnePlus-Super-Silver-128GB-Storage/dp/B0D5YCYS1G/ref=sr_1_8?crid=2EI05AJSBCHZ0&dib=eyJ2IjoiMSJ9.Zu16M0f4gcJTITvmFzGqs-VcrDQSbkLoQziIYYWLheceq4BjINcNA0ch7umzJRYsJM-u3d1ozPtg6TqCkFI0g-PS3gZ9mgtxjlvAlyGbkmY6QpABhQrEGNuYB4v0GGtHApFG_9lavasZpodAYaoMAdFBbKV-K45M3zQBJQOmKbo_OQto-EnLwa8XsLQqI4bhyA2gTn2bIdMy5sg-UREtUdevdnzeLhzIaaBe6K51cmo.7LNR3Man6Q3eIhMHC3aqQjQXjArcqwV3RL28tpsCg8c&dib_tag=se&keywords=mobiles&qid=1755517629&sprefix=mobiles%2Caps%2C225&sr=8-8",
+  "Product Image" : "https://m.media-amazon.com/images/I/61Io5-ojWUL._AC_UY218_.jpg",
+  "Price (INR)" : "16999",
+  "Original Price (INR)" : "19999",
+  "Discount Percentage" : "15",
+  "Rating (Max 5)" : "4.1",
+  "Number of Ratings" : "8609"
+}, {
+  "Product Name" : "Redmi A4 5G (Sparkle Purple, 6GB RAM, 128GB Storage)",
+  "Product URL" : "https://www.amazon.in/Redmi-A4-5G-Sparkle-Charging/dp/B0FBR69B2R/ref=sr_1_9?crid=2EI05AJSBCHZ0&dib=eyJ2IjoiMSJ9.Zu16M0f4gcJTITvmFzGqs-VcrDQSbkLoQziIYYWLheceq4BjINcNA0ch7umzJRYsJM-u3d1ozPtg6TqCkFI0g-PS3gZ9mgtxjlvAlyGbkmY6QpABhQrEGNuYB4v0GGtHApFG_9lavasZpodAYaoMAdFBbKV-K45M3zQBJQOmKbo_OQto-EnLwa8XsLQqI4bhyA2gTn2bIdMy5sg-UREtUdevdnzeLhzIaaBe6K51cmo.7LNR3Man6Q3eIhMHC3aqQjQXjArcqwV3RL28tpsCg8c&dib_tag=se&keywords=mobiles&qid=1755517629&sprefix=mobiles%2Caps%2C225&sr=8-9",
+  "Product Image" : "https://m.media-amazon.com/images/I/81BGKLI+cWL._AC_UY218_.jpg",
+  "Price (INR)" : "9799",
+  "Original Price (INR)" : "12999",
+  "Discount Percentage" : "25",
+  "Rating (Max 5)" : "3.9",
+  "Number of Ratings" : "5752"
+}, {
+  "Product Name" : "Samsung Galaxy M35 5G (DayBreak Blue,8GB RAM,128GB Storage)",
+  "Product URL" : "https://www.amazon.in/Samsung-Daybreak-Storage-Corning-Gorilla/dp/B0D7Z8FJZ9/ref=sr_1_10?crid=2EI05AJSBCHZ0&dib=eyJ2IjoiMSJ9.Zu16M0f4gcJTITvmFzGqs-VcrDQSbkLoQziIYYWLheceq4BjINcNA0ch7umzJRYsJM-u3d1ozPtg6TqCkFI0g-PS3gZ9mgtxjlvAlyGbkmY6QpABhQrEGNuYB4v0GGtHApFG_9lavasZpodAYaoMAdFBbKV-K45M3zQBJQOmKbo_OQto-EnLwa8XsLQqI4bhyA2gTn2bIdMy5sg-UREtUdevdnzeLhzIaaBe6K51cmo.7LNR3Man6Q3eIhMHC3aqQjQXjArcqwV3RL28tpsCg8c&dib_tag=se&keywords=mobiles&qid=1755517629&sprefix=mobiles%2Caps%2C225&sr=8-10",
+  "Product Image" : "https://m.media-amazon.com/images/I/81nt-RGKpyL._AC_UY218_.jpg",
+  "Price (INR)" : "18499",
+  "Original Price (INR)" : "25999",
+  "Discount Percentage" : "29",
+  "Rating (Max 5)" : "4.2",
+  "Number of Ratings" : "13145"
+}, {
+  "Product Name" : "iPhone 16 512 GB: 5G Mobile Phone with Camera Control, A18 Chip and a Big Boost in Battery Life. Works with AirPods; Ultramarine",
+  "Product URL" : "https://www.amazon.in/sspa/click?ie=UTF8&spc=MTo3MDM0NTI5MzU1Nzk1NDEzOjE3NTU1MTc2Mjk6c3BfbXRmOjMwMDM1MTQ4MTk4MTUzMjo6MDo6&url=%2FiPhone-16-512-GB-Ultramarine%2Fdp%2FB0DGJ6CMJK%2Fref%3Dsr_1_11_sspa%3Fcrid%3D2EI05AJSBCHZ0%26dib%3DeyJ2IjoiMSJ9.Zu16M0f4gcJTITvmFzGqs-VcrDQSbkLoQziIYYWLheceq4BjINcNA0ch7umzJRYsJM-u3d1ozPtg6TqCkFI0g-PS3gZ9mgtxjlvAlyGbkmY6QpABhQrEGNuYB4v0GGtHApFG_9lavasZpodAYaoMAdFBbKV-K45M3zQBJQOmKbo_OQto-EnLwa8XsLQqI4bhyA2gTn2bIdMy5sg-UREtUdevdnzeLhzIaaBe6K51cmo.7LNR3Man6Q3eIhMHC3aqQjQXjArcqwV3RL28tpsCg8c%26dib_tag%3Dse%26keywords%3Dmobiles%26qid%3D1755517629%26sprefix%3Dmobiles%252Caps%252C225%26sr%3D8-11-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9tdGY%26psc%3D1&sp_cr=ZAZ",
+  "Product Image" : "https://m.media-amazon.com/images/I/712SuRmHG4L._AC_UY218_.jpg",
+  "Price (INR)" : "99900",
+  "Original Price (INR)" : "109900",
+  "Discount Percentage" : "9",
+  "Rating (Max 5)" : "4.5",
+  "Number of Ratings" : "1242"
+}, {
+  "Product Name" : "Apple iPhone 15 Plus (128 GB) - Pink",
+  "Product URL" : "https://www.amazon.in/sspa/click?ie=UTF8&spc=MTo3MDM0NTI5MzU1Nzk1NDEzOjE3NTU1MTc2Mjk6c3BfbXRmOjMwMDA1NzU5NDU0MDczMjo6MDo6&url=%2FApple-iPhone-15-Plus-128%2Fdp%2FB0CHWYXK1R%2Fref%3Dsr_1_12_sspa%3Fcrid%3D2EI05AJSBCHZ0%26dib%3DeyJ2IjoiMSJ9.Zu16M0f4gcJTITvmFzGqs-VcrDQSbkLoQziIYYWLheceq4BjINcNA0ch7umzJRYsJM-u3d1ozPtg6TqCkFI0g-PS3gZ9mgtxjlvAlyGbkmY6QpABhQrEGNuYB4v0GGtHApFG_9lavasZpodAYaoMAdFBbKV-K45M3zQBJQOmKbo_OQto-EnLwa8XsLQqI4bhyA2gTn2bIdMy5sg-UREtUdevdnzeLhzIaaBe6K51cmo.7LNR3Man6Q3eIhMHC3aqQjQXjArcqwV3RL28tpsCg8c%26dib_tag%3Dse%26keywords%3Dmobiles%26qid%3D1755517629%26sprefix%3Dmobiles%252Caps%252C225%26sr%3D8-12-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9tdGY%26psc%3D1&sp_cr=ZAZ",
+  "Product Image" : "https://m.media-amazon.com/images/I/71bErtQPC3L._AC_UY218_.jpg",
+  "Price (INR)" : "72499",
+  "Original Price (INR)" : "89900",
+  "Discount Percentage" : "19",
+  "Rating (Max 5)" : "4.6",
+  "Number of Ratings" : "1720"
+}, {
+  "Product Name" : "Samsung Galaxy M06 5G (Sage Green, 6GB RAM, 128 GB Storage)",
+  "Product URL" : "https://www.amazon.in/Samsung-MediaTek-Dimensity-Charging-Upgrades/dp/B0DX655V11/ref=sr_1_13?crid=2EI05AJSBCHZ0&dib=eyJ2IjoiMSJ9.Zu16M0f4gcJTITvmFzGqs-VcrDQSbkLoQziIYYWLheceq4BjINcNA0ch7umzJRYsJM-u3d1ozPtg6TqCkFI0g-PS3gZ9mgtxjlvAlyGbkmY6QpABhQrEGNuYB4v0GGtHApFG_9lavasZpodAYaoMAdFBbKV-K45M3zQBJQOmKbo_OQto-EnLwa8XsLQqI4bhyA2gTn2bIdMy5sg-UREtUdevdnzeLhzIaaBe6K51cmo.7LNR3Man6Q3eIhMHC3aqQjQXjArcqwV3RL28tpsCg8c&dib_tag=se&keywords=mobiles&qid=1755517629&sprefix=mobiles%2Caps%2C225&sr=8-13",
+  "Product Image" : "https://m.media-amazon.com/images/I/718tAI-i2uL._AC_UY218_.jpg",
+  "Price (INR)" : "10999",
+  "Original Price (INR)" : "15499",
+  "Discount Percentage" : "29",
+  "Rating (Max 5)" : "3.8",
+  "Number of Ratings" : "2250"
+}, {
+  "Product Name" : "Apple iPhone 13 (128GB) - Blue",
+  "Product URL" : "https://www.amazon.in/sspa/click?ie=UTF8&spc=MToyNDE2MjgzNTM5MzA1Nzk4OjE3NTU1MTc2Mjk6c3Bfc2VhcmNoX3RoZW1hdGljOjIwMDc5NjgyODUxMDAzOjowOjo&url=%2FApple-iPhone-13-128GB-Blue%2Fdp%2FB09G9BL5CP%2Fref%3Dsxin_23_pa_sp_search_thematic_sspa%3Fcontent-id%3Damzn1.sym.739e670d-dfb3-4be0-9815-d8c5c0372e07%253Aamzn1.sym.739e670d-dfb3-4be0-9815-d8c5c0372e07%26crid%3D2EI05AJSBCHZ0%26cv_ct_cx%3Dmobiles%26keywords%3Dmobiles%26pd_rd_i%3DB09G9BL5CP%26pd_rd_r%3D7fedf7f4-7166-49e9-af95-53a82d865797%26pd_rd_w%3D9KArC%26pd_rd_wg%3Def11z%26pf_rd_p%3D739e670d-dfb3-4be0-9815-d8c5c0372e07%26pf_rd_r%3DMP4974QRYT4AVDZP7ZSH%26qid%3D1755517629%26sbo%3DRZvfv%252F%252FHxDF%252BO5021pAnSA%253D%253D%26sprefix%3Dmobiles%252Caps%252C225%26sr%3D1-1-66673dcf-083f-43ba-b782-d4a436cc5cfb-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9zZWFyY2hfdGhlbWF0aWM%26psc%3D1&sp_cr=ZAZ",
+  "Product Image" : "https://m.media-amazon.com/images/I/71xb2xkN5qL._AC_UL320_.jpg",
+  "Price (INR)" : "43900",
+  "Original Price (INR)" : "59900",
+  "Discount Percentage" : "27",
+  "Rating (Max 5)" : "4.5",
+  "Number of Ratings" : "35338"
+}, {
+  "Product Name" : "iQOO Z10R 5G (Moonstone, 8GB RAM, 128GB Storage)",
+  "Product URL" : "https://www.amazon.in/sspa/click?ie=UTF8&spc=MToyNDE2MjgzNTM5MzA1Nzk4OjE3NTU1MTc2Mjk6c3Bfc2VhcmNoX3RoZW1hdGljOjMwMDY0MTA2MzQ2ODkzMjo6Mjo6&url=%2FiQOO-Moonstone-Quad-Curved-Dimensity-Processor%2Fdp%2FB0FHB5982P%2Fref%3Dsxin_23_pa_sp_search_thematic_sspa%3Fcontent-id%3Damzn1.sym.739e670d-dfb3-4be0-9815-d8c5c0372e07%253Aamzn1.sym.739e670d-dfb3-4be0-9815-d8c5c0372e07%26crid%3D2EI05AJSBCHZ0%26cv_ct_cx%3Dmobiles%26keywords%3Dmobiles%26pd_rd_i%3DB0FHB5982P%26pd_rd_r%3D7fedf7f4-7166-49e9-af95-53a82d865797%26pd_rd_w%3D9KArC%26pd_rd_wg%3Def11z%26pf_rd_p%3D739e670d-dfb3-4be0-9815-d8c5c0372e07%26pf_rd_r%3DMP4974QRYT4AVDZP7ZSH%26qid%3D1755517629%26sbo%3DRZvfv%252F%252FHxDF%252BO5021pAnSA%253D%253D%26sprefix%3Dmobiles%252Caps%252C225%26sr%3D1-2-66673dcf-083f-43ba-b782-d4a436cc5cfb-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9zZWFyY2hfdGhlbWF0aWM%26psc%3D1&sp_cr=ZAZ",
+  "Product Image" : "https://m.media-amazon.com/images/I/51WO7LtLM6L._AC_UL320_.jpg",
+  "Price (INR)" : "19498",
+  "Original Price (INR)" : "23499",
+  "Discount Percentage" : "17",
+  "Rating (Max 5)" : "4.2",
+  "Number of Ratings" : "167"
+}, {
+  "Product Name" : "Lava Bold 5G (Sapphire Blue, 8GB RAM, 128GB Storage)",
+  "Product URL" : "https://www.amazon.in/sspa/click?ie=UTF8&spc=MToyNDE2MjgzNTM5MzA1Nzk4OjE3NTU1MTc2Mjk6c3Bfc2VhcmNoX3RoZW1hdGljOjMwMDY0NDk0NTc4MTEzMjo6Mzo6&url=%2FLava-Bold-5G-Dimensity-Resistance%2Fdp%2FB0F1N1Z2HX%2Fref%3Dsxin_23_pa_sp_search_thematic_sspa%3Fcontent-id%3Damzn1.sym.739e670d-dfb3-4be0-9815-d8c5c0372e07%253Aamzn1.sym.739e670d-dfb3-4be0-9815-d8c5c0372e07%26crid%3D2EI05AJSBCHZ0%26cv_ct_cx%3Dmobiles%26keywords%3Dmobiles%26pd_rd_i%3DB0F1N1Z2HX%26pd_rd_r%3D7fedf7f4-7166-49e9-af95-53a82d865797%26pd_rd_w%3D9KArC%26pd_rd_wg%3Def11z%26pf_rd_p%3D739e670d-dfb3-4be0-9815-d8c5c0372e07%26pf_rd_r%3DMP4974QRYT4AVDZP7ZSH%26qid%3D1755517629%26sbo%3DRZvfv%252F%252FHxDF%252BO5021pAnSA%253D%253D%26sprefix%3Dmobiles%252Caps%252C225%26sr%3D1-3-66673dcf-083f-43ba-b782-d4a436cc5cfb-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9zZWFyY2hfdGhlbWF0aWM%26psc%3D1&sp_cr=ZAZ",
+  "Product Image" : "https://m.media-amazon.com/images/I/61ZkAlnVKHL._AC_UL320_.jpg",
+  "Price (INR)" : "13999",
+  "Original Price (INR)" : "18999",
+  "Discount Percentage" : "26",
+  "Rating (Max 5)" : "4.2",
+  "Number of Ratings" : "346"
+}, {
+  "Product Name" : "Apple iPhone 15 (128 GB) - Blue",
+  "Product URL" : "https://www.amazon.in/sspa/click?ie=UTF8&spc=MToyNDE2MjgzNTM5MzA1Nzk4OjE3NTU1MTc2Mjk6c3Bfc2VhcmNoX3RoZW1hdGljOjMwMDA1NzU5NDUzNzUzMjo6NDo6&url=%2FApple-iPhone-15-128-GB%2Fdp%2FB0CHX2F5QT%2Fref%3Dsxin_23_pa_sp_search_thematic_sspa%3Fcontent-id%3Damzn1.sym.739e670d-dfb3-4be0-9815-d8c5c0372e07%253Aamzn1.sym.739e670d-dfb3-4be0-9815-d8c5c0372e07%26crid%3D2EI05AJSBCHZ0%26cv_ct_cx%3Dmobiles%26keywords%3Dmobiles%26pd_rd_i%3DB0CHX2F5QT%26pd_rd_r%3D7fedf7f4-7166-49e9-af95-53a82d865797%26pd_rd_w%3D9KArC%26pd_rd_wg%3Def11z%26pf_rd_p%3D739e670d-dfb3-4be0-9815-d8c5c0372e07%26pf_rd_r%3DMP4974QRYT4AVDZP7ZSH%26qid%3D1755517629%26sbo%3DRZvfv%252F%252FHxDF%252BO5021pAnSA%253D%253D%26sprefix%3Dmobiles%252Caps%252C225%26sr%3D1-4-66673dcf-083f-43ba-b782-d4a436cc5cfb-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9zZWFyY2hfdGhlbWF0aWM%26psc%3D1&sp_cr=ZAZ",
+  "Product Image" : "https://m.media-amazon.com/images/I/71d7rfSl0wL._AC_UL320_.jpg",
+  "Price (INR)" : "61499",
+  "Original Price (INR)" : "69900",
+  "Discount Percentage" : "12",
+  "Rating (Max 5)" : "4.5",
+  "Number of Ratings" : "4795"
+}, {
+  "Product Name" : "Motorola Edge 50 Fusion 5G (Hot Pink, 12GB RAM, 256GB Storage)",
+  "Product URL" : "https://www.amazon.in/Motorola-Edge-Fusion-256GB-Storage/dp/B0D4JNVVHH/ref=sr_1_14?crid=2EI05AJSBCHZ0&dib=eyJ2IjoiMSJ9.Zu16M0f4gcJTITvmFzGqs-VcrDQSbkLoQziIYYWLheceq4BjINcNA0ch7umzJRYsJM-u3d1ozPtg6TqCkFI0g-PS3gZ9mgtxjlvAlyGbkmY6QpABhQrEGNuYB4v0GGtHApFG_9lavasZpodAYaoMAdFBbKV-K45M3zQBJQOmKbo_OQto-EnLwa8XsLQqI4bhyA2gTn2bIdMy5sg-UREtUdevdnzeLhzIaaBe6K51cmo.7LNR3Man6Q3eIhMHC3aqQjQXjArcqwV3RL28tpsCg8c&dib_tag=se&keywords=mobiles&qid=1755517629&sprefix=mobiles%2Caps%2C225&sr=8-14",
+  "Product Image" : "https://m.media-amazon.com/images/I/71m+dNHzoGL._AC_UY218_.jpg",
+  "Price (INR)" : "21980",
+  "Original Price (INR)" : "27999",
+  "Discount Percentage" : "21",
+  "Rating (Max 5)" : "4.1",
+  "Number of Ratings" : "1715"
+}, {
+  "Product Name" : "POCO M7 5G, Ocean Blue (6GB, 128GB)",
+  "Product URL" : "https://www.amazon.in/POCO-Ocean-Blue-6GB-128GB/dp/B0F135PGDX/ref=sr_1_15?crid=2EI05AJSBCHZ0&dib=eyJ2IjoiMSJ9.Zu16M0f4gcJTITvmFzGqs-VcrDQSbkLoQziIYYWLheceq4BjINcNA0ch7umzJRYsJM-u3d1ozPtg6TqCkFI0g-PS3gZ9mgtxjlvAlyGbkmY6QpABhQrEGNuYB4v0GGtHApFG_9lavasZpodAYaoMAdFBbKV-K45M3zQBJQOmKbo_OQto-EnLwa8XsLQqI4bhyA2gTn2bIdMy5sg-UREtUdevdnzeLhzIaaBe6K51cmo.7LNR3Man6Q3eIhMHC3aqQjQXjArcqwV3RL28tpsCg8c&dib_tag=se&keywords=mobiles&qid=1755517629&sprefix=mobiles%2Caps%2C225&sr=8-15",
+  "Product Image" : "https://m.media-amazon.com/images/I/418EYFlH0xL._AC_UY218_.jpg",
+  "Price (INR)" : "9498",
+  "Original Price (INR)" : "12999",
+  "Discount Percentage" : "27",
+  "Rating (Max 5)" : "4",
+  "Number of Ratings" : "171"
+}, {
+  "Product Name" : "Motorola G05 4G (Forest Green, 4GB RAM, 64GB Storage)",
+  "Product URL" : "https://www.amazon.in/Motorola-Forest-Green-64GB-Storage/dp/B0DSTLPR3C/ref=sr_1_16?crid=2EI05AJSBCHZ0&dib=eyJ2IjoiMSJ9.Zu16M0f4gcJTITvmFzGqs-VcrDQSbkLoQziIYYWLheceq4BjINcNA0ch7umzJRYsJM-u3d1ozPtg6TqCkFI0g-PS3gZ9mgtxjlvAlyGbkmY6QpABhQrEGNuYB4v0GGtHApFG_9lavasZpodAYaoMAdFBbKV-K45M3zQBJQOmKbo_OQto-EnLwa8XsLQqI4bhyA2gTn2bIdMy5sg-UREtUdevdnzeLhzIaaBe6K51cmo.7LNR3Man6Q3eIhMHC3aqQjQXjArcqwV3RL28tpsCg8c&dib_tag=se&keywords=mobiles&qid=1755517629&sprefix=mobiles%2Caps%2C225&sr=8-16",
+  "Product Image" : "https://m.media-amazon.com/images/I/61xBynqDfVL._AC_UY218_.jpg",
+  "Price (INR)" : "7323",
+  "Original Price (INR)" : "9999",
+  "Discount Percentage" : "27",
+  "Rating (Max 5)" : "3.9",
+  "Number of Ratings" : "1089"
+}, {
+  "Product Name" : "iQOO Z10 Lite 5G (Titanium Blue, 8GB RAM, 256GB Storage)",
+  "Product URL" : "https://www.amazon.in/iQOO-Titanium-Dimensity-Processor-Shock-Resistance/dp/B0FC5QGMZ1/ref=sr_1_17?crid=2EI05AJSBCHZ0&dib=eyJ2IjoiMSJ9.Zu16M0f4gcJTITvmFzGqs-VcrDQSbkLoQziIYYWLheceq4BjINcNA0ch7umzJRYsJM-u3d1ozPtg6TqCkFI0g-PS3gZ9mgtxjlvAlyGbkmY6QpABhQrEGNuYB4v0GGtHApFG_9lavasZpodAYaoMAdFBbKV-K45M3zQBJQOmKbo_OQto-EnLwa8XsLQqI4bhyA2gTn2bIdMy5sg-UREtUdevdnzeLhzIaaBe6K51cmo.7LNR3Man6Q3eIhMHC3aqQjQXjArcqwV3RL28tpsCg8c&dib_tag=se&keywords=mobiles&qid=1755517629&sprefix=mobiles%2Caps%2C225&sr=8-17",
+  "Product Image" : "https://m.media-amazon.com/images/I/617yTaz4XkL._AC_UY218_.jpg",
+  "Price (INR)" : "12998",
+  "Original Price (INR)" : "16999",
+  "Discount Percentage" : "24",
+  "Rating (Max 5)" : "4",
+  "Number of Ratings" : "1296"
+}, {
+  "Product Name" : "Redmi A4 5G (Starry Black, 6GB RAM, 128GB Storage)",
+  "Product URL" : "https://www.amazon.in/Redmi-A4-5G-Storage-Charging/dp/B0FBRM15FH/ref=sr_1_18?crid=2EI05AJSBCHZ0&dib=eyJ2IjoiMSJ9.Zu16M0f4gcJTITvmFzGqs-VcrDQSbkLoQziIYYWLheceq4BjINcNA0ch7umzJRYsJM-u3d1ozPtg6TqCkFI0g-PS3gZ9mgtxjlvAlyGbkmY6QpABhQrEGNuYB4v0GGtHApFG_9lavasZpodAYaoMAdFBbKV-K45M3zQBJQOmKbo_OQto-EnLwa8XsLQqI4bhyA2gTn2bIdMy5sg-UREtUdevdnzeLhzIaaBe6K51cmo.7LNR3Man6Q3eIhMHC3aqQjQXjArcqwV3RL28tpsCg8c&dib_tag=se&keywords=mobiles&qid=1755517629&sprefix=mobiles%2Caps%2C225&sr=8-18",
+  "Product Image" : "https://m.media-amazon.com/images/I/710SCukwhcL._AC_UY218_.jpg",
+  "Price (INR)" : "9799",
+  "Original Price (INR)" : "12999",
+  "Discount Percentage" : "25",
+  "Rating (Max 5)" : "3.9",
+  "Number of Ratings" : "5752"
+}, {
+  "Product Name" : "Samsung Galaxy A55 5G (Awesome Navy, 8GB RAM, 128GB Storage)",
+  "Product URL" : "https://www.amazon.in/Samsung-Awesome-Storage-Nightography-Corning/dp/B0CWPDH74H/ref=sr_1_19?crid=2EI05AJSBCHZ0&dib=eyJ2IjoiMSJ9.Zu16M0f4gcJTITvmFzGqs-VcrDQSbkLoQziIYYWLheceq4BjINcNA0ch7umzJRYsJM-u3d1ozPtg6TqCkFI0g-PS3gZ9mgtxjlvAlyGbkmY6QpABhQrEGNuYB4v0GGtHApFG_9lavasZpodAYaoMAdFBbKV-K45M3zQBJQOmKbo_OQto-EnLwa8XsLQqI4bhyA2gTn2bIdMy5sg-UREtUdevdnzeLhzIaaBe6K51cmo.7LNR3Man6Q3eIhMHC3aqQjQXjArcqwV3RL28tpsCg8c&dib_tag=se&keywords=mobiles&qid=1755517629&sprefix=mobiles%2Caps%2C225&sr=8-19",
+  "Product Image" : "https://m.media-amazon.com/images/I/71Kyp8TlE6L._AC_UY218_.jpg",
+  "Price (INR)" : "26999",
+  "Original Price (INR)" : "42999",
+  "Discount Percentage" : "37",
+  "Rating (Max 5)" : "4.2",
+  "Number of Ratings" : "2057"
+}, {
+  "Product Name" : "iQOO Z10 Lite 5G (Cyber Green, 6GB RAM, 128GB Storage)",
+  "Product URL" : "https://www.amazon.in/iQOO-Dimensity-Processor-Military-Shock-Resistance/dp/B0FC5XK9WZ/ref=sr_1_20?crid=2EI05AJSBCHZ0&dib=eyJ2IjoiMSJ9.Zu16M0f4gcJTITvmFzGqs-VcrDQSbkLoQziIYYWLheceq4BjINcNA0ch7umzJRYsJM-u3d1ozPtg6TqCkFI0g-PS3gZ9mgtxjlvAlyGbkmY6QpABhQrEGNuYB4v0GGtHApFG_9lavasZpodAYaoMAdFBbKV-K45M3zQBJQOmKbo_OQto-EnLwa8XsLQqI4bhyA2gTn2bIdMy5sg-UREtUdevdnzeLhzIaaBe6K51cmo.7LNR3Man6Q3eIhMHC3aqQjQXjArcqwV3RL28tpsCg8c&dib_tag=se&keywords=mobiles&qid=1755517629&sprefix=mobiles%2Caps%2C225&sr=8-20",
+  "Product Image" : "https://m.media-amazon.com/images/I/61852T0zGxL._AC_UY218_.jpg",
+  "Price (INR)" : "10998",
+  "Original Price (INR)" : "14999",
+  "Discount Percentage" : "27",
+  "Rating (Max 5)" : "4",
+  "Number of Ratings" : "1296"
+}, {
+  "Product Name" : "iPhone 16 Pro 128 GB: 5G Mobile Phone with Camera Control, 4K 120 fps Dolby Vision and a Huge Leap in Battery Life. Works with AirPods; Desert Titanium",
+  "Product URL" : "https://www.amazon.in/sspa/click?ie=UTF8&spc=MTo3MDM0NTI5MzU1Nzk1NDEzOjE3NTU1MTc2Mjk6c3BfYnRmOjMwMDM1NTM0ODg1NjIzMjo6MDo6&url=%2FiPhone-16-Pro-128-GB%2Fdp%2FB0DGJ3THPR%2Fref%3Dsr_1_21_sspa%3Fcrid%3D2EI05AJSBCHZ0%26dib%3DeyJ2IjoiMSJ9.Zu16M0f4gcJTITvmFzGqs-VcrDQSbkLoQziIYYWLheceq4BjINcNA0ch7umzJRYsJM-u3d1ozPtg6TqCkFI0g-PS3gZ9mgtxjlvAlyGbkmY6QpABhQrEGNuYB4v0GGtHApFG_9lavasZpodAYaoMAdFBbKV-K45M3zQBJQOmKbo_OQto-EnLwa8XsLQqI4bhyA2gTn2bIdMy5sg-UREtUdevdnzeLhzIaaBe6K51cmo.7LNR3Man6Q3eIhMHC3aqQjQXjArcqwV3RL28tpsCg8c%26dib_tag%3Dse%26keywords%3Dmobiles%26qid%3D1755517629%26sprefix%3Dmobiles%252Caps%252C225%26sr%3D8-21-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9idGY%26psc%3D1&sp_cr=ZAZ",
+  "Product Image" : "https://m.media-amazon.com/images/I/61JvFLHZ6NL._AC_UY218_.jpg",
+  "Price (INR)" : "111900",
+  "Original Price (INR)" : "119900",
+  "Discount Percentage" : "7",
+  "Rating (Max 5)" : "4.4",
+  "Number of Ratings" : "424"
+}, {
+  "Product Name" : "iPhone 16 Plus 256 GB: 5G Mobile Phone with Camera Control, A18 Chip and a Big Boost in Battery Life. Works with AirPods; Ultrmarine",
+  "Product URL" : "https://www.amazon.in/sspa/click?ie=UTF8&spc=MTo3MDM0NTI5MzU1Nzk1NDEzOjE3NTU1MTc2Mjk6c3BfYnRmOjMwMDM1MTQ4MTk3OTkzMjo6MDo6&url=%2FiPhone-16-Plus-256-Ultrmarine%2Fdp%2FB0DGJGRDDS%2Fref%3Dsr_1_22_sspa%3Fcrid%3D2EI05AJSBCHZ0%26dib%3DeyJ2IjoiMSJ9.Zu16M0f4gcJTITvmFzGqs-VcrDQSbkLoQziIYYWLheceq4BjINcNA0ch7umzJRYsJM-u3d1ozPtg6TqCkFI0g-PS3gZ9mgtxjlvAlyGbkmY6QpABhQrEGNuYB4v0GGtHApFG_9lavasZpodAYaoMAdFBbKV-K45M3zQBJQOmKbo_OQto-EnLwa8XsLQqI4bhyA2gTn2bIdMy5sg-UREtUdevdnzeLhzIaaBe6K51cmo.7LNR3Man6Q3eIhMHC3aqQjQXjArcqwV3RL28tpsCg8c%26dib_tag%3Dse%26keywords%3Dmobiles%26qid%3D1755517629%26sprefix%3Dmobiles%252Caps%252C225%26sr%3D8-22-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9idGY%26psc%3D1&sp_cr=ZAZ",
+  "Product Image" : "https://m.media-amazon.com/images/I/71D3JsltoLL._AC_UY218_.jpg",
+  "Price (INR)" : "93499",
+  "Original Price (INR)" : "99900",
+  "Discount Percentage" : "6",
+  "Rating (Max 5)" : "4.6",
+  "Number of Ratings" : "517"
+}, {
+  "Product Name" : "iPhone 16 Pro 128 GB: 5G Mobile Phone with Camera Control, 4K 120 fps Dolby Vision and a Huge Leap in Battery Life. Works with AirPods; Desert Titanium",
+  "Product URL" : "https://aax-eu-zaz.amazon.in/x/c/JCGP_tjzkQBoRCKzLhzD49cAAAGYvQE01QoAAAH2AQBvbm9fdHhuX2JpZDEgICBvbm9fdHhuX2ltcDEgICCvg4md/clv1_CEuOPUxokZA0iHrVe9ZrhnjoZ0pSfboYlY0i6Byvz-Es139LlRvYHv018HHz9hvVjq0yzpNb3X7OfU01AmcAJnklcnupMfDaPEEgR1tUVnuEJIQlokfB8IkGXCQ3UuW6XJeXalC7rdIQEQQ8kV_3ZVhXLA8QC8x8H15tWbp4Xgyay_2WjkwrSxutOI2vKbYuDzUcfMyagcpNBHhtJZhsefQQh8yliMIIKin6O61_zAYOsoJhkeWuV2gvjBmW5lJBN2PMN-SRnR9AjX0lL9xFahCwdXiTzSjwM7idy4j_a5sYLmef1aK1xkuNcA7FBIOT3_cq0eVrbNPflqDnDeSQNedO6bhUdANor4Ai6vZPHKdczlJXCVmo_yWr3JYqfnqDdhxLjmOcuEwp_RD2Me6tZl4GfKrBhPBne-wSBml9tlZkUux_rAVrRF9I0bxcInIFH-Gzc_r6mO-bWyVNaReipMUTeUmOk2KifChiJ4snkeH1E39g8pKg8xPmTmFjVYOMr_VkwTthKoxWmj2Ajwi85x_bWgR-Y2A4Ly61XW_0GbfWKhOMGTd0mEAZAg3OfkfrU_0Pj89oQgyJhpZTgsU3XVSZOi98lgp6zP47jZipuW8Vvb-f_ZYgVnHu5zjScpWFM2scS8o1ABhn481pGcxtqRMa26fRZzNteSMkhM159KYwJmseY3mEuV5AkWnjANde9F4G-Hky9fQ-_t0yEHWVPk4f2bbWbd7w7PjlC2sLPD3XgDbPfsRV_xwc2-cYWumQjbxcMhLTn2TR5RPMYAbeH3RllibLAkpWt8pDeNEBQSWC8nkvH_B8gRhjnKuSSVOtVuWyajNb6VDKpuVsRc5qk4SjjEYnzP6yFOOEm8C7vGmRxFXhynMh-1XVvGCUvTL5rqIvkfwinyTmQ_ALU7ssEdOE4MyY9TJfJi0RDlbZoRTQlDtxI3YcZk9rYym_92iaxW-OX_qawLK8s8Hwxy-LcaZMB8WNfLPNw36bDRFuCfoOSDd9TRJ8ZJPE6iHJKVogDjei9IJf_gsQeLMP37yo8xZ9vDBSBM-YpkJf4IFskAx3R2eCdtuNNwa5TqtuKPRCSWqSVp_SGmg5C7GWQpynncG9fyHU16FsaskCPlo3D4e6FUecF9pYmH9dDKGXhOHtuMwqdsrzqwwhR-J18Ec2S3B7eeCYGV7zDYgGjtCgnby99CyexlDH3LYrhU1RZ8ASOyGFEmnS1me8XioshF3RP-OSyMBZoIlI0yGY9L5eI0XNI2UIQniE1Ua_vC1zIa3-Qogtleujb3zCTpBdQZowrFsp1rpZi6aWzguYzGWoMsDcadIxFO3Qn_B4kBio7LYHCKoYfwa8_Gjqju8LbUkW36T23tl0819YS55lFcZJsts3l2-4OFmWvs68LnisY4c5FzjgflCzSg7cWSgsZJOLNL2tuUG1Nklx2qg2-qH0mFtkVDUhr44nFNMDHh_cLDKL0zAJOEL-tL-8nTvrEjb6SEDN0jSpQugf4LsS6vcr1lIKhGHkO1uRG3gm7okpw-6HsG78eRdbf-13N7bZRt42JRDit-PZLUuxHVWJKPUeu8Kq58bL5f69XaRjAtBTq_9CX8PzGFzn45flF__pHEcrSTBK5Mv9wrMI0p3E92zrxfO4fVyxKgqOkj9Ji3ZEQraCVCzPPUfC4r8OXFyKsSNs_J8WdAXUaGkWFLt7_fdmZKqUNe1-6pTmaUMqzei8vvW9_vtHQouDvTQMp02lk5cdKx387xZ1sC6i8d94AxOH8wL-luX0-PwAQcdq_kb2MeF6qok34hS9q-9FP8JQQ4VwhlYKLufqwnTRVOWCDxfXpM25E5a1yroH78YJT9Dxr_F9owYpe9ldGKgXp8PzAHLlCrSGjbMPI-inHNhxbT1rtkZRiuDkD6m8u38FcKm01voNjoLydwMEgNuOjy9IbgrMKsyVqi1_0NE5WOHzjawRl0prNDFBxJDuep4kxgODFS1znIDHSmMmGvWm0Lmrd7qVHRuGie1uKW2pdIY1JwGLKtbGZhxDI8GvcKCDiTbe8Vc4O9JBYxJmZowmpWlditXytvLCqcI1ec2VGKchDfv_ml2W5-etoJrCvSAYqefOrxorVx1O757Mtn-R-A6ebHj_Ki1zWsH8hpGEd-YPlBtSGubmGdxsSjeUL-09hpsyul2vETg2nSkzIn4zHlutLBLr7TWXHIr80zc03kHXAo4IG_M-NZ3jTM3IQvNaPWoaA3Bj6IWDPJvzuY_Jue96Vp1egdmh1MxNgAdh3PrnPFFF6cAyUNowZTHzAvWKopSV4fZLHU2CbZm9t1f0vxkxMO5JnsSHGN3VbPhm6wBYbobUMdEd1aAm/https://www.amazon.in/iPhone-16-Pro-128-GB/dp/B0DGJ3THPR/ref=sxbs_sbv_search_btf?content-id=amzn1.sym.fa654091-9aaa-43a3-ac17-a2ad95526fd2%3Aamzn1.sym.fa654091-9aaa-43a3-ac17-a2ad95526fd2&crid=2EI05AJSBCHZ0&cv_ct_cx=mobiles&keywords=mobiles&pd_rd_i=B0DGJ3THPR&pd_rd_r=652bc2ed-c15f-4435-9db2-eaedb1315f02&pd_rd_w=G9FND&pd_rd_wg=zXiGh&pf_rd_p=fa654091-9aaa-43a3-ac17-a2ad95526fd2&pf_rd_r=MP4974QRYT4AVDZP7ZSH&qid=1755517629&sbo=RZvfv%2F%2FHxDF%2BO5021pAnSA%3D%3D&sprefix=mobiles%2Caps%2C225&sr=1-1-f1821008-9dea-4812-b2b6-4a6e4a4f2d55",
+  "Product Image" : "https://m.media-amazon.com/images/I/61JvFLHZ6NL._AC_UL640_QL65_.jpg",
+  "Price (INR)" : "111900",
+  "Original Price (INR)" : "119900",
+  "Discount Percentage" : "7",
+  "Rating (Max 5)" : "4.4",
+  "Number of Ratings" : "424"
+} 
+    ];
+
+    function createCard(item) {
+        const price = item['Price (INR)'] || '';
+        const mrp = item['Original Price (INR)'] || '';
+        const rating = item['Rating (Max 5)'] || '';
+        const url = item['Product URL'] || '#';
+        const discount = item['Discount Percentage'] || '';
+        // Format price with commas for Indian rupees
+        const formatPrice = (price) => {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        };
+        return `
+        <article class="product-card" role="listitem">
+            <a href="${url}" target="_blank" rel="noopener">
+                <img src="${item['Product Image']}" alt="${item['Product Name']}" class="product-image" onerror="this.src='https://via.placeholder.com/320x200?text=Image'" loading="lazy">
+            </a>
+            <div class="product-info">
+                <h3 class="product-name">${item['Product Name']}</h3>
+                <div class="product-price-row">
+                    ${price ? `<span class="product-price">₹${formatPrice(price)}</span>` : ''}
+                    ${mrp ? `<span class="product-original-price">₹${formatPrice(mrp)}</span>` : ''}
+                    ${discount ? `<span class="product-discount">${discount}% off</span>` : ''}
+                </div>
+                ${rating ? `
+                <div class="product-rating">
+                    <div class="stars">
+                        ${'<i class="fas fa-star"></i>'.repeat(Math.floor(rating))}
+                        ${rating % 1 >= 0.5 ? '<i class="fas fa-star-half-alt"></i>' : ''}
+                        ${'<i class="far fa-star"></i>'.repeat(5 - Math.ceil(rating))}
+                    </div>
+                    <span>${rating}</span>
+                </div>` : ''}
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </article>`;
+    }
+
+    // Load mobiles data
+    async function loadMobiles() {
+        const grid = document.getElementById('productGrid');
+        try {
+            const res = await fetch('./mobiles.json');
+            const data = await res.json();
+            grid.innerHTML = data.map(createCard).join('');
+        } catch (e) {
+            console.log("Using inline data as fallback");
+            grid.innerHTML = inlineMobilesData.map(createCard).join('');
+        }
+        grid.setAttribute('aria-busy', 'false');
+    }
+
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', () => {
+        loadMobiles();
+        // Fallback button handler
+        document.getElementById('loadJsonBtn')?.addEventListener('click', loadMobiles);
+    });
+    </script>
+
+    <style>
+    /* Basic styling - you can expand this in your styles.css */
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+    .product-card {
+        border: 1px solid #e1e1e1;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+        background: white;
+    }
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .product-image {
+        width: 100%;
+        height: 200px;
+        object-fit: contain;
+        background: #f5f5f5;
+        padding: 10px;
+    }
+    .product-info {
+        padding: 15px;
+    }
+    .product-name {
+        font-size: 14px;
+        margin: 0 0 10px 0;
+        height: 40px;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+    .product-price-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 8px;
+        flex-wrap: wrap;
+    }
+    .product-price {
+        font-weight: bold;
+        font-size: 18px;
+        color: #B12704;
+    }
+    .product-original-price {
+        text-decoration: line-through;
+        color: #565959;
+        font-size: 14px;
+    }
+    .product-discount {
+        color: #067D62;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    .product-rating {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: 10px;
+    }
+    .product-rating .stars {
+        color: #1b83ac;
+    }
+    .add-to-cart {
+        width: 100%;
+        padding: 8px;
+        background: #FFD814;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background 0.3s;
+    }
+    .add-to-cart:hover {
+        background: #F7CA00;
+    }
+    </style>
+</body>
+</html>

@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Axzora Electronics</title>
+<link rel="stylesheet" href="styles.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+<header class="header">
+<div class="header-container">
+<div class="logo">
+<a href="index.html" class="brand" aria-label="Axzora home">
+<span class="brand-glyph"><span class="brand-letter">A</span></span>
+<span class="brand-name">Axzora</span>
+</a>
+</div>
+<h1 style="color:#fff; font-family:Inter, sans-serif; font-weight:800;">Electronics</h1>
+</div>
+</header>
+ 
+    <main id="main-content" role="main">
+<section class="products" id="products" aria-labelledby="products-title">
+<div class="container">
+<h2 class="section-title" id="products-title">Electronics</h2>
+<div class="product-grid" id="productGrid" role="list" aria-label="Product items" aria-busy="true"></div>
+<div id="fallback" style="display:none; text-align:center; margin:24px 0;">
+<button id="loadJsonBtn">Load Electronics Data</button>
+</div>
+</div>
+</section>
+</main>
+ 
+    <script>
+    // Sample electronics data (replace with your actual data)
+    const inlineElectronicsData = [
+          {
+  "Product Name" : "DREAME Robot Vacuum Cleaner",
+  "Product URL" : "https://aax-eu-zaz.amazon.in/x/c/JA30gwuQYOorOg4X9NWI4FAAAAGYp4nwzAoAAAH2AQBvbm9fdHhuX2JpZDEgICBvbm9fdHhuX2ltcDEgICC_3MCO/clv1_CEuOPUxokZA0iHrVdukW7wmNan8lU6FrmJcJrWW79exI4X9AnTiMH_018HHz9hvVjq0yzpNb3X7OfU1vAmcAK0ZYGwrMPMWtElpTSkF_EwKQHolBlEfB8IkGXCRtU-W6XJeXalC7rdIQEQQ8kV_3ZVhXLA8QC8x8H15tWbp4Xgyay_2WjkwrSxutOI2vKbYuDzUcfMyagcpNBHhtJZhsefQQh8yliMIIKin6O61_zAYOsoJhkeWuV2gvjBmW5lJBN2PMN-SRnR9AjX0lL9xFahCwdXiTzSjwM7idy5i2a5sQYmWf1aK1xkuNcA7FBIOT3_cq0eVrbNPflqH2PMWOJOAu7OR9BDACivQj9dRsNbZy2mZ9Aned1SWr3JYqfnqDdhxLjmOcuEw9tBLIB-qsZlpKf6rdhPBne-wSBml9tlZkUux_rAVrRF9I0bxcInIFH-Gzc_r6mO-bWyVNaReipMUTeUmOnmCYQTtgTbV7n9mGD0dk7s2izRPtS0xNFricmfda3FxGEYwynzuAoU-5yQODWwRmcmo6djaNSR6rH7DofgKiPz1B7kQPBXjrdEHsefg0kPl-VBmGjLx6pM0NATfcADpCyR1V8u8umKazrWoovLyO4a4ZPXHk5F3eTZyUFmEaTc0_BDZj7M15O8tu4RAJ27f_ZzBDaWok4tYk48M7NmkOZ36Fl1Ebkg_eWdRJ6F4F1mJu4PcI-cklAyyUSHtG2abkbt7g3rrlfXRVPD7-2TbfYsZB0gNE2NoHS_--qKhNGCPDjknV7BO4C3zvJRNiqTjUCExQsMBHVOQLRAqN-FMsB_58jgRzoruOTVDEa-acQxJH6Q_wpt5iWsFHk5u_oxsdis-ISca6mMCyhW_h5VyT93A06hPLh2C-4wmgiP8WusIimBHMAMslSNgRCtui7OOboCN1FA0NCFbikgXDjRVaEmwUOWV0UTnI8Vb_xRuyRPnV17HqrOrc_TWcXptNDtjiQ4jg2H2gfA1hOcAwRR9AF0hTZZjO_yDsJXZHHTqL241V-AwTZ50R6r2Q8yA6tT9KV-eqh1dxz6x-hQt7CGWCcpKNGQr1T5JXM_NVRmOEVa7PIWkpCraXc4WyxbHEaQ3AxKJAUNcuLS59GJuTUVOhLvdMtVZRIKW9tsvtntYqZtb-kGg5AudkvlshYnB-eMnpHUr2MJEFt7f8pInC6ReP8HLHtucYvDhBbsMSM32NK3H86zm4WyxY-1b8EtqGzexBvqR1p2Ka775RG1XzFGYHeG-FoVKlhC0EfZXHQp4tleuvaFfkTa5MYJA2q242-LRgjoni0Qqik3W3BMDicdExd93o-4t4kmOe948_NbMNUhGs7UHQj9MUR0oV2bDgzdkD-HRqecFcAehPgdtAhWm5PA-8k-i8Ln-VYZNPDB7iZXHwcSDQeBAZZJWKRaLLiUG1NmRalKs5-OzLkk1jMj9S0KgSE7wMEjDiNiaO7i8wEnigt4agmQudMCPRTkfH1DSIZOkx8LAUnN0g1FI4hGvhBUGFHkV_0JYxid-srHr7dhdNeJhSPbDebNsNOib0ofbWJ2OEP36_DYYGgpy28cbKx7yDZrxdOI4grv9AbezNB0js8r7cEfjPABo9XD9AzOHT04ot5Mb-wnDD9oaGb1yzEwCIkhFNn3N5RrW4XCrxLVvb85Y3CViOsjl4548cSgrIdkEJAKx8msk8ZdqMd_klq4TNQywp88GGss7miaBHTZe_gCt_oluqj4gcAQns-Rtbsxe2jdlvDxzKzGON2s3w5PA-UJoMz1TiR9d4l9Uo81a5qqVecP5xW4FO4ncpO8jX72GKV9efHyr8l8-lN72r6JMP46RcXPy3rshIv1oEWesZCJIf-vPnGyfODo2NoqhJc8CeHd9cWyVvtRh_lez0F6-7uFUld5Gg1tEJrNneUhRclsuN_TwTdlDLT9DlpnZ_5NEocuX1sqdqjnBqZBtT9OGD_AqGU27gyLjmV28jZAvvlzcNJmmsHVpP09gk9gAuOx3FS6d7e12UQbalZ3tcKID6GZPCwAb4smo7WI49WBVDRZcIqhZjiOTOrs7wiJwhccq1WvspZpZnGqEAjtpGIV4OObdxwW8jFdaa5DQdaEZgCo2icC6kPwvFP3I0D57h__3nHOR79nATCuejReF8Sj7QcZwMvbRtn1ulW-Ne8-5HXgVPRxiJNS3S_iSgELziiBtrzoi0bOo5H19puv0bRZSlFmElXA3DVg/https://www.amazon.in/gp/aw/d/B0FDKZTRL1/?_encoding=UTF8&pd_rd_plhdr=t&aaxitk=a3c0c83cdce4788577225f76a61b9161&hsa_cr_id=0&qid=1755157491&sr=1-1-e0fa1fdd-d857-4087-adda-5bd576b25987&ref_=sbx_be_s_sparkle_lsi4d_asin_0_img&pd_rd_w=Cy6OB&content-id=amzn1.sym.cbe1d71a-30e3-45dc-b787-bad221b13c68%3Aamzn1.sym.cbe1d71a-30e3-45dc-b787-bad221b13c68&pf_rd_p=cbe1d71a-30e3-45dc-b787-bad221b13c68&pf_rd_r=40NYAXD61EXF5SH7B16F&pd_rd_wg=Ojk1g&pd_rd_r=92578515-0870-4b7a-aaf3-d42e7a8b3b08",
+  "Product Image" : "https://m.media-amazon.com/images/I/61q2w9vvaFL._AC_SR160,134_CB1169409_QL70_.jpg",
+  "Price (INR)" : "19999",
+  "Original Price (INR)" : "39998",
+  "Discount Percentage" : "50",
+  "Rating (Max 5)" : "",
+  "Number of Ratings" : ""
+}, {
+  "Product Name" : "DREAME D10 Plus Gen 2 Robot Vacuum Cleaner with Automatic Dust Emptying, Stores up to 90 Days of Dust, LiDAR Navigation, 6000 Pa Suction Power for Carpets and Pet Hair, 285-Minute Battery, White",
+  "Product URL" : "https://aax-eu-zaz.amazon.in/x/c/JA30gwuQYOorOg4X9NWI4FAAAAGYp4nwzAoAAAH2AQBvbm9fdHhuX2JpZDEgICBvbm9fdHhuX2ltcDEgICC_3MCO/clv1_CEuOPUxokZA0iHrVdukW7wmNan8lU6FrmJcJrWW79exI4X9AnTiMH_018HHz9hvVjq0yzpNb3X7OfU1vAmcAK0ZYGwrMPMWtElpTSkF_EwKQHolBlEfB8IkGXCRtU-W6XJeXalC7rdIQEQQ8kV_3ZVhXLA8QC8x8H15tWbp4Xgyay_2WjkwrSxutOI2vKbYuDzUcfMyagcpNBHhtJZhsefQQh8yliMIIKin6O61_zAYOsoJhkeWuV2gvjBmW5lJBN2PMN-SRnR9AjX0lL9xFahCwdXiTzSjwM7idy5i2a5sQYmWf1aK1xkuNcA7FBIOT3_cq0eVrbNPflqH2PMWOJOAu7OR9BDACivQj9dRsNbZy2mZ9Aned1SWr3JYqfnqDdhxLjmOcuEw9tBLIB-qsZlpKf6rdhPBne-wSBml9tlZkUux_rAVrRF9I0bxcInIFH-Gzc_r6mO-bWyVNaReipMUTeUmOnmCYQTtgTbV7n9mGD0dk7s2izRPtS0xNFricmfda3FxGEYwynzuAoU-5yQODWwRmcmo6djaNSR6rH7DofgKiPz1B7kQPBXjrdEHsefg0kPl-VBmGjLx6pM0NATfcADpCyR1V8u8umKazrWoovLyO4a4ZPXHk5F3eTZyUFmEaTc0_BDZj7M15O8tu4RAJ27f_ZzBDaWok4tYk48M7NmkOZ36Fl1Ebkg_eWdRJ6F4F1mJu4PcI-cklAyyUSHtG2abkbt7g3rrlfXRVPD7-2TbfYsZB0gNE2NoHS_--qKhNGCPDjknV7BO4C3zvJRNiqTjUCExQsMBHVOQLRAqN-FMsB_58jgRzoruOTVDEa-acQxJH6Q_wpt5iWsFHk5u_oxsdis-ISca6mMCyhW_h5VyT93A06hPLh2C-4wmgiP8WusIimBHMAMslSNgRCtui7OOboCN1FA0NCFbikgXDjRVaEmwUOWV0UTnI8Vb_xRuyRPnV17HqrOrc_TWcXptNDtjiQ4jg2H2gfA1hOcAwRR9AF0hTZZjO_yDsJXZHHTqL241V-AwTZ50R6r2Q8yA6tT9KV-eqh1dxz6x-hQt7CGWCcpKNGQr1T5JXM_NVRmOEVa7PIWkpCraXc4WyxbHEaQ3AxKJAUNcuLS59GJuTUVOhLvdMtVZRIKW9tsvtntYqZtb-kGg5AudkvlshYnB-eMnpHUr2MJEFt7f8pInC6ReP8HLHtucYvDhBbsMSM32NK3H86zm4WyxY-1b8EtqGzexBvqR1p2Ka775RG1XzFGYHeG-FoVKlhC0EfZXHQp4tleuvaFfkTa5MYJA2q242-LRgjoni0Qqik3W3BMDicdExd93o-4t4kmOe948_NbMNUhGs7UHQj9MUR0oV2bDgzdkD-HRqecFcAehPgdtAhWm5PA-8k-i8Ln-VYZNPDB7iZXHwcSDQeBAZZJWKRaLLiUG1NmRalKs5-OzLkk1jMj9S0KgSE7wMEjDiNiaO7i8wEnigt4agmQudMCPRTkfH1DSIZOkx8LAUnN0g1FI4hGvhBUGFHkV_0JYxid-srHr7dhdNeJhSPbDebNsNOib0ofbWJ2OEP36_DYYGgpy28cbKx7yDZrxdOI4grv9AbezNB0js8r7cEfjPABo9XD9AzOHT04ot5Mb-wnDD9oaGb1yzEwCIkhFNn3N5RrW4XCrxLVvb85Y3CViOsjl4548cSgrIdkEJAKx8msk8ZdqMd_klq4TNQywp88GGss7miaBHTZe_gCt_oluqj4gcAQns-Rtbsxe2jdlvDxzKzGON2s3w5PA-UJoMz1TiR9d4l9Uo81a5qqVecP5xW4FO4ncpO8jX72GKV9efHyr8l8-lN72r6JMP46RcXPy3rshIv1oEWesZCJIf-vPnGyfODo2NoqhJc8CeHd9cWyVvtRh_lez0F6-7uFUld5Gg1tEJrNneUhRclsuN_TwTdlDLT9DlpnZ_5NEocuX1sqdqjnBqZBtT9OGD_AqGU27gyLjmV28jZAvvlzcNJmmsHVpP09gk9gAuOx3FS6d7e12UQbalZ3tcKID6GZPCwAb4smo7WI49WBVDRZcIqhZjiOTOrs7wiJwhccq1WvspZpZnGqEAjtpGIV4OObdxwW8jFdaa5DQdaEZgCo2icC6kPwvFP3I0D57h__3nHOR79nATCuejReF8Sj7QcZwMvbRtn1ulW-Ne8-5HXgVPRxiJNS3S_iSgELziiBtrzoi0bOo5H19puv0bRZSlFmElXA3DVg/https://www.amazon.in/gp/aw/d/B0DCRYGHGK/?_encoding=UTF8&pd_rd_plhdr=t&aaxitk=a3c0c83cdce4788577225f76a61b9161&hsa_cr_id=0&qid=1755157491&sr=1-2-e0fa1fdd-d857-4087-adda-5bd576b25987&ref_=sbx_be_s_sparkle_lsi4d_asin_1_img&pd_rd_w=Cy6OB&content-id=amzn1.sym.cbe1d71a-30e3-45dc-b787-bad221b13c68%3Aamzn1.sym.cbe1d71a-30e3-45dc-b787-bad221b13c68&pf_rd_p=cbe1d71a-30e3-45dc-b787-bad221b13c68&pf_rd_r=40NYAXD61EXF5SH7B16F&pd_rd_wg=Ojk1g&pd_rd_r=92578515-0870-4b7a-aaf3-d42e7a8b3b08",
+  "Product Image" : "https://m.media-amazon.com/images/I/61u-kOLiU5L._AC_SR160,134_CB1169409_QL70_.jpg",
+  "Price (INR)" : "24999",
+  "Original Price (INR)" : "179999",
+  "Discount Percentage" : "86",
+  "Rating (Max 5)" : "",
+  "Number of Ratings" : ""
+}, {
+  "Product Name" : "DREAME L10s Ultra Robot Vacuum Cleaner Washer with Self-Cleaning Base Station (Dust Drain, Automatic Cleaning) AI Obstacle Detection 3D, 5300Pa Suction Power, 210 Minutes Battery, WiFi/APP/Alexa",
+  "Product URL" : "https://aax-eu-zaz.amazon.in/x/c/JA30gwuQYOorOg4X9NWI4FAAAAGYp4nwzAoAAAH2AQBvbm9fdHhuX2JpZDEgICBvbm9fdHhuX2ltcDEgICC_3MCO/clv1_CEuOPUxokZA0iHrVdukW7wmNan8lU6FrmJcJrWW79exI4X9AnTiMH_018HHz9hvVjq0yzpNb3X7OfU1vAmcAK0ZYGwrMPMWtElpTSkF_EwKQHolBlEfB8IkGXCRtU-W6XJeXalC7rdIQEQQ8kV_3ZVhXLA8QC8x8H15tWbp4Xgyay_2WjkwrSxutOI2vKbYuDzUcfMyagcpNBHhtJZhsefQQh8yliMIIKin6O61_zAYOsoJhkeWuV2gvjBmW5lJBN2PMN-SRnR9AjX0lL9xFahCwdXiTzSjwM7idy5i2a5sQYmWf1aK1xkuNcA7FBIOT3_cq0eVrbNPflqH2PMWOJOAu7OR9BDACivQj9dRsNbZy2mZ9Aned1SWr3JYqfnqDdhxLjmOcuEw9tBLIB-qsZlpKf6rdhPBne-wSBml9tlZkUux_rAVrRF9I0bxcInIFH-Gzc_r6mO-bWyVNaReipMUTeUmOnmCYQTtgTbV7n9mGD0dk7s2izRPtS0xNFricmfda3FxGEYwynzuAoU-5yQODWwRmcmo6djaNSR6rH7DofgKiPz1B7kQPBXjrdEHsefg0kPl-VBmGjLx6pM0NATfcADpCyR1V8u8umKazrWoovLyO4a4ZPXHk5F3eTZyUFmEaTc0_BDZj7M15O8tu4RAJ27f_ZzBDaWok4tYk48M7NmkOZ36Fl1Ebkg_eWdRJ6F4F1mJu4PcI-cklAyyUSHtG2abkbt7g3rrlfXRVPD7-2TbfYsZB0gNE2NoHS_--qKhNGCPDjknV7BO4C3zvJRNiqTjUCExQsMBHVOQLRAqN-FMsB_58jgRzoruOTVDEa-acQxJH6Q_wpt5iWsFHk5u_oxsdis-ISca6mMCyhW_h5VyT93A06hPLh2C-4wmgiP8WusIimBHMAMslSNgRCtui7OOboCN1FA0NCFbikgXDjRVaEmwUOWV0UTnI8Vb_xRuyRPnV17HqrOrc_TWcXptNDtjiQ4jg2H2gfA1hOcAwRR9AF0hTZZjO_yDsJXZHHTqL241V-AwTZ50R6r2Q8yA6tT9KV-eqh1dxz6x-hQt7CGWCcpKNGQr1T5JXM_NVRmOEVa7PIWkpCraXc4WyxbHEaQ3AxKJAUNcuLS59GJuTUVOhLvdMtVZRIKW9tsvtntYqZtb-kGg5AudkvlshYnB-eMnpHUr2MJEFt7f8pInC6ReP8HLHtucYvDhBbsMSM32NK3H86zm4WyxY-1b8EtqGzexBvqR1p2Ka775RG1XzFGYHeG-FoVKlhC0EfZXHQp4tleuvaFfkTa5MYJA2q242-LRgjoni0Qqik3W3BMDicdExd93o-4t4kmOe948_NbMNUhGs7UHQj9MUR0oV2bDgzdkD-HRqecFcAehPgdtAhWm5PA-8k-i8Ln-VYZNPDB7iZXHwcSDQeBAZZJWKRaLLiUG1NmRalKs5-OzLkk1jMj9S0KgSE7wMEjDiNiaO7i8wEnigt4agmQudMCPRTkfH1DSIZOkx8LAUnN0g1FI4hGvhBUGFHkV_0JYxid-srHr7dhdNeJhSPbDebNsNOib0ofbWJ2OEP36_DYYGgpy28cbKx7yDZrxdOI4grv9AbezNB0js8r7cEfjPABo9XD9AzOHT04ot5Mb-wnDD9oaGb1yzEwCIkhFNn3N5RrW4XCrxLVvb85Y3CViOsjl4548cSgrIdkEJAKx8msk8ZdqMd_klq4TNQywp88GGss7miaBHTZe_gCt_oluqj4gcAQns-Rtbsxe2jdlvDxzKzGON2s3w5PA-UJoMz1TiR9d4l9Uo81a5qqVecP5xW4FO4ncpO8jX72GKV9efHyr8l8-lN72r6JMP46RcXPy3rshIv1oEWesZCJIf-vPnGyfODo2NoqhJc8CeHd9cWyVvtRh_lez0F6-7uFUld5Gg1tEJrNneUhRclsuN_TwTdlDLT9DlpnZ_5NEocuX1sqdqjnBqZBtT9OGD_AqGU27gyLjmV28jZAvvlzcNJmmsHVpP09gk9gAuOx3FS6d7e12UQbalZ3tcKID6GZPCwAb4smo7WI49WBVDRZcIqhZjiOTOrs7wiJwhccq1WvspZpZnGqEAjtpGIV4OObdxwW8jFdaa5DQdaEZgCo2icC6kPwvFP3I0D57h__3nHOR79nATCuejReF8Sj7QcZwMvbRtn1ulW-Ne8-5HXgVPRxiJNS3S_iSgELziiBtrzoi0bOo5H19puv0bRZSlFmElXA3DVg/https://www.amazon.in/gp/aw/d/B0CS2SVZWC/?_encoding=UTF8&pd_rd_plhdr=t&aaxitk=a3c0c83cdce4788577225f76a61b9161&hsa_cr_id=0&qid=1755157491&sr=1-3-e0fa1fdd-d857-4087-adda-5bd576b25987&ref_=sbx_be_s_sparkle_lsi4d_asin_2_img&pd_rd_w=Cy6OB&content-id=amzn1.sym.cbe1d71a-30e3-45dc-b787-bad221b13c68%3Aamzn1.sym.cbe1d71a-30e3-45dc-b787-bad221b13c68&pf_rd_p=cbe1d71a-30e3-45dc-b787-bad221b13c68&pf_rd_r=40NYAXD61EXF5SH7B16F&pd_rd_wg=Ojk1g&pd_rd_r=92578515-0870-4b7a-aaf3-d42e7a8b3b08",
+  "Product Image" : "https://m.media-amazon.com/images/I/61bzdsrqQ-L._AC_SR160,134_CB1169409_QL70_.jpg",
+  "Price (INR)" : "42999",
+  "Original Price (INR)" : "112999",
+  "Discount Percentage" : "62",
+  "Rating (Max 5)" : "",
+  "Number of Ratings" : ""
+}, {
+  "Product Name" : "Noise Buds N1 Pro in Ear Truly Wireless Earbuds with Metallic Finish, ANC(Upto 30Db), 60H of Playtime, Dual Pairing, Instacharge(10 Min=200 Min), BT V5.3(Chrome Black)",
+  "Product URL" : "https://www.amazon.in/sspa/click?ie=UTF8&spc=MTo3Mjk1MDk3NDMzOTY0NTg1OjE3NTUxNTc0OTE6c3BfYXRmOjMwMDMxNDQ0MjU4NTAzMjo6MDo6&url=%2FNoise-Wireless-Metallic-Playtime-Instacharge%2Fdp%2FB0D4QLT8WG%2Fref%3Dsr_1_1_sspa%3Fcontent-id%3Damzn1.sym.b5876297-ded6-4475-876b-d315610bb575%253Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575%26dib%3DeyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ%26dib_tag%3Dse%26keywords%3Delectronic%2Bitems%26pd_rd_r%3D150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6%26pd_rd_w%3DkMSzf%26pd_rd_wg%3DrySsP%26qid%3D1755157491%26sr%3D8-1-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9hdGY%26psc%3D1&sp_cr=ZAZ",
+  "Product Image" : "https://m.media-amazon.com/images/I/61UNThaGjYL._AC_UL320_.jpg",
+  "Price (INR)" : "1799",
+  "Original Price (INR)" : "4999",
+  "Discount Percentage" : "64",
+  "Rating (Max 5)" : "3.9",
+  "Number of Ratings" : "5640"
+}, {
+  "Product Name" : "USB-MPI For Siemens S7-200/300/400 USB MPI/PPI/DP/PROFIBUS PLC RS485 Profibus PC Adapter 9pin Communication Cable Replace Siemens 6ES7972-0CB20-0XA0",
+  "Product URL" : "https://www.amazon.in/sspa/click?ie=UTF8&spc=MTo3Mjk1MDk3NDMzOTY0NTg1OjE3NTUxNTc0OTE6c3BfYXRmOjMwMDM4MzgzMzg4OTczMjo6MDo6&url=%2FUSB-MPI-PROFIBUS-Profibus-Communication-6ES7972-0CB20-0XA0%2Fdp%2FB08BHN5PKG%2Fref%3Dsr_1_2_sspa%3Fcontent-id%3Damzn1.sym.b5876297-ded6-4475-876b-d315610bb575%253Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575%26dib%3DeyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ%26dib_tag%3Dse%26keywords%3Delectronic%2Bitems%26pd_rd_r%3D150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6%26pd_rd_w%3DkMSzf%26pd_rd_wg%3DrySsP%26qid%3D1755157491%26sr%3D8-2-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9hdGY%26psc%3D1&sp_cr=ZAZ",
+  "Product Image" : "https://m.media-amazon.com/images/I/610I1cmTnQL._AC_UL320_.jpg",
+  "Price (INR)" : "6999",
+  "Original Price (INR)" : "11999",
+  "Discount Percentage" : "42",
+  "Rating (Max 5)" : "4.2",
+  "Number of Ratings" : "8"
+}, {
+  "Product Name" : "Amazon Echo Show 8 (2nd Gen) - Smart speaker with 8\" HD screen, stereo sound & hands-free entertainment with Alexa (Black)",
+  "Product URL" : "https://www.amazon.in/sspa/click?ie=UTF8&spc=MTo3Mjk1MDk3NDMzOTY0NTg1OjE3NTUxNTc0OTE6c3BfYXRmOjMwMDQ1OTU1NDUxMDczMjo6MDo6&url=%2FEcho-show-8-2nd-Gen%2Fdp%2FB084TNMLTB%2Fref%3Dsr_1_3_sspa%3Fcontent-id%3Damzn1.sym.b5876297-ded6-4475-876b-d315610bb575%253Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575%26dib%3DeyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ%26dib_tag%3Dse%26keywords%3Delectronic%2Bitems%26pd_rd_r%3D150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6%26pd_rd_w%3DkMSzf%26pd_rd_wg%3DrySsP%26qid%3D1755157491%26sr%3D8-3-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9hdGY%26psc%3D1&sp_cr=ZAZ",
+  "Product Image" : "https://m.media-amazon.com/images/I/61Tex9834NL._AC_UL320_.jpg",
+  "Price (INR)" : "13999",
+  "Original Price (INR)" : "",
+  "Discount Percentage" : "",
+  "Rating (Max 5)" : "4.1",
+  "Number of Ratings" : "2625"
+}, {
+  "Product Name" : "GOBOULT Z20 Truly Wireless Bluetooth Ear Buds with 51H Playtime, Zen™ Calling ENC Mic, Made in India, Low Latency Gaming, Touch Control, Rich Bass Drivers, TWS Earbuds Bluetooth Wireless (Ivory White)",
+  "Product URL" : "https://www.amazon.in/sspa/click?ie=UTF8&spc=MTo3Mjk1MDk3NDMzOTY0NTg1OjE3NTUxNTc0OTE6c3BfYXRmOjMwMDQ3MjQ0MzU5MjYzMjo6MDo6&url=%2FBoult-Wireless-Bluetooth-Playtime-Controls%2Fdp%2FB0DSG4ZPSY%2Fref%3Dsr_1_4_sspa%3Fcontent-id%3Damzn1.sym.b5876297-ded6-4475-876b-d315610bb575%253Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575%26dib%3DeyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ%26dib_tag%3Dse%26keywords%3Delectronic%2Bitems%26pd_rd_r%3D150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6%26pd_rd_w%3DkMSzf%26pd_rd_wg%3DrySsP%26qid%3D1755157491%26sr%3D8-4-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9hdGY%26psc%3D1&sp_cr=ZAZ",
+  "Product Image" : "https://m.media-amazon.com/images/I/612jf6X2qBL._AC_UL320_.jpg",
+  "Price (INR)" : "799",
+  "Original Price (INR)" : "5499",
+  "Discount Percentage" : "85",
+  "Rating (Max 5)" : "4.1",
+  "Number of Ratings" : "4511"
+}, {
+  "Product Name" : "Atom 10Kg Kitchen Weight Machine 6 Months Warranty, Digital Scale with LCD Display, Scale for Home Baking, Cooking & Balance Diet. Weighing Machine with capacity 10Kg, SF400/A121,Color May Vary",
+  "Product URL" : "https://www.amazon.in/Weighing-Balanced-Batteries-Included-A121/dp/B083C6XMKQ/ref=sr_1_5?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-5",
+  "Product Image" : "https://m.media-amazon.com/images/I/71775fRr+gL._AC_UL320_.jpg",
+  "Price (INR)" : "205",
+  "Original Price (INR)" : "599",
+  "Discount Percentage" : "66",
+  "Rating (Max 5)" : "4.0",
+  "Number of Ratings" : "14156"
+}, {
+  "Product Name" : "LIRAMARK Mobile Phone Charging Stand, Storage Holder, Bedside Fixed Rack, Home Organization and Storage Supplies, Bedroom Accessories, Office Accessories, Bathroom Accessories (Pack of 1)",
+  "Product URL" : "https://www.amazon.in/LIRAMARK-Mounted-Storage-Purpose-Charging/dp/B0BQMJZZNM/ref=sr_1_6?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-6",
+  "Product Image" : "https://m.media-amazon.com/images/I/61mJSikurML._AC_UL320_.jpg",
+  "Price (INR)" : "99",
+  "Original Price (INR)" : "299",
+  "Discount Percentage" : "67",
+  "Rating (Max 5)" : "3.9",
+  "Number of Ratings" : "4795"
+}, {
+  "Product Name" : "Pigeon by Stovekraft Amaze Plus Electric Kettle (14289) with Stainless Steel Body, 1.5 litre, used for boiling Water, making tea and coffee, instant noodles, soup etc. (Silver)",
+  "Product URL" : "https://www.amazon.in/Pigeon-Electric-Stainless-Shut-off-Feature/dp/B07WMS7TWB/ref=sr_1_7?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-7",
+  "Product Image" : "https://m.media-amazon.com/images/I/51DGcy8eBCL._AC_UL320_.jpg",
+  "Price (INR)" : "499",
+  "Original Price (INR)" : "1101",
+  "Discount Percentage" : "55",
+  "Rating (Max 5)" : "4.0",
+  "Number of Ratings" : "176155"
+}, {
+  "Product Name" : "Seagull flight of fashion Nylon Single Layer Electronic Gadget Organizer Case, Tech Kit Accessories Organizer Professional Bag With Mobile Stand - 25 X 19 X 2 Cm - Grey - Model 1",
+  "Product URL" : "https://aax-eu-zaz.amazon.in/x/c/JFn4ydNUeBEPFWqNukgk_7UAAAGYp4nwygoAAAH2AQBvbm9fdHhuX2JpZDIgICBvbm9fdHhuX2ltcDEgICCcI0yZ/clv1_CEuOPUxokZA0iHrVZekv4XqJeixWa-oLvZBdqwehy6Vp8X87nDiMH_018HHz9hvVjq0yzpNb3X7OfU02AmcAOEZhFXnILJbeKhEzb0YrFWCKIMBghEfB8IkGXCQwUuW6XJeXalC7rdIQEQQ8kV_3ZVhXLA8QC8x8H15tWbp4Xgyay_2WjkwrSxutOI2vKbYuDzUcfMyagcpNBHhtJZhsefQQh8yliMIIKin6O61_zAYOsoJhkeWuV2gvjBmW5lJBN2PMN-SRnR9AjX0lL9xFahCwdXiTzSjwM7idy5i2a5sQYmWf1aK1xkuNcA7FBIOT3_cq0eVrbNPflqWDPOCPC-xn6ONMcAQOr5Eo5YR4Np56xFFTUxGZ1SWr3JYqfnqDdhxLjmOcuEwh_RPmIemtZl4CfLrZhPBne-wSBml9tlZkUux_rAVrRF9I0bxcInIFH-Gzc_r6mO-bWyVNaReipMUTeUmOk2OYfChiJ4snkeH1E39g8pKg8xPmTmFjVYOMr_VkwTthKoxWmj2Ajw-85x_bWgR-Y2A4Ly61XW_0GbfWKhOMGTd0mEAZAg3OfkfrU_0Pj89oQgyJhpZTgsU3XVSZOi98lgp6zP47jZipuW8Vvb-f_ZYgVnHu5zjScpWFM2scS8o1ABhn481pGcxtqRMa26fRZzNteSMkhM159KYwJmseY3mEuV5AkWnjANde9F4G-Hky9fQ-_t0yEHWVPk4f2bbWbd7w7PjlC2sLPD3XgDbPfsRV_xwc2-cYWumQjbxcMhLTn2TR5RPMYAbeH3RllibLAkpWt8pDeNEBQSWC8nkvH_B8gRhjnKuSSVOtVuWyajNb6VDKpuVsRc5qk4SjjEYnzP6yFOOEm8C7vGmRxFXhynMh-1XVvGCUvTL5rqIvkfwinyTmQ_ALU7ssEdOE4MyY9TJfJi0RDlbZoRTQlDtxI3YcZk9rYym_92iaxW-OX_qawI_r88Lz8j-aX6pPOeCBabTk_XSiZw1dAOsrQjF9Z1h8WpfJ6jHvK1ogAn6j241V7lQYZLIQ26STlkdCtSF3DsmYhExf4IFikhx3R2SCftuOGTT2T4FuKPRCSWqSVp_SGmg5C7GWQpynnc37fB_63rVpV9ABBz1rNrLFCHyNIeJb_QheNIqHrOPXmsoiTdriq2g9B-EQ_FEnYlY6eMntHUr2MJEFt7f8pInC6ReMj3b7wYgXgjlvY_sdL32FAG2m6F3fGxsHiAXvLsKYzsB3oohh6jGJ2bpLG1rBNmUZUlq_xU65hC0UOKvVKeoToPejbUb8SZJIf8UlrEcy18BClLKT8wiYqRKrCND2d-pob9_Rn-wdowiG97QSNvUaVj-s7Ub21u4LdVgc3f3u5oU6-VlcT8p0O_RMids_jFepGVOQuMm2PULPcIxcThTxVGGjWyDEXhYZUomIU9KptDOLaV5e55c0w97hmz4TTDN69qUiKtclDzXtPCOloD8LAnjnspaoxT77RzXAZ36SxRuUZu0Pk7EVnPct0kEeoXDOCkuANmB61-I1oOGyoCfCdg8RQ-hJaKPZWsU3Xwv9o-bkNEnYEX2Id6gJgvey58Sh06CyOaRwA48Sq8xqQ5_OCW3t5ZPHXvjQH1g_TA1M3NTx0I1y8Iz9z3Tc_uywfWfDFFWMuwZZmlhUR7bnTHDIRH7I5LkJVnbWtj5EyakNdBW6akYGHLRDh_M9Wdr0K9Z-q5TeeVtwyPjpvduDnfx-KLHBu0B0pFjAm4YkDgLywAlxqC2bloNBMmuZyALy09vkm7k8NqR3_1byJ-0IlJMj5ymurJRdLv9PR4dP4FYrLOLUnXbvUO6WCirIn5KpT5Hfyrg68MIOQcKGvvMigVoudONGGM0PgcriJXjjCp6GprMOc8eaW8JbbiFpiCJ_kd37ZKa6gH86SKnWyfwJjdziQhNfkMio0DcRRDbKKuaErhN30tAoV4_1s6Nql00SLjRv2MjvcYZ77BS6FBBzi57BTSZiHOWp0LyFUb6VEnyHtP1iM1W4YK43EjfRKrLkFy9DL4SRb56HpB_4rk9hEfp2fh5lUY8yjVlft-rlmenmtNVPKc2VGeR6GD7JoxSTHgjauzNykVLdLcHTNeMHPsjksqhQQlU_6ZnP1FXtSCsrGsH_gZGCeOYIkg5OS6vlD8Y0TTDMaatz29ghoES6SiU9xyUvOHotah6gV0756T-SHIqn2St2nEzdQ4FdRbJ-dd_3E8fZQuVAZW0dWzYp4_bgQonXk6rJubZRZeVD78unqOZtpwA7-ve8D11d1_sKTac0VXHHwpz0spSdWeAaYBi5TZazk1zrmDpsJu1AdvK4utqXnmnVAyWotVkXLwBQCjiMd0wZ/https://www.amazon.in/Seagull-Flight-Fashion-Electronic-Accessories/dp/B08P63D2VY/ref=sxin_14_sbv_search_btf?content-id=amzn1.sym.7f127af2-01e9-4e9a-857b-f7f598682cc6%3Aamzn1.sym.7f127af2-01e9-4e9a-857b-f7f598682cc6&cv_ct_cx=electronic+items&keywords=electronic+items&pd_rd_i=B08P63D2VY&pd_rd_r=1bd088ec-0073-4b30-a16d-b090f99d27e8&pd_rd_w=9cM63&pd_rd_wg=6YEsq&pf_rd_p=7f127af2-01e9-4e9a-857b-f7f598682cc6&pf_rd_r=40NYAXD61EXF5SH7B16F&qid=1755157491&sbo=RZvfv%2F%2FHxDF%2BO5021pAnSA%3D%3D&sr=1-1-9131241a-a358-4619-a7b8-0f5a65d91d81",
+  "Product Image" : "https://m.media-amazon.com/images/I/71xJ9KGPxNL._AC_UL640_QL65_.jpg",
+  "Price (INR)" : "395",
+  "Original Price (INR)" : "799",
+  "Discount Percentage" : "51",
+  "Rating (Max 5)" : "4.2",
+  "Number of Ratings" : "932"
+}, {
+  "Product Name" : "AptechDeals Mini LCD digital thermometer sensor wired for Room temperaure/fridges, Indoor Outdoor Portable Pocket LCD Electronic Temperature Meter Tester Instant Read Thermocouple",
+  "Product URL" : "https://www.amazon.in/AptechDeals-thermometer-temperaure-Temperature-Thermocouple/dp/B07FFT49V4/ref=sr_1_8?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-8",
+  "Product Image" : "https://m.media-amazon.com/images/I/71doekn7wWL._AC_UL320_.jpg",
+  "Price (INR)" : "150",
+  "Original Price (INR)" : "699",
+  "Discount Percentage" : "79",
+  "Rating (Max 5)" : "3.9",
+  "Number of Ratings" : "4296"
+}, {
+  "Product Name" : "rts Universal Travel Adapter, International All in One Worldwide Travel Adapter and Wall Charger with USB Ports with Multi Type Power Outlet USB 2.1A,100-250 Voltage Travel Charger (Black)",
+  "Product URL" : "https://www.amazon.in/rts-Universal-Adapter-International-Worldwide/dp/B082WYMTWF/ref=sr_1_9?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-9",
+  "Product Image" : "https://m.media-amazon.com/images/I/611RCy1XjsL._AC_UL320_.jpg",
+  "Price (INR)" : "582",
+  "Original Price (INR)" : "4999",
+  "Discount Percentage" : "88",
+  "Rating (Max 5)" : "4.2",
+  "Number of Ratings" : "13528"
+}, {
+  "Product Name" : "Inditradition Plastic Abstract Alarm Clock with 7 Colour Changing Digital Display and Temperature (White, 7.5 x 7.5 x 7.5 cm)",
+  "Product URL" : "https://www.amazon.in/Inditradition-Glowing-Table-Alarm-Clock/dp/B07DRKLHBG/ref=sr_1_10?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-10",
+  "Product Image" : "https://m.media-amazon.com/images/I/619lCAgb8rL._AC_UL320_.jpg",
+  "Price (INR)" : "283",
+  "Original Price (INR)" : "500",
+  "Discount Percentage" : "43",
+  "Rating (Max 5)" : "3.3",
+  "Number of Ratings" : "1375"
+}, {
+  "Product Name" : "GLUN® Electronic Portable Digital LED Screen Luggage Weighing Scale, 50 kg/110 Lb For Multi-Purpose Use.",
+  "Product URL" : "https://www.amazon.in/Electronic-Portable-Digital-Luggage-Weighing/dp/B07PK41FL4/ref=sr_1_11?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-11",
+  "Product Image" : "https://m.media-amazon.com/images/I/61Z35SZs7lL._AC_UL320_.jpg",
+  "Price (INR)" : "249",
+  "Original Price (INR)" : "849",
+  "Discount Percentage" : "71",
+  "Rating (Max 5)" : "4.0",
+  "Number of Ratings" : "25580"
+}, {
+  "Product Name" : "ZEBRONICS Bro in Ear Wired Earphones with Mic, 3.5mm Audio Jack, 10mm Drivers, Phone/Tablet Compatible (Green)",
+  "Product URL" : "https://www.amazon.in/ZEBRONICS-Zeb-Bro-Earphones-Compatible-Green/dp/B09R24JBYV/ref=sr_1_12?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-12",
+  "Product Image" : "https://m.media-amazon.com/images/I/61+0KSoFrOL._AC_UL320_.jpg",
+  "Price (INR)" : "159",
+  "Original Price (INR)" : "399",
+  "Discount Percentage" : "60",
+  "Rating (Max 5)" : "3.5",
+  "Number of Ratings" : "62299"
+}, {
+  "Product Name" : "pTron Newly Launched Fusion Tunes 10W Mini Bluetooth Speaker with Wireless Karaoke Mic, 8Hrs Playtime, Vivid RGB Lights, Voice Effects, Multi-Play Modes BT5.1/TF Card & Type-C Charging Port (Black)",
+  "Product URL" : "https://www.amazon.in/pTron-Launched-Fusion-Bluetooth-Multi-Play/dp/B0D772K8X8/ref=sr_1_13?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-13",
+  "Product Image" : "https://m.media-amazon.com/images/I/61Lgfcc+o-L._AC_UL320_.jpg",
+  "Price (INR)" : "799",
+  "Original Price (INR)" : "3199",
+  "Discount Percentage" : "75",
+  "Rating (Max 5)" : "4.0",
+  "Number of Ratings" : "2805"
+}, {
+  "Product Name" : "CP PLUS 2MP Full HD Smart Wi-Fi CCTV Home Security Camera | 360° with Pan Tilt | View & Talk | Motion Alert | Night Vision | SD Card (Upto 128 GB), Alexa & Google Support | IR Distance 10mtr | CP-E25A",
+  "Product URL" : "https://www.amazon.in/CP-PLUS-Security-Distance-CP-E25A/dp/B0BBV83YF9/ref=sr_1_14?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-14",
+  "Product Image" : "https://m.media-amazon.com/images/I/51gmjKtWUGL._AC_UL320_.jpg",
+  "Price (INR)" : "1499",
+  "Original Price (INR)" : "3450",
+  "Discount Percentage" : "57",
+  "Rating (Max 5)" : "3.7",
+  "Number of Ratings" : "12403"
+}, {
+  "Product Name" : "AGARO Grand Egg Boiler And Poacher, 2-in1 Boils 8 Eggs, Poach 4 Eggs, Steamed Vegetables, 3 Boiling Modes, Stainless Steel Body, Transparent Lid, 500W, Silver",
+  "Product URL" : "https://www.amazon.in/AGARO-Grand-Vegetables-Stainless-Transparent/dp/B0B257ZYVB/ref=sr_1_15?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-15",
+  "Product Image" : "https://m.media-amazon.com/images/I/81670ZfgQ-L._AC_UL320_.jpg",
+  "Price (INR)" : "936",
+  "Original Price (INR)" : "2199",
+  "Discount Percentage" : "57",
+  "Rating (Max 5)" : "4.2",
+  "Number of Ratings" : "3064"
+}, {
+  "Product Name" : "Portronics Snapcase 3 60W Multifunctional Fast Charging Data Cable Kit, Conversion Set USB A & Type C to Male Micro/Type C/Lightning, Data Transfer, Sim Storage, Sim Eject Pin, Pocket Size(Blue)",
+  "Product URL" : "https://www.amazon.in/Portronics-Snapcase-Multifunctional-Conversion-Lightning/dp/B0DTPGC83R/ref=sr_1_16?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-16",
+  "Product Image" : "https://m.media-amazon.com/images/I/61t1Q0eNs7L._AC_UL320_.jpg",
+  "Price (INR)" : "299",
+  "Original Price (INR)" : "799",
+  "Discount Percentage" : "63",
+  "Rating (Max 5)" : "4.4",
+  "Number of Ratings" : "363"
+}, {
+  "Product Name" : "Venus (India) Electronic Digital Personal Bathroom Weight Machine for Body Weight upto 180 kg Weighing Scale with 24 Months Warranty",
+  "Product URL" : "https://www.amazon.in/Venus-Electronic-Personal-Bathroom-Weighing/dp/B08ZYNTJY9/ref=sr_1_17?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-17",
+  "Product Image" : "https://m.media-amazon.com/images/I/618sRDufgZL._AC_UL320_.jpg",
+  "Price (INR)" : "499",
+  "Original Price (INR)" : "2499",
+  "Discount Percentage" : "80",
+  "Rating (Max 5)" : "4.0",
+  "Number of Ratings" : "21703"
+}, {
+  "Product Name" : "SaleOn 8.3X5 Inch Portable Storage Organizer Bag Usb Cable, Earphone, Power Bank, Mobile Charger, Hard Disk & Digital Gadgets With Mesh, Dual Zippers & Elastic Loops, Inside Color May Vary, grey",
+  "Product URL" : "https://www.amazon.in/SaleOn-Portable-Storage-Organizer-Earphone/dp/B0D5J6X2ZJ/ref=sr_1_18?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-18",
+  "Product Image" : "https://m.media-amazon.com/images/I/710CZkYfj8L._AC_UL320_.jpg",
+  "Price (INR)" : "295",
+  "Original Price (INR)" : "899",
+  "Discount Percentage" : "67",
+  "Rating (Max 5)" : "4.2",
+  "Number of Ratings" : "263"
+}, {
+  "Product Name" : "Seznik Portable Mini Sealing Machine, Handheld Packet Sealer for Food, Snacks, Chips, Fresh Storage, Plastic Bags Sealing Machine, 1 YEAR Warranty (Dark Blue)",
+  "Product URL" : "https://www.amazon.in/Portable-Sealing-Machine-Handheld-Warranty/dp/B0D4KJYKNS/ref=sr_1_19?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-19",
+  "Product Image" : "https://m.media-amazon.com/images/I/71erYLVtXtL._AC_UL320_.jpg",
+  "Price (INR)" : "347",
+  "Original Price (INR)" : "1200",
+  "Discount Percentage" : "71",
+  "Rating (Max 5)" : "3.8",
+  "Number of Ratings" : "5594"
+}, {
+  "Product Name" : "AGARO Elite Rechargeable Mini Electric Chopper, Food Grade Bowl, Stainless Steel Blades, One Touch Operation, for Mincing Garlic, Ginger, Onion, Vegetable, Meat, Nuts, 250 Ml, Black.",
+  "Product URL" : "https://www.amazon.in/AGARO-Rechargeable-Stainless-Operation-Vegetable/dp/B0C897PVVM/ref=sr_1_20?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-20",
+  "Product Image" : "https://m.media-amazon.com/images/I/71JxqRoEC9L._AC_UL320_.jpg",
+  "Price (INR)" : "530",
+  "Original Price (INR)" : "1499",
+  "Discount Percentage" : "65",
+  "Rating (Max 5)" : "4.2",
+  "Number of Ratings" : "3146"
+}, {
+  "Product Name" : "Amazon Echo Pop| Smart speaker with Alexa and Bluetooth| Loud sound, balanced bass, crisp vocals| Black",
+  "Product URL" : "https://www.amazon.in/sspa/click?ie=UTF8&spc=MTo3Mjk1MDk3NDMzOTY0NTg1OjE3NTUxNTc0OTE6c3BfbXRmOjMwMDQ1OTU1NDUxMDgzMjo6MDo6&url=%2FIntroducing-Echo-Pop-Smart-speaker-black%2Fdp%2FB09WWT8HFH%2Fref%3Dsr_1_21_sspa%3Fcontent-id%3Damzn1.sym.b5876297-ded6-4475-876b-d315610bb575%253Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575%26dib%3DeyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ%26dib_tag%3Dse%26keywords%3Delectronic%2Bitems%26pd_rd_r%3D150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6%26pd_rd_w%3DkMSzf%26pd_rd_wg%3DrySsP%26qid%3D1755157491%26sr%3D8-21-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9tdGY%26psc%3D1&sp_cr=ZAZ",
+  "Product Image" : "https://m.media-amazon.com/images/I/618+TCm3XoL._AC_UL320_.jpg",
+  "Price (INR)" : "4499",
+  "Original Price (INR)" : "4999",
+  "Discount Percentage" : "10",
+  "Rating (Max 5)" : "4.2",
+  "Number of Ratings" : "2927"
+}, {
+  "Product Name" : "DDLC Wi-Fi Bulb CCTV Camera 1080p Wireless PTZ Bulb Shape Indoor 360° Smart Home Security Light Vision 24x7 Continuous Recording with Motion Sensor LED Lights PTZ Bulb Shape V380 Pro",
+  "Product URL" : "https://www.amazon.in/sspa/click?ie=UTF8&spc=MTo3Mjk1MDk3NDMzOTY0NTg1OjE3NTUxNTc0OTE6c3BfbXRmOjMwMDY0NDAxODA4NjUzMjo6MDo6&url=%2FDDLC-Wireless-Security-Continuous-Recording%2Fdp%2FB0F2HC35Z3%2Fref%3Dsr_1_22_sspa%3Fcontent-id%3Damzn1.sym.b5876297-ded6-4475-876b-d315610bb575%253Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575%26dib%3DeyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ%26dib_tag%3Dse%26keywords%3Delectronic%2Bitems%26pd_rd_r%3D150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6%26pd_rd_w%3DkMSzf%26pd_rd_wg%3DrySsP%26qid%3D1755157491%26sr%3D8-22-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9tdGY%26psc%3D1&sp_cr=ZAZ",
+  "Product Image" : "https://m.media-amazon.com/images/I/61v6JrcC7ML._AC_UL320_.jpg",
+  "Price (INR)" : "1198",
+  "Original Price (INR)" : "2999",
+  "Discount Percentage" : "60",
+  "Rating (Max 5)" : "4.3",
+  "Number of Ratings" : "47"
+}, {
+  "Product Name" : "Amazon Echo (4th Gen) | Premium sound powered by Dolby and Alexa (Black)",
+  "Product URL" : "https://www.amazon.in/sspa/click?ie=UTF8&spc=MTo3Mjk1MDk3NDMzOTY0NTg1OjE3NTUxNTc0OTE6c3BfbXRmOjMwMDMzMDUwMDU5ODgzMjo6MDo6&url=%2FAll-new-Echo%2Fdp%2FB085FY9NK8%2Fref%3Dsr_1_23_sspa%3Fcontent-id%3Damzn1.sym.b5876297-ded6-4475-876b-d315610bb575%253Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575%26dib%3DeyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ%26dib_tag%3Dse%26keywords%3Delectronic%2Bitems%26pd_rd_r%3D150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6%26pd_rd_w%3DkMSzf%26pd_rd_wg%3DrySsP%26qid%3D1755157491%26sr%3D8-23-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9tdGY%26psc%3D1&sp_cr=ZAZ",
+  "Product Image" : "https://m.media-amazon.com/images/I/61dgl2srHDL._AC_UL320_.jpg",
+  "Price (INR)" : "9999",
+  "Original Price (INR)" : "",
+  "Discount Percentage" : "",
+  "Rating (Max 5)" : "4.4",
+  "Number of Ratings" : "11618"
+}, {
+  "Product Name" : "truke New Launch Buds Elite True Wireless in Ear Earbuds with 10mm Dynamic Driver, 70Hrs Battery & Fast Charging EarBuds, Dual-MIC ENC TWS, 40ms Low Latency Gaming Buds, Volume Control, BT 5.4 (Black)",
+  "Product URL" : "https://www.amazon.in/sspa/click?ie=UTF8&spc=MTo3Mjk1MDk3NDMzOTY0NTg1OjE3NTUxNTc0OTE6c3BfbXRmOjMwMDY1MTQ5NzgyOTkzMjo6MDo6&url=%2Ftruke-Wireless-Earbuds-Charging-Dual-MIC%2Fdp%2FB0DVL9D7JD%2Fref%3Dsr_1_24_sspa%3Fcontent-id%3Damzn1.sym.b5876297-ded6-4475-876b-d315610bb575%253Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575%26dib%3DeyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ%26dib_tag%3Dse%26keywords%3Delectronic%2Bitems%26pd_rd_r%3D150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6%26pd_rd_w%3DkMSzf%26pd_rd_wg%3DrySsP%26qid%3D1755157491%26sr%3D8-24-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9tdGY%26psc%3D1&sp_cr=ZAZ",
+  "Product Image" : "https://m.media-amazon.com/images/I/61IJb69H+wL._AC_UL320_.jpg",
+  "Price (INR)" : "699",
+  "Original Price (INR)" : "2299",
+  "Discount Percentage" : "70",
+  "Rating (Max 5)" : "3.9",
+  "Number of Ratings" : "352"
+}, {
+  "Product Name" : "Tygot Bluetooth Extendable Selfie Sticks with Wireless Remote and Tripod Stand, 3-in-1 Multifunctional Selfie Stick with Tripod Stand Compatible with iPhone/OnePlus/Samsung/Oppo/Vivo and All Phones",
+  "Product URL" : "https://www.amazon.in/Tygot-Bluetooth-Extendable-Multifunctional-Compatible/dp/B094YFFSMY/ref=sr_1_25?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-25",
+  "Product Image" : "https://m.media-amazon.com/images/I/61NcJuDzfqL._AC_UL320_.jpg",
+  "Price (INR)" : "299",
+  "Original Price (INR)" : "1999",
+  "Discount Percentage" : "85",
+  "Rating (Max 5)" : "3.8",
+  "Number of Ratings" : "7323"
+}, {
+  "Product Name" : "THEMISTO - built with passion Themisto Beginners 8 In 1 Corded_electric Soldering Iron Kit",
+  "Product URL" : "https://www.amazon.in/THEMISTO-passion-Themisto-Beginners-Soldering/dp/B07PM6134P/ref=sr_1_26?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-26",
+  "Product Image" : "https://m.media-amazon.com/images/I/61rO8eQB4ZL._AC_UL320_.jpg",
+  "Price (INR)" : "259",
+  "Original Price (INR)" : "799",
+  "Discount Percentage" : "68",
+  "Rating (Max 5)" : "3.7",
+  "Number of Ratings" : "6629"
+}, {
+  "Product Name" : "Bajaj iLED 8.5W Rechargeable Emergency Inverter LED Bulb | Cool Day Light | Upto 4 Hours Battery | B22D | (Pack of 1, White)",
+  "Product URL" : "https://www.amazon.in/Bajaj-Rechargeable-Emergency-Inverter-Battery/dp/B0C9JHQPGY/ref=sr_1_27?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-27",
+  "Product Image" : "https://m.media-amazon.com/images/I/61orFwKGg3L._AC_UL320_.jpg",
+  "Price (INR)" : "209",
+  "Original Price (INR)" : "685",
+  "Discount Percentage" : "69",
+  "Rating (Max 5)" : "3.9",
+  "Number of Ratings" : "5778"
+}, {
+  "Product Name" : "STRIFF Adjustable Laptop Tabletop Stand Patented Riser Ventilated Portable Foldable Compatible with MacBook Notebook Tablet Tray Desk Table Book with Free Phone Stand (Black)",
+  "Product URL" : "https://www.amazon.in/STRIFF-Adjustable-Patented-Ventilated-Compatible/dp/B07XCM6T4N/ref=sr_1_28?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-28",
+  "Product Image" : "https://m.media-amazon.com/images/I/71Zf9uUp+GL._AC_UL320_.jpg",
+  "Price (INR)" : "249",
+  "Original Price (INR)" : "1499",
+  "Discount Percentage" : "83",
+  "Rating (Max 5)" : "4.3",
+  "Number of Ratings" : "40413"
+}, {
+  "Product Name" : "ANCHOR 6A 3 Pin Multi Plug Socket Travel Adapter with Universal Socket, 3 Pin Multi Plug Extension Socket (White)",
+  "Product URL" : "https://www.amazon.in/Panasonic-6A-Multiplug-Universal-22841-Pk1/dp/B07FZ18FMF/ref=sr_1_29?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-29",
+  "Product Image" : "https://m.media-amazon.com/images/I/51JON7XePEL._AC_UL320_.jpg",
+  "Price (INR)" : "129",
+  "Original Price (INR)" : "164",
+  "Discount Percentage" : "21",
+  "Rating (Max 5)" : "4.4",
+  "Number of Ratings" : "12379"
+}, {
+  "Product Name" : "Electronic Spices Science Experiment Kit – Science Kit for Kids, STEM Kit, Electric Circuit Kit with Motor Fan Toy",
+  "Product URL" : "https://www.amazon.in/Electronic-Spices-Science-Experiment-Kit/dp/B0CX5FQPH2/ref=sr_1_30?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-30",
+  "Product Image" : "https://m.media-amazon.com/images/I/81bmXOQGz-L._AC_UL320_.jpg",
+  "Price (INR)" : "159",
+  "Original Price (INR)" : "280",
+  "Discount Percentage" : "43",
+  "Rating (Max 5)" : "3.0",
+  "Number of Ratings" : "85"
+}, {
+  "Product Name" : "HP H150 Wireless in Ear Earbuds, Compatible with Tablets, Smartphones, Pcs, and Other Devices with Bluetooth,Noise-Reduction,Water Resistant Design,Black,0.036Kg",
+  "Product URL" : "https://www.amazon.in/HP-Compatible-Smartphones-Bluetooth-Noise-Reduction/dp/B0D6NMXQ2V/ref=sr_1_31?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-31",
+  "Product Image" : "https://m.media-amazon.com/images/I/61+pEvfKgOL._AC_UL320_.jpg",
+  "Price (INR)" : "799",
+  "Original Price (INR)" : "2499",
+  "Discount Percentage" : "68",
+  "Rating (Max 5)" : "3.0",
+  "Number of Ratings" : "2089"
+}, {
+  "Product Name" : "Portronics Ruffpad 8.5E Re-Writable LCD Writing Pad with Screen 21.5cm (8.5-inch) for Drawing, Playing, Handwriting Gifts for Kids & Adults, India's first notepad to save and share your child's first creatives via Ruffpad app on your Smartphone(Black)",
+  "Product URL" : "https://www.amazon.in/Portronics-Ruffpad-Re-Writable-8-5-inch-Handwriting/dp/B09GF6JBZN/ref=sr_1_32?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-32",
+  "Product Image" : "https://m.media-amazon.com/images/I/51nzIs6jTCL._AC_UL320_.jpg",
+  "Price (INR)" : "199",
+  "Original Price (INR)" : "799",
+  "Discount Percentage" : "75",
+  "Rating (Max 5)" : "4.0",
+  "Number of Ratings" : "8308"
+}, {
+  "Product Name" : "Portronics Bridge Y USB 3.0 to Type C OTG Adaptor, 10Gbps High Speed Data Transfer, Thunderbolt to USB Adapter, Compatible for All Type C Devices, Smartphone, Laptops, Tablets, Chargers, MacBook",
+  "Product URL" : "https://www.amazon.in/Portronics-Transfer-Thunderbolt-Compatible-Smartphone/dp/B0DH3J6LB9/ref=sr_1_33?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-33",
+  "Product Image" : "https://m.media-amazon.com/images/I/616jdfyhw8L._AC_UL320_.jpg",
+  "Price (INR)" : "119",
+  "Original Price (INR)" : "599",
+  "Discount Percentage" : "80",
+  "Rating (Max 5)" : "4.3",
+  "Number of Ratings" : "3542"
+}, {
+  "Product Name" : "ZEBRONICS THUNDER Bluetooth 5.3 Wireless Headphones with 60H Backup, Gaming Mode, Dual Pairing, ENC, AUX, Micro SD, Voice assistant, Comfortable Earcups, Call Function(Black)",
+  "Product URL" : "https://www.amazon.in/ZEBRONICS-Bluetooth-Headphones-assistant-Comfortable/dp/B07L8KNP5F/ref=sr_1_34?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-34",
+  "Product Image" : "https://m.media-amazon.com/images/I/618-45t0P5L._AC_UL320_.jpg",
+  "Price (INR)" : "799",
+  "Original Price (INR)" : "1199",
+  "Discount Percentage" : "33",
+  "Rating (Max 5)" : "3.7",
+  "Number of Ratings" : "25371"
+}, {
+  "Product Name" : "Sounce 3 in 1 Cleaning Set for Screen PC, Laptops, Monitors, Mobiles, LCD, LED, TV/Professional Quality/Prevents Static Electricity, 100ml with Micro Fiber Cloth and Soft Brush",
+  "Product URL" : "https://www.amazon.in/Sounce-Cleaning-Monitors-Professional-Electricity/dp/B0BSLRB8NJ/ref=sr_1_35?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-35",
+  "Product Image" : "https://m.media-amazon.com/images/I/71CFc-fYMBL._AC_UL320_.jpg",
+  "Price (INR)" : "149",
+  "Original Price (INR)" : "999",
+  "Discount Percentage" : "85",
+  "Rating (Max 5)" : "4.2",
+  "Number of Ratings" : "2299"
+}, {
+  "Product Name" : "Portronics MODESK Universal Mobile Holder Stand with Metal Body, Anti Skid Design, Light Weight for All Smartphones, Tablets, Kindle, iPad(Black)",
+  "Product URL" : "https://www.amazon.in/Portronics-POR-122-MODESK-Universal-Mobile/dp/B07N8RQ6W7/ref=sr_1_36?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-36",
+  "Product Image" : "https://m.media-amazon.com/images/I/51u2MqPaQwL._AC_UL320_.jpg",
+  "Price (INR)" : "119",
+  "Original Price (INR)" : "699",
+  "Discount Percentage" : "83",
+  "Rating (Max 5)" : "4.2",
+  "Number of Ratings" : "27604"
+}, {
+  "Product Name" : "HOMEDRIP mini travel bag Mens Sling Bagpack Chest Bag Side Bag with Water Resistant for Everyday Use Items and Electronic Product (Black) sling bag for men",
+  "Product URL" : "https://www.amazon.in/HOMEDRIP-Bagpack-Resistant-Everyday-Electronic/dp/B0CSXF42PK/ref=sr_1_37?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-37",
+  "Product Image" : "https://m.media-amazon.com/images/I/617U2YqngDL._AC_UL320_.jpg",
+  "Price (INR)" : "699",
+  "Original Price (INR)" : "2999",
+  "Discount Percentage" : "77",
+  "Rating (Max 5)" : "3.8",
+  "Number of Ratings" : "39"
+}, {
+  "Product Name" : "Philips 9-Watts Multipack B22 LED Cool Day White LED Bulb, Pack of 2, (Ace Saver)",
+  "Product URL" : "https://www.amazon.in/Philips-Base-9-Watt-Round-Light/dp/B016W0ZPVU/ref=sr_1_38?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-38",
+  "Product Image" : "https://m.media-amazon.com/images/I/61S4uM+qHeL._AC_UL320_.jpg",
+  "Price (INR)" : "129",
+  "Original Price (INR)" : "500",
+  "Discount Percentage" : "74",
+  "Rating (Max 5)" : "4.1",
+  "Number of Ratings" : "34957"
+}, {
+  "Product Name" : "Electric Rechargeable Plasma Gas Lighter for Kitchen, Lighter for Gas Stove, Candles, Pooja, 1 Year Warranty, C-Type USB, Kitchen Tools, Multi Purpose - 360° Flexible & Windproof, Black",
+  "Product URL" : "https://www.amazon.in/Electric-Rechargeable-Lighter-Kitchen-Warranty/dp/B0F4G3JQXZ/ref=sr_1_39?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-39",
+  "Product Image" : "https://m.media-amazon.com/images/I/81LUFTHo1OL._AC_UL320_.jpg",
+  "Price (INR)" : "265",
+  "Original Price (INR)" : "999",
+  "Discount Percentage" : "73",
+  "Rating (Max 5)" : "4.7",
+  "Number of Ratings" : "1002"
+}, {
+  "Product Name" : "Portronics Power Plate 10 Extension Board with 4 Universal Sockets, 3 Meter Long Cord, 1500 Watts, 6 Amp Multi Plug for Office & Home Appliances (Black)",
+  "Product URL" : "https://www.amazon.in/Portronics-Converter-Sockets-Protection-Intelligent/dp/B0B2WQFHB2/ref=sr_1_40?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-40",
+  "Product Image" : "https://m.media-amazon.com/images/I/517A8JGGlsL._AC_UL320_.jpg",
+  "Price (INR)" : "398",
+  "Original Price (INR)" : "699",
+  "Discount Percentage" : "43",
+  "Rating (Max 5)" : "4.3",
+  "Number of Ratings" : "4507"
+}, {
+  "Product Name" : "E Gate i9 Pro-Max 4X Brighter Bluetooth Projector 4k Ultra HD,400 ISO Lumens & 840fc Mega Brightness, Full HD 1080p Native, 210\" (534 cm) Screen | AV, VGA, HDMI, SD Card, USB, AUX, inbuilt Speaker",
+  "Product URL" : "https://www.amazon.in/Pro-Max-Brighter-Bluetooth-Projector-Brightness/dp/B088Z1YWBC/ref=sr_1_41?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-41",
+  "Product Image" : "https://m.media-amazon.com/images/I/71jFtHiVfDL._AC_UL320_.jpg",
+  "Price (INR)" : "8499",
+  "Original Price (INR)" : "15990",
+  "Discount Percentage" : "47",
+  "Rating (Max 5)" : "3.8",
+  "Number of Ratings" : "15237"
+}, {
+  "Product Name" : "Halonix 10W Cool Day Light LED Light, Pack of 1, (F5BMM030040000000 PK1)",
+  "Product URL" : "https://www.amazon.in/Halonix-Cool-Light-F5BMM030040000000-PK1/dp/B083KHVCGD/ref=sr_1_42?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-42",
+  "Product Image" : "https://m.media-amazon.com/images/I/41VMf3CygKL._AC_UL320_.jpg",
+  "Price (INR)" : "59",
+  "Original Price (INR)" : "199",
+  "Discount Percentage" : "70",
+  "Rating (Max 5)" : "4.0",
+  "Number of Ratings" : "11339"
+}, {
+  "Product Name" : "AGARO Callus Remover with 3 Interchangeable Head Rollers, Electronic Foot Scrubber For Callus & Dead Skin Removal, Pedicure Device, 2 Speed, Rechargeable Foot Care, Waterproof, CR1727, Pink",
+  "Product URL" : "https://www.amazon.in/AGARO-Interchangeable-Electronic-Rechargeable-Waterproof/dp/B0CR3XND7W/ref=sr_1_43?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-43",
+  "Product Image" : "https://m.media-amazon.com/images/I/61-Tb1sCfmL._AC_UL320_.jpg",
+  "Price (INR)" : "899",
+  "Original Price (INR)" : "1299",
+  "Discount Percentage" : "31",
+  "Rating (Max 5)" : "4.1",
+  "Number of Ratings" : "909"
+}, {
+  "Product Name" : "Bajaj ATX 4 750 watts 2-Slice Pop-up Toaster | Dust Cover & Slide Out Crumb Tray | 6-Level Browning Controls | Mid-Cycle Cancel Feature | 2-Yr Warranty | 750 watts | Electric Toaster 【White】",
+  "Product URL" : "https://www.amazon.in/Bajaj-Browning-Controls-Mid-Cycle-Warranty/dp/B0073QGKAS/ref=sr_1_44?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-44",
+  "Product Image" : "https://m.media-amazon.com/images/I/61fgJs4zIqL._AC_UL320_.jpg",
+  "Price (INR)" : "1199",
+  "Original Price (INR)" : "2150",
+  "Discount Percentage" : "44",
+  "Rating (Max 5)" : "4.2",
+  "Number of Ratings" : "11904"
+}, {
+  "Product Name" : "Sulfar Screwdriver Set, Steel 31 in 1 with 30 Screwdriver Bits, Professional Magnetic Driver Set, for PC/Household/Furniture/Tablet/Game Console/Electronic Devices",
+  "Product URL" : "https://www.amazon.in/Sulfar-Screwdriver-Set-Professional-Driver/dp/B09BZ6PX7K/ref=sr_1_45?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-45",
+  "Product Image" : "https://m.media-amazon.com/images/I/51jVpGL1-MS._AC_UL320_.jpg",
+  "Price (INR)" : "199",
+  "Original Price (INR)" : "",
+  "Discount Percentage" : "",
+  "Rating (Max 5)" : "3.5",
+  "Number of Ratings" : "3743"
+}, {
+  "Product Name" : "GM 3 Pin 6 AMP Universal Multiplug Travel Adapter with 4 Charging Point | Useful for Home Applications, Mobiles, Computers, Laptops | Adapter with Inbuilt Surge Protector & Power Indicator | GM 3019",
+  "Product URL" : "https://www.amazon.in/GM-Universal-Adaptor-Applications-Computers/dp/B0BZSQGFQ6/ref=sr_1_46?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-46",
+  "Product Image" : "https://m.media-amazon.com/images/I/51Ta-z2O2LL._AC_UL320_.jpg",
+  "Price (INR)" : "229",
+  "Original Price (INR)" : "390",
+  "Discount Percentage" : "41",
+  "Rating (Max 5)" : "4.4",
+  "Number of Ratings" : "4655"
+}, {
+  "Product Name" : "Electrobot Starter Kit (70 ITEMS) 20+ DIY Projects with Electronics Components Breadboard, LEDs, Resistors, Switches etc",
+  "Product URL" : "https://www.amazon.in/Electrobot-Electronics-Components-Breadboard-Resistors/dp/B0CX5HY9N1/ref=sr_1_47?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-47",
+  "Product Image" : "https://m.media-amazon.com/images/I/71uNKkKiTDL._AC_UL320_.jpg",
+  "Price (INR)" : "299",
+  "Original Price (INR)" : "799",
+  "Discount Percentage" : "63",
+  "Rating (Max 5)" : "4.0",
+  "Number of Ratings" : "78"
+}, {
+  "Product Name" : "GLUN® 5-in-1 Multi-Function Cleaning Tools Kit, Multipurpose Cleaning Brush (Keyboard Brush, TWS Cleaner, Key Puller, Metal Pen Tip, High-Density Brush) Electronics Cleaning & Home Decor Maintenance",
+  "Product URL" : "https://www.amazon.in/Multi-Function-Multipurpose-Brush-Keyboard-High-Density/dp/B0DL9YH4R1/ref=sr_1_48?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-48",
+  "Product Image" : "https://m.media-amazon.com/images/I/51gK-qlvl5L._AC_UL320_.jpg",
+  "Price (INR)" : "88",
+  "Original Price (INR)" : "299",
+  "Discount Percentage" : "71",
+  "Rating (Max 5)" : "4.0",
+  "Number of Ratings" : "429"
+}, {
+  "Product Name" : "JIALTO 10 Pcs Stainless Steel, PVC, ABS Nail Free Seamless Adhesive Non-Trace No Drilling Installation Hanging, Waterproof Screws Wall Hook (Transparent)",
+  "Product URL" : "https://www.amazon.in/Jialto-Adhesive-Hooks-Transparent-Improvement/dp/B08X2R1HM5/ref=sr_1_49?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-49",
+  "Product Image" : "https://m.media-amazon.com/images/I/410a9N3gxpL._AC_UL320_.jpg",
+  "Price (INR)" : "149",
+  "Original Price (INR)" : "699",
+  "Discount Percentage" : "79",
+  "Rating (Max 5)" : "4.0",
+  "Number of Ratings" : "11223"
+}, {
+  "Product Name" : "EMBOX 3 Pin Multi Plug Adapter with Individual Switch 3 Pin Plug Socket Safety Shutter Spike Buster Fuse Protected Adapter 3 Way Plug Extension for Home Office Travel-5A-250V, Pack of 1 Orange",
+  "Product URL" : "https://www.amazon.in/EMBOX-Socket-Universal-Individual-Indicator-3-Travel-5A-250V/dp/B09VH69RYC/ref=sr_1_50?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-50",
+  "Product Image" : "https://m.media-amazon.com/images/I/51y0jZpL7vL._AC_UL320_.jpg",
+  "Price (INR)" : "298",
+  "Original Price (INR)" : "999",
+  "Discount Percentage" : "70",
+  "Rating (Max 5)" : "4.4",
+  "Number of Ratings" : "5020"
+}, {
+  "Product Name" : "HUMBLE 7-in-1 Multifunctional Electronic Cleaner Kit | Keyboard Cleaner Kit | Cleaning Kit for Airpods & Laptop | Screen Dust Brush | Soft Swipe Airpods Cleaner Pen | Key Puller & Empty Spray Bottle",
+  "Product URL" : "https://www.amazon.in/HUMBLE-Multifunctional-Electronic-Keyboard-Cleaning/dp/B0DC6TPF9G/ref=sr_1_51?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-51",
+  "Product Image" : "https://m.media-amazon.com/images/I/61dSzOh-ciL._AC_UL320_.jpg",
+  "Price (INR)" : "259",
+  "Original Price (INR)" : "999",
+  "Discount Percentage" : "74",
+  "Rating (Max 5)" : "4.5",
+  "Number of Ratings" : "181"
+}, {
+  "Product Name" : "GM 6AMP 3-Pin Multi Plug Adapter | Universal Travel Adapter | Supports 2-Pin & 3-Pin Plugs | Multiple Charging Ports | Charge Smartphones, Laptops & Other Devices | Compact & Reliable | GM 3011",
+  "Product URL" : "https://www.amazon.in/GM-3011-2-Universal-Protector-Shutter/dp/B008LQOZ42/ref=sr_1_52?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-52",
+  "Product Image" : "https://m.media-amazon.com/images/I/51cSiy4FDRL._AC_UL320_.jpg",
+  "Price (INR)" : "175",
+  "Original Price (INR)" : "200",
+  "Discount Percentage" : "13",
+  "Rating (Max 5)" : "4.4",
+  "Number of Ratings" : "5029"
+}, {
+  "Product Name" : "SaleOn 8.3X5 Inch Portable Storage Organizer For Usb Cable, Earphone, Power Bank,Charger, Hard Disk & Digital Gadgets, With Mesh Pockets Size 21X12Cm Inside's Material And Color May Vary, black",
+  "Product URL" : "https://www.amazon.in/SaleOn-Portable-Organizer-Earphone-Travel-Black/dp/B0CP2K2XN8/ref=sr_1_53?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-53",
+  "Product Image" : "https://m.media-amazon.com/images/I/814GTqb4fEL._AC_UL320_.jpg",
+  "Price (INR)" : "295",
+  "Original Price (INR)" : "899",
+  "Discount Percentage" : "67",
+  "Rating (Max 5)" : "4.2",
+  "Number of Ratings" : "925"
+}, {
+  "Product Name" : "Taparia MDTN82 Plastic Digital Tester with LCD Display and Neon Bulb (Black)",
+  "Product URL" : "https://www.amazon.in/Taparia-MDTN82-Plastic-Digital-Display/dp/B01LQWN0NE/ref=sr_1_54?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-54",
+  "Product Image" : "https://m.media-amazon.com/images/I/51Fgo1+VoYL._AC_UL320_.jpg",
+  "Price (INR)" : "139",
+  "Original Price (INR)" : "152",
+  "Discount Percentage" : "9",
+  "Rating (Max 5)" : "4.2",
+  "Number of Ratings" : "20228"
+}, {
+  "Product Name" : "Prestige IRIS ECO 1200 W Induction Cooktop with Automatic Voltage Regulator |Indian Menu Option |High Voltage Surge Protection |Timer with User Pre-Set|1 year Warranty |Black",
+  "Product URL" : "https://www.amazon.in/Prestige-IRIS-ECO-Induction-automatic/dp/B0C4DMRHYG/ref=sr_1_55?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-55",
+  "Product Image" : "https://m.media-amazon.com/images/I/61Vu80YcolL._AC_UL320_.jpg",
+  "Price (INR)" : "1399",
+  "Original Price (INR)" : "2995",
+  "Discount Percentage" : "53",
+  "Rating (Max 5)" : "3.7",
+  "Number of Ratings" : "5212"
+}, {
+  "Product Name" : "STRIFF Multi Angle Tablet Tabletop Stand. Holder for iPhone, Android, Samsung, OnePlus, Xiaomi. Portable, Foldable Stand. Perfect for Bed,Office, Home, Gift and Desktop (Black)",
+  "Product URL" : "https://www.amazon.in/STRIFF-Android-Portable-Foldable-Stand-Perfect/dp/B09VZBGL1N/ref=sr_1_56?content-id=amzn1.sym.b5876297-ded6-4475-876b-d315610bb575%3Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575&dib=eyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ&dib_tag=se&keywords=electronic+items&pd_rd_r=150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6&pd_rd_w=kMSzf&pd_rd_wg=rySsP&qid=1755157491&sr=8-56",
+  "Product Image" : "https://m.media-amazon.com/images/I/51XowXHyroL._AC_UL320_.jpg",
+  "Price (INR)" : "99",
+  "Original Price (INR)" : "599",
+  "Discount Percentage" : "83",
+  "Rating (Max 5)" : "4.1",
+  "Number of Ratings" : "14776"
+}, {
+  "Product Name" : "truke New Launch Crystal Dyno Leather Finish True Wireless in Ear Earbuds w/Spatial Audio, 70H Battery Rapid Charge Ear Buds, 13mm Driver HiFi Sound TWS, 40ms Ultra Low Latency, 4Mics ENC - OakBrown",
+  "Product URL" : "https://www.amazon.in/sspa/click?ie=UTF8&spc=MTo3Mjk1MDk3NDMzOTY0NTg1OjE3NTUxNTc0OTE6c3BfYnRmOjMwMDUzODU1NjU3ODUzMjo6MDo6&url=%2Ftruke-Crystal-Leather-Wireless-Earbuds%2Fdp%2FB0F1YCF29P%2Fref%3Dsr_1_57_sspa%3Fcontent-id%3Damzn1.sym.b5876297-ded6-4475-876b-d315610bb575%253Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575%26dib%3DeyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ%26dib_tag%3Dse%26keywords%3Delectronic%2Bitems%26pd_rd_r%3D150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6%26pd_rd_w%3DkMSzf%26pd_rd_wg%3DrySsP%26qid%3D1755157491%26sr%3D8-57-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9idGY%26psc%3D1&sp_cr=ZAZ",
+  "Product Image" : "https://m.media-amazon.com/images/I/71PWG4BBeGL._AC_UL320_.jpg",
+  "Price (INR)" : "999",
+  "Original Price (INR)" : "2999",
+  "Discount Percentage" : "67",
+  "Rating (Max 5)" : "4.0",
+  "Number of Ratings" : "606"
+}, {
+  "Product Name" : "GOBOULT Mustang Torq Wireless in Ear Earbuds with 60H Playtime, App Support, Quad Mic ENC, 45ms Low Latency, 13mm Driver, Breathing LEDs,Touch Controls, Made in India, IPX5, Ear buds Wireless (Silver)",
+  "Product URL" : "https://www.amazon.in/sspa/click?ie=UTF8&spc=MTo3Mjk1MDk3NDMzOTY0NTg1OjE3NTUxNTc0OTE6c3BfYnRmOjMwMDQ4MzMyNzA2OTYzMjo6MDo6&url=%2FLaunched-Earbuds-Playtime-Breathing-Wireless%2Fdp%2FB0DN1RPL19%2Fref%3Dsr_1_58_sspa%3Fcontent-id%3Damzn1.sym.b5876297-ded6-4475-876b-d315610bb575%253Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575%26dib%3DeyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ%26dib_tag%3Dse%26keywords%3Delectronic%2Bitems%26pd_rd_r%3D150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6%26pd_rd_w%3DkMSzf%26pd_rd_wg%3DrySsP%26qid%3D1755157491%26sr%3D8-58-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9idGY%26psc%3D1&sp_cr=ZAZ",
+  "Product Image" : "https://m.media-amazon.com/images/I/71q1X+E4tSL._AC_UL320_.jpg",
+  "Price (INR)" : "1799",
+  "Original Price (INR)" : "5999",
+  "Discount Percentage" : "70",
+  "Rating (Max 5)" : "4.1",
+  "Number of Ratings" : "8506"
+}, {
+  "Product Name" : "truke Mega 9 New Launch True Wireless in Ear Earbuds W/ 24-Bit Lossless Spatial Audio, 70H Battery Fast Charge Ear Buds, Leather Finish, 13mm Speakers TWS, 40ms Ultra Low Latency, 4Mics ENC",
+  "Product URL" : "https://www.amazon.in/sspa/click?ie=UTF8&spc=MTo3Mjk1MDk3NDMzOTY0NTg1OjE3NTUxNTc0OTE6c3BfYnRmOjMwMDU2NzIzNDEyOTYzMjo6MDo6&url=%2Ftruke-Wireless-Earbuds-Lossless-Speakers%2Fdp%2FB0F1CYD5PS%2Fref%3Dsr_1_59_sspa%3Fcontent-id%3Damzn1.sym.b5876297-ded6-4475-876b-d315610bb575%253Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575%26dib%3DeyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ%26dib_tag%3Dse%26keywords%3Delectronic%2Bitems%26pd_rd_r%3D150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6%26pd_rd_w%3DkMSzf%26pd_rd_wg%3DrySsP%26qid%3D1755157491%26sr%3D8-59-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9idGY%26psc%3D1&sp_cr=ZAZ",
+  "Product Image" : "https://m.media-amazon.com/images/I/71LF1Yb26NL._AC_UL320_.jpg",
+  "Price (INR)" : "1299",
+  "Original Price (INR)" : "3999",
+  "Discount Percentage" : "68",
+  "Rating (Max 5)" : "4.0",
+  "Number of Ratings" : "578"
+}, {
+  "Product Name" : "Jawsons™ Cordless Air Duster, 130000RPM Mini Jet Blower with Infinite Speed Adjustment Knob, Air Blow Gun Ideal for Cleaning Electronics, Inflating Items, and Removing pet Hair (Black)",
+  "Product URL" : "https://www.amazon.in/sspa/click?ie=UTF8&spc=MTo3Mjk1MDk3NDMzOTY0NTg1OjE3NTUxNTc0OTE6c3BfYnRmOjMwMDQzNDg0OTkxNTYzMjo6MDo6&url=%2FJawsonsTM-130000RPM-Adjustment-Electronics-Inflating%2Fdp%2FB0DP6X7D7N%2Fref%3Dsr_1_60_sspa%3Fcontent-id%3Damzn1.sym.b5876297-ded6-4475-876b-d315610bb575%253Aamzn1.sym.b5876297-ded6-4475-876b-d315610bb575%26dib%3DeyJ2IjoiMSJ9.CnSG_eGkR5kp8qC59L5_gTkNTXvzTv2980xj0KZHlaP03M7d5sxioKEoW360G0JHFgZ0QpyLCU6GF2x3u5FBjZAExy6NUuBCM54f8kwKVcDwv0xSIa7lqjhzwGJ2l5x-rocbxrDD1sjTb64QqGy0AJsgQXOJ4UImezpTmqXZQM7GEkGTFkK58Ytp1NoKkEW0YkrMyVA0C8AfoNcTz24DGJ-Ayo_FRflrnIJcXacesTwqUBOvMMWUXOBEtytul0Bd7gJn7t-ZKE1bp3jY3lqNx72ppFTuDx1pmC6BeKlsQUk.U_-ky-87IjCcq4S_-K2vK8lx3-UCop4sRfMyJJ1zpYQ%26dib_tag%3Dse%26keywords%3Delectronic%2Bitems%26pd_rd_r%3D150c4a5e-d51e-4673-abb7-f2c3ef6e1ec6%26pd_rd_w%3DkMSzf%26pd_rd_wg%3DrySsP%26qid%3D1755157491%26sr%3D8-60-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9idGY%26psc%3D1&sp_cr=ZAZ",
+  "Product Image" : "https://m.media-amazon.com/images/I/51jXWgh+tHL._AC_UL320_.jpg",
+  "Price (INR)" : "",
+  "Original Price (INR)" : "",
+  "Discount Percentage" : "",
+  "Rating (Max 5)" : "5.0",
+  "Number of Ratings" : "1"
+}, {
+  "Product Name" : "ADOFYS Multipurpose 3 in 1 Desk Lamp with 15w Wireless Charger and Bluetooth Speaker & Mic for Calls | 360° Adjustable Lamp, 3 Color Lights, Brightness Control Button (White)",
+  "Product URL" : "https://www.amazon.in/sspa/click?ie=UTF8&spc=MToyMTIyNTYyODU1Nzk3MjIyOjE3NTUxNTc0OTE6c3Bfc2VhcmNoX3RoZW1hdGljX2J0ZjozMDA0MTIxODU5MDMzMzI6OjA6Og&url=%2FADOFYS-Multipurpose-Bluetooth-Adjustable-Brightness%2Fdp%2FB0DJJWTXGK%2Fref%3Dsxbs_pa_sp_search_thematic_btf_sspa%3Fcontent-id%3Damzn1.sym.2b534e09-d9fa-4840-9aea-6910e059d6d9%253Aamzn1.sym.2b534e09-d9fa-4840-9aea-6910e059d6d9%26cv_ct_cx%3Delectronic%2Bitems%26keywords%3Delectronic%2Bitems%26pd_rd_i%3DB0DJJWTXGK%26pd_rd_r%3D37570a2b-d3ac-4760-b67a-e0ca09f86c0e%26pd_rd_w%3DajyRW%26pd_rd_wg%3DRi0Hi%26pf_rd_p%3D2b534e09-d9fa-4840-9aea-6910e059d6d9%26pf_rd_r%3D40NYAXD61EXF5SH7B16F%26qid%3D1755157491%26sbo%3DRZvfv%252F%252FHxDF%252BO5021pAnSA%253D%253D%26sr%3D1-1-2907eac4-8056-42c7-8014-fdf7bd4c5395-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9zZWFyY2hfdGhlbWF0aWNfYnRm%26psc%3D1&sp_cr=ZAZ",
+  "Product Image" : "https://m.media-amazon.com/images/I/4111kshXe3L._AC_UL320_.jpg",
+  "Price (INR)" : "1728",
+  "Original Price (INR)" : "4789",
+  "Discount Percentage" : "64",
+  "Rating (Max 5)" : "4.5",
+  "Number of Ratings" : "31"
+}, {
+  "Product Name" : "SEZNIK Mini Camera Printer, Click Photo Print, Inkless Bluetooth HD Print | Compatible with Android, iOS Mobile. Instant Print Pictures, Labels | 1 Year Warranty by SEZNIK (Mini-B40-Blue)",
+  "Product URL" : "https://www.amazon.in/sspa/click?ie=UTF8&spc=MToyMTIyNTYyODU1Nzk3MjIyOjE3NTUxNTc0OTE6c3Bfc2VhcmNoX3RoZW1hdGljX2J0ZjozMDAzNzcxMDA4MTc0MzI6OjE6Og&url=%2FSEZNIK-Bluetooth-Compatible-Pictures-Mini-B40-Blue%2Fdp%2FB0DG9BQPMV%2Fref%3Dsxbs_pa_sp_search_thematic_btf_sspa%3Fcontent-id%3Damzn1.sym.2b534e09-d9fa-4840-9aea-6910e059d6d9%253Aamzn1.sym.2b534e09-d9fa-4840-9aea-6910e059d6d9%26cv_ct_cx%3Delectronic%2Bitems%26keywords%3Delectronic%2Bitems%26pd_rd_i%3DB0DG9BQPMV%26pd_rd_r%3D37570a2b-d3ac-4760-b67a-e0ca09f86c0e%26pd_rd_w%3DajyRW%26pd_rd_wg%3DRi0Hi%26pf_rd_p%3D2b534e09-d9fa-4840-9aea-6910e059d6d9%26pf_rd_r%3D40NYAXD61EXF5SH7B16F%26qid%3D1755157491%26sbo%3DRZvfv%252F%252FHxDF%252BO5021pAnSA%253D%253D%26sr%3D1-2-2907eac4-8056-42c7-8014-fdf7bd4c5395-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9zZWFyY2hfdGhlbWF0aWNfYnRm%26psc%3D1&sp_cr=ZAZ",
+  "Product Image" : "https://m.media-amazon.com/images/I/814uAMZzLOL._AC_UL320_.jpg",
+  "Price (INR)" : "3097",
+  "Original Price (INR)" : "6000",
+  "Discount Percentage" : "48",
+  "Rating (Max 5)" : "4.7",
+  "Number of Ratings" : "207"
+}, {
+  "Product Name" : "truke New Launch Mega 10 True Wireless in Ear Earbuds W/ 24-Bit Lossless Spatial Audio, 70H Battery Fast Charge Buds, Dual Pairing, 13mm Drivers TWS, Low Latency(40ms), Matte Finish, ENC (Royal Blue)",
+  "Product URL" : "https://www.amazon.in/sspa/click?ie=UTF8&spc=MToyMTIyNTYyODU1Nzk3MjIyOjE3NTUxNTc0OTE6c3Bfc2VhcmNoX3RoZW1hdGljX2J0ZjozMDA2MzgxNDI1MjYxMzI6OjI6Og&url=%2Ftruke-Wireless-Earbuds-Lossless-Spatial%2Fdp%2FB0FDKSVHMM%2Fref%3Dsxbs_pa_sp_search_thematic_btf_sspa%3Fcontent-id%3Damzn1.sym.2b534e09-d9fa-4840-9aea-6910e059d6d9%253Aamzn1.sym.2b534e09-d9fa-4840-9aea-6910e059d6d9%26cv_ct_cx%3Delectronic%2Bitems%26keywords%3Delectronic%2Bitems%26pd_rd_i%3DB0FDKSVHMM%26pd_rd_r%3D37570a2b-d3ac-4760-b67a-e0ca09f86c0e%26pd_rd_w%3DajyRW%26pd_rd_wg%3DRi0Hi%26pf_rd_p%3D2b534e09-d9fa-4840-9aea-6910e059d6d9%26pf_rd_r%3D40NYAXD61EXF5SH7B16F%26qid%3D1755157491%26sbo%3DRZvfv%252F%252FHxDF%252BO5021pAnSA%253D%253D%26sr%3D1-3-2907eac4-8056-42c7-8014-fdf7bd4c5395-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9zZWFyY2hfdGhlbWF0aWNfYnRm%26psc%3D1&sp_cr=ZAZ",
+  "Product Image" : "https://m.media-amazon.com/images/I/71yGe+RVDFL._AC_UL320_.jpg",
+  "Price (INR)" : "1299",
+  "Original Price (INR)" : "4499",
+  "Discount Percentage" : "71",
+  "Rating (Max 5)" : "4.3",
+  "Number of Ratings" : "103"
+}, {
+  "Product Name" : "HIFFIN COB-300P Professional 300W LED Video Light for Studio Film Recording, 2800K-6800K Dimmable with Remote Control, Widely Used for Photography and Videography",
+  "Product URL" : "https://www.amazon.in/sspa/click?ie=UTF8&spc=MToyMTIyNTYyODU1Nzk3MjIyOjE3NTUxNTc0OTE6c3Bfc2VhcmNoX3RoZW1hdGljX2J0ZjozMDA2MzA0NDY2NzIzMzI6OjM6Og&url=%2FCOB-300P-Professional-2800K-6800K-Photography-Videography%2Fdp%2FB0CMJ6X6S7%2Fref%3Dsxbs_pa_sp_search_thematic_btf_sspa%3Fcontent-id%3Damzn1.sym.2b534e09-d9fa-4840-9aea-6910e059d6d9%253Aamzn1.sym.2b534e09-d9fa-4840-9aea-6910e059d6d9%26cv_ct_cx%3Delectronic%2Bitems%26keywords%3Delectronic%2Bitems%26pd_rd_i%3DB0CMJ6X6S7%26pd_rd_r%3D37570a2b-d3ac-4760-b67a-e0ca09f86c0e%26pd_rd_w%3DajyRW%26pd_rd_wg%3DRi0Hi%26pf_rd_p%3D2b534e09-d9fa-4840-9aea-6910e059d6d9%26pf_rd_r%3D40NYAXD61EXF5SH7B16F%26qid%3D1755157491%26sbo%3DRZvfv%252F%252FHxDF%252BO5021pAnSA%253D%253D%26sr%3D1-4-2907eac4-8056-42c7-8014-fdf7bd4c5395-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9zZWFyY2hfdGhlbWF0aWNfYnRm%26psc%3D1&sp_cr=ZAZ",
+  "Product Image" : "https://m.media-amazon.com/images/I/61Nf3ZxB8UL._AC_UL320_.jpg",
+  "Price (INR)" : "11488",
+  "Original Price (INR)" : "14990",
+  "Discount Percentage" : "23",
+  "Rating (Max 5)" : "4.0",
+  "Number of Ratings" : "543"
+}, {
+  "Product Name" : "CrossBeats Arc Buds OWS Open Ear Wireless Earbuds | Spatial Audio Headphones & Head Tracking | Gaming Bluetooth Earphones | 100hr Playtime | 14.2mm Drivers IPX5 Rating Type-c Fast Charging (Blue)",
+  "Product URL" : "https://www.amazon.in/sspa/click?ie=UTF8&spc=MToyMTIyNTYyODU1Nzk3MjIyOjE3NTUxNTc0OTE6c3Bfc2VhcmNoX3RoZW1hdGljX2J0ZjozMDAyNTQxODE4ODE0MzI6OjQ6Og&url=%2FCrossBeats-Wireless-Headphones-Bluetooth-Earphones%2Fdp%2FB0D5R48MDF%2Fref%3Dsxbs_pa_sp_search_thematic_btf_sspa%3Fcontent-id%3Damzn1.sym.2b534e09-d9fa-4840-9aea-6910e059d6d9%253Aamzn1.sym.2b534e09-d9fa-4840-9aea-6910e059d6d9%26cv_ct_cx%3Delectronic%2Bitems%26keywords%3Delectronic%2Bitems%26pd_rd_i%3DB0D5R48MDF%26pd_rd_r%3D37570a2b-d3ac-4760-b67a-e0ca09f86c0e%26pd_rd_w%3DajyRW%26pd_rd_wg%3DRi0Hi%26pf_rd_p%3D2b534e09-d9fa-4840-9aea-6910e059d6d9%26pf_rd_r%3D40NYAXD61EXF5SH7B16F%26qid%3D1755157491%26sbo%3DRZvfv%252F%252FHxDF%252BO5021pAnSA%253D%253D%26sr%3D1-5-2907eac4-8056-42c7-8014-fdf7bd4c5395-spons%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9zZWFyY2hfdGhlbWF0aWNfYnRm%26psc%3D1&sp_cr=ZAZ",
+  "Product Image" : "https://m.media-amazon.com/images/I/71+bdX3czHL._AC_UL320_.jpg",
+  "Price (INR)" : "3998",
+  "Original Price (INR)" : "9999",
+  "Discount Percentage" : "60",
+  "Rating (Max 5)" : "4.0",
+  "Number of Ratings" : "1457"
+} 
+ 
+ 
+ 
+];
+ 
+    function createCard(item) {
+        const price = item['Price (INR)'] || '';
+        const mrp = item['Original Price (INR)'] || '';
+        const rating = item['Rating (Max 5)'] || '';
+        const url = item['Product URL'] || '#';
+        const discount = item['Discount Percentage'] || '';
+        // Format price with commas for Indian rupees
+        const formatPrice = (price) => {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        };
+        return `
+<article class="product-card" role="listitem">
+<a href="${url}" target="_blank" rel="noopener">
+<img src="${item['Product Image']}" alt="${item['Product Name']}" class="product-image" onerror="this.src='https://via.placeholder.com/320x200?text=Image'" loading="lazy">
+</a>
+<div class="product-info">
+<h3 class="product-name">${item['Product Name']}</h3>
+<div class="product-price-row">
+                    ${price ? `<span class="product-price">₹${formatPrice(price)}</span>` : ''}
+                    ${mrp ? `<span class="product-original-price">₹${formatPrice(mrp)}</span>` : ''}
+                    ${discount ? `<span class="product-discount">${discount}% off</span>` : ''}
+</div>
+                ${rating ? `
+<div class="product-rating">
+<div class="stars">
+                        ${'<i class="fas fa-star"></i>'.repeat(Math.floor(rating))}
+                        ${rating % 1 >= 0.5 ? '<i class="fas fa-star-half-alt"></i>' : ''}
+                        ${'<i class="far fa-star"></i>'.repeat(5 - Math.ceil(rating))}
+</div>
+<span>${rating}</span>
+</div>` : ''}
+<button class="add-to-cart">Add to Cart</button>
+</div>
+</article>`;
+    }
+ 
+    // Load electronics data
+    async function loadElectronics() {
+        const grid = document.getElementById('productGrid');
+        try {
+            const res = await fetch('./electronics.json');
+            const data = await res.json();
+            grid.innerHTML = data.map(createCard).join('');
+        } catch (e) {
+            console.log("Using inline data as fallback");
+            grid.innerHTML = inlineElectronicsData.map(createCard).join('');
+        }
+        grid.setAttribute('aria-busy', 'false');
+    }
+ 
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', () => {
+        loadElectronics();
+        // Fallback button handler
+        document.getElementById('loadJsonBtn')?.addEventListener('click', loadElectronics);
+    });
+</script>
+ 
+    <style>
+    /* Basic styling - you can expand this in your styles.css */
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+    .product-card {
+        border: 1px solid #e1e1e1;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .product-image {
+        width: 100%;
+        height: 200px;
+        object-fit: contain;
+        background: #f5f5f5;
+    }
+    .product-info {
+        padding: 15px;
+    }
+    .product-name {
+        font-size: 14px;
+        margin: 0 0 10px 0;
+        height: 40px;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+    .product-price-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 8px;
+    }
+    .product-price {
+        font-weight: bold;
+        font-size: 18px;
+        color: #B12704;
+    }
+    .product-original-price {
+        text-decoration: line-through;
+        color: #565959;
+        font-size: 14px;
+    }
+    .product-discount {
+        color: #067D62;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    .product-rating {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: 10px;
+    }
+    .product-rating .stars {
+        color: #FFA41C;
+    }
+    .add-to-cart {
+        width: 100%;
+        padding: 8px;
+        background: #FFD814;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+    }
+    .add-to-cart:hover {
+        background: #F7CA00;
+    }
+</style>
+</body>
+</html>
+ 

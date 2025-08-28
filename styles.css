@@ -1,0 +1,1374 @@
+/* ========================================
+   RESET AND BASE STYLES
+   ======================================== */
+/* CSS Reset - Removes default browser margins and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Includes padding and border in element's total width/height */
+}
+
+/* Google Fonts Import - Modern, professional typography */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=Pacifico&display=swap');
+
+:root {
+    --brand-start: #f97316; /* warm orange */
+    --brand-end:   #ef4444; /* warm red */
+    --brand-accent:#fb7185; /* rose */
+}
+
+/* Main Body Styles - Sets foundation for entire website */
+body {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; /* Modern font stack with fallbacks */
+    line-height: 1.6; /* Optimal readability */
+    color: #2d3748; /* Dark gray for better contrast */
+    background: linear-gradient(135deg, #ffedd5 0%, #ffe4e6 100%); /* Warm neutral gradient */
+    background-attachment: fixed; /* Gradient stays fixed during scroll */
+    min-height: 100vh; /* Ensures full viewport height */
+    -webkit-font-smoothing: antialiased; /* Better text rendering on WebKit browsers */
+    -moz-osx-font-smoothing: grayscale; /* Better text rendering on Firefox */
+    text-rendering: optimizeLegibility; /* Optimizes text rendering */
+}
+
+/* Decorative layered background */
+.bg-decor {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(1200px 600px at -10% 10%, rgba(249, 115, 22, 0.18), transparent 60%),
+                radial-gradient(900px 500px at 110% 0%, rgba(239, 68, 68, 0.18), transparent 50%),
+                radial-gradient(1000px 600px at 50% 120%, rgba(251, 113, 133, 0.12), transparent 60%);
+}
+
+.bg-pattern {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(135deg, rgba(255,255,255,0.06) 0.5px, transparent 0.5px),
+                      linear-gradient(45deg, rgba(255,255,255,0.06) 0.5px, transparent 0.5px);
+    background-size: 28px 28px, 28px 28px;
+    mix-blend-mode: overlay;
+}
+
+/* Accessibility utilities */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.focus-ring:focus-visible,
+.category-card:focus-visible,
+.add-to-cart:focus-visible,
+.login-btn:focus-visible,
+.search-bar input:focus-visible,
+.search-btn:focus-visible,
+.nav-menu a:focus-visible {
+    outline: 3px solid #764ba2;
+    outline-offset: 2px;
+    border-radius: 8px;
+}
+
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #000;
+    color: #fff;
+    padding: 8px 12px;
+    z-index: 10000;
+    transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* Container Layout - Centers content and provides consistent spacing */
+.container {
+    max-width: 1200px; /* Maximum width for large screens */
+    margin: 0 auto; /* Centers container horizontally */
+    padding: 0 20px; /* Horizontal padding for mobile responsiveness */
+}
+
+/* ========================================
+   HEADER STYLES - Top navigation bar
+   ======================================== */
+/* Main Header Container - Sticky navigation with gradient background */
+.header {
+    background: linear-gradient(135deg, var(--brand-start) 0%, var(--brand-end) 100%); /* Brand gradient */
+    padding: 7px 0; /* Reduced padding for compact design */
+    position: sticky; /* Stays at top when scrolling */
+    top: 0; /* Positioned at very top */
+    z-index: 1000; /* Ensures header appears above other content */
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15); /* Subtle shadow for depth */
+    backdrop-filter: saturate(140%) blur(6px);
+}
+
+/* Header Content Layout - Flexbox container for logo, search, and actions */
+.header-container {
+    max-width: 1200px; /* Consistent with main container */
+    margin: 0 auto; /* Center alignment */
+    padding: 0 20px; /* Horizontal spacing */
+    display: flex; /* Horizontal layout */
+    align-items: center; /* Vertical center alignment */
+    justify-content: space-between; /* Logo left, actions right */
+}
+
+/* Decorative accent under header */
+.header::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: -2px;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.3), rgba(255,255,255,0.8), rgba(255,255,255,0.3));
+    opacity: 0.6;
+}
+
+/* Brand Logo - Company name with enhanced typography */
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    position: relative;
+}
+
+.brand-glyph {
+    display: inline-grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 8px;
+    background: transparent;
+    text-shadow: none;
+    transition: all 0.35s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: none;
+    animation: none;
+}
+
+.brand-a-svg { display:block; width: 100%; height: 100%; }
+
+/* remove shine layers for clean logo */
+.brand-glyph::before,
+.brand-glyph::after { content: none !important; display: none !important; }
+
+/* Stylish A letter inside glyph */
+.brand-letter {
+    font-family: 'Pacifico', cursive;
+    font-size: 26px;
+    line-height: 1;
+    background: linear-gradient(135deg, #7c3aed 0%, #22d3ee 25%, #06b6d4 50%, #3b82f6 75%, #7c3aed 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 2px 8px rgba(124, 58, 237, 0.35);
+    z-index: 1;
+    animation: hueShift 6s linear infinite;
+    position: relative;
+}
+
+/* Animated glossy sweep */
+.brand-glyph::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(120deg, rgba(255,255,255,0) 35%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0) 65%);
+    transform: translateX(-140%);
+    animation: gloss 2s ease-in-out infinite;
+}
+
+/* Colorful animated ring */
+.brand-glyph::after {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: inherit;
+    background:
+        radial-gradient(circle at 50% 50%, rgba(255,199,0,0.55), rgba(255,199,0,0.0) 60%),
+        conic-gradient(from 0deg,
+            rgba(255,183,3,0.0) 0 10deg,
+            rgba(255,183,3,0.55) 10deg 20deg) ;
+    background-blend-mode: screen;
+    z-index: 0;
+    animation: sunRotate 10s linear infinite;
+    -webkit-mask: radial-gradient(circle at 50% 50%, transparent 60%, black 62%);
+            mask: radial-gradient(circle at 50% 50%, transparent 60%, black 62%);
+}
+
+.brand:hover .brand-glyph {
+    transform: translateY(-2px) scale(1.06);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.18), 0 0 0 8px rgba(255,183,3,0.15);
+}
+
+.brand:hover .brand-letter { text-shadow: 0 4px 12px rgba(59,130,246,0.5); }
+
+.brand-name {
+    font-size: 42px;
+    font-weight: 800;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 1px;
+    color: #ffffff;
+    text-shadow: 0 4px 12px rgba(0,0,0,0.35), 0 0 14px rgba(255,255,255,0.25);
+    transition: color 0.35s ease, text-shadow 0.35s ease, -webkit-text-fill-color 0.35s ease;
+    line-height: 1;
+}
+
+/* Floating annotation that appears when the A animates */
+.brand-annotation {
+    position: absolute;
+    left: 54px; /* just after the glyph */
+    top: -10px;
+    background: rgba(255, 255, 255, 0.18);
+    color: #ffeea8;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-radius: 8px;
+    backdrop-filter: blur(6px) saturate(140%);
+    border: 1px solid rgba(255,255,255,0.25);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.brand-annotation::after {
+    content: '';
+    position: absolute;
+    left: 8px;
+    bottom: -5px;
+    width: 8px; height: 8px;
+    background: inherit;
+    border-left: 1px solid rgba(255,255,255,0.25);
+    border-bottom: 1px solid rgba(255,255,255,0.25);
+    transform: rotate(45deg);
+}
+
+/* Click interaction: vibrant color shift and glyph morph */
+.brand.active .brand-glyph {
+    border-radius: 50%;
+    background: conic-gradient(from 180deg, #ff8a00, #e52e71, #7f00ff, #00c6ff, #00f2fe, #4facfe, #ff8a00);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25), 0 0 0 2px rgba(255,255,255,0.35) inset;
+    transform: rotate(8deg) scale(1.06);
+    animation: spin3d 1.2s ease both;
+}
+
+.brand.active .brand-letter {
+    background: linear-gradient(135deg, #fff1a8, #ffe2f0, #d2c2ff, #c3f2ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.brand.active .brand-annotation,
+.brand:hover .brand-annotation {
+    opacity: 1;
+    transform: translateY(-2px) scale(1);
+    animation: popUp 0.35s ease;
+}
+
+@keyframes popUp {
+    0% { opacity: 0; transform: translateY(-12px) scale(0.92); }
+    100% { opacity: 1; transform: translateY(-2px) scale(1); }
+}
+/* Extra inner gloss crossing the letter */
+.brand-letter::before {
+    content: '';
+    position: absolute;
+    left: -30%;
+    top: -20%;
+    width: 160%;
+    height: 140%;
+    background: linear-gradient(110deg, rgba(255,255,255,0) 46%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0) 54%);
+    transform: translateX(-130%);
+    animation: gloss 3s ease-in-out infinite 0.3s;
+    pointer-events: none;
+}
+
+/* Sparkle glint */
+.brand-letter::after {
+    content: '';
+    position: absolute;
+    right: -2px;
+    top: -2px;
+    width: 9px;
+    height: 9px;
+    background: radial-gradient(circle, rgba(255,255,255,1) 0 40%, rgba(255,255,255,0) 60%);
+    filter: drop-shadow(0 0 6px rgba(255,255,255,0.9));
+    transform: scale(0.6) rotate(0deg);
+    opacity: 0;
+    animation: sparkle 2.4s ease-in-out infinite 0.6s;
+}
+
+@keyframes gloss {
+    0% { transform: translateX(-120%); }
+    55% { transform: translateX(120%); }
+    100% { transform: translateX(120%); }
+}
+
+@keyframes hueShift {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+@keyframes sparkle {
+    0%, 100% { opacity: 0; transform: scale(0.6) rotate(0deg); }
+    30% { opacity: 1; transform: scale(1) rotate(20deg); }
+    60% { opacity: 0.8; transform: scale(0.8) rotate(-15deg); }
+}
+
+@keyframes sunRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes haloPulse {
+    0%, 100% { box-shadow: 0 6px 18px rgba(0,0,0,0.12), 0 0 0 0 rgba(255,183,3,0.25); }
+    50% { box-shadow: 0 8px 22px rgba(0,0,0,0.18), 0 0 0 10px rgba(255,183,3,0.0); }
+}
+
+.brand.active .brand-name {
+    background: linear-gradient(90deg, #fff1a8, #ffe2f0, #d2c2ff, #c3f2ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: none;
+}
+
+@keyframes spin3d {
+    0% { transform: rotate(0deg) scale(1); }
+    60% { transform: rotate(540deg) scale(1.08); }
+    100% { transform: rotate(720deg) scale(1.06); }
+}
+
+/* Search Bar Container - Flexible search input with positioning */
+.search-bar {
+    flex: 1; /* Takes available space between logo and actions */
+    max-width: 500px; /* Prevents search from becoming too wide */
+    margin: 0 40px; /* Balanced spacing from logo and actions */
+    position: relative; /* For absolute positioning of search button */
+}
+
+/* Search Input Field - Modern rounded input with enhanced styling */
+.search-bar input {
+    width: 100%; /* Full width of container */
+    padding: 14px 50px 14px 20px; /* Left padding for text, right for button */
+    border: none; /* Removes default border */
+    border-radius: 25px; /* Fully rounded corners for modern look */
+    font-size: 15px; /* Readable text size */
+    outline: none; /* Removes focus outline */
+    font-family: 'Inter', sans-serif; /* Consistent with brand font */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+    transition: all 0.3s ease; /* Smooth transitions for interactions */
+    -webkit-font-smoothing: antialiased; /* Better text rendering */
+    -moz-osx-font-smoothing: grayscale; /* Better text rendering */
+}
+
+/* Search Input Focus State - Enhanced visual feedback */
+.search-bar input:focus {
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15); /* Deeper shadow on focus */
+    transform: translateY(-2px); /* Subtle lift effect for engagement */
+}
+
+/* Search Button - Positioned over input field with gradient background */
+.search-btn {
+    position: absolute; /* Positioned relative to search container */
+    right: 0; /* Aligned to right edge */
+    top: 0; /* Aligned to top edge */
+    height: 100%; /* Full height of input field */
+    width: 50px; /* Fixed width for search icon */
+    background: linear-gradient(135deg, var(--brand-start) 0%, var(--brand-end) 100%); /* Matching brand gradient */
+    border: none; /* Removes default button border */
+    color: white; /* White icon for contrast */
+    cursor: pointer; /* Indicates clickable element */
+    border-radius: 0 25px 25px 0; /* Rounded right corners only */
+    transition: all 0.3s ease; /* Smooth hover transitions */
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.15);
+}
+
+/* Search Button Hover Effect - Interactive feedback */
+.search-btn:hover {
+    background: linear-gradient(135deg, var(--brand-end) 0%, var(--brand-start) 100%); /* Reversed gradient on hover */
+    transform: scale(1.05); /* Slight enlargement for engagement */
+}
+
+/* Search quick dropdown */
+.search-dropdown {
+    position: absolute;
+    left: 0;
+    right: 50px; /* keep clear of search button */
+    top: 100%;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    margin-top: 6px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+    list-style: none;
+    padding: 6px;
+    display: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    z-index: 1002;
+}
+
+.search-bar.open .search-dropdown { display: grid; }
+
+.search-dropdown li a {
+    display: block;
+    padding: 10px 12px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #111827;
+    font-weight: 700;
+    background: #f8fafc;
+}
+
+.search-dropdown li a:hover { background: #eef2ff; color: var(--brand-start); }
+
+/* Header Action Buttons - Container for login and cart */
+.header-actions {
+    display: flex; /* Horizontal layout for buttons */
+    align-items: center; /* Vertical center alignment */
+    gap: 20px; /* Consistent spacing between elements */
+}
+
+/* Login dropdown wrapper */
+.login-menu {
+    position: relative;
+}
+
+/* Dropdown panel */
+.login-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 280px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    border: 1px solid rgba(0,0,0,0.06);
+    padding: 8px 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    z-index: 1001;
+}
+
+.login-menu:hover .login-dropdown,
+.login-menu:focus-within .login-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Also show when opened via click (for touch devices) */
+.login-menu.open .login-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Small arrow on top of dropdown */
+.login-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    right: 20px;
+    width: 14px;
+    height: 14px;
+    background: #ffffff;
+    border-left: 1px solid rgba(0,0,0,0.06);
+    border-top: 1px solid rgba(0,0,0,0.06);
+    transform: rotate(45deg);
+}
+
+/* Dropdown header */
+.login-dropdown-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px 12px;
+    border-bottom: 1px solid #f0f0f0;
+    font-family: 'Inter', sans-serif;
+    color: #475569;
+}
+
+.signup-link {
+    padding: 6px 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    color: var(--brand-end);
+    background: #fff7f7;
+}
+
+.signup-link:hover {
+    background: #ffecec;
+}
+
+/* Menu items */
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    color: #1f2937;
+    text-decoration: none;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+}
+
+.menu-item i { color: var(--brand-end); width: 20px; text-align: center; }
+
+.menu-item:hover {
+    background: #f5f7ff;
+    color: var(--brand-start);
+}
+
+/* =========================
+   Modal (Sign Up)
+   ========================= */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: grid;
+    place-items: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.modal-overlay.open { opacity: 1; visibility: visible; }
+
+.modal-dialog {
+    width: min(560px, 92vw);
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.35);
+    padding: 22px 22px 24px;
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.06);
+}
+
+.modal-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    margin-bottom: 14px;
+    color: #111827;
+}
+
+.modal-close {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    border: none;
+    background: transparent;
+    font-size: 26px;
+    cursor: pointer;
+    color: #6b7280;
+}
+
+.modal-form { display: grid; gap: 12px; }
+.form-row { display: grid; gap: 6px; }
+.form-row label { font-weight: 600; font-family: 'Poppins', sans-serif; color: #374151; }
+.form-row input {
+    padding: 12px 14px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.form-row input:focus {
+    border-color: var(--brand-end);
+    box-shadow: 0 0 0 3px rgba(239,68,68,0.15);
+}
+
+.form-note { font-size: 12px; color: #6b7280; }
+.form-note a { color: var(--brand-end); text-decoration: none; }
+
+.primary-btn {
+    margin-top: 4px;
+    background: linear-gradient(135deg, var(--brand-start) 0%, var(--brand-end) 100%);
+    color: #ffffff;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+}
+.primary-btn:hover { filter: brightness(1.05); }
+
+/* Login modal specific layout (Flipkart-like split) */
+.login-modal-layout {
+    display: grid;
+    grid-template-columns: 1.1fr 1.4fr;
+    gap: 0;
+}
+
+.login-modal-left {
+    background: linear-gradient(135deg, var(--brand-start) 0%, var(--brand-end) 100%);
+    color: #ffffff;
+    border-radius: 12px;
+    margin: 4px 14px 4px 4px;
+    padding: 20px 18px;
+    display: grid;
+    align-content: start;
+    gap: 10px;
+}
+
+.login-modal-left p { opacity: 0.95; }
+
+.login-modal-right { padding: 8px 6px; }
+.alt-link { margin-top: 10px; color: #6b7280; font-size: 14px; }
+.alt-link a { color: var(--brand-end); text-decoration: none; font-weight: 700; }
+
+@media (max-width: 640px) {
+    .login-modal-layout { grid-template-columns: 1fr; }
+    .login-modal-left { margin: 4px; }
+}
+
+/* Login Button - Primary call-to-action with enhanced styling */
+.login-btn {
+    background: linear-gradient(135deg, var(--brand-start) 0%, var(--brand-end) 100%); /* Matching brand gradient */
+    color: white; /* High contrast text */
+    padding: 12px 28px; /* Comfortable clickable area */
+    text-decoration: none; /* Removes underline */
+    border-radius: 25px; /* Fully rounded for modern look */
+    font-weight: 600; /* Semi-bold for emphasis */
+    font-family: 'Inter', sans-serif; /* Consistent with brand typography */
+    transition: all 0.3s ease; /* Smooth state transitions */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2), inset 0 0 0 1px rgba(255,255,255,0.15); /* Depth and subtle inner stroke */
+    text-transform: uppercase; /* Professional appearance */
+    letter-spacing: 0.5px; /* Improved readability */
+    -webkit-font-smoothing: antialiased; /* Better text rendering */
+    -moz-osx-font-smoothing: grayscale; /* Better text rendering */
+}
+
+/* Login Button Hover State - Interactive feedback and depth */
+.login-btn:hover {
+    background: linear-gradient(135deg, var(--brand-end) 0%, var(--brand-start) 100%); /* Reversed gradient */
+    transform: translateY(-3px); /* Lift effect for engagement */
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3); /* Enhanced shadow for depth */
+}
+
+/* Shopping Cart Button - Icon with notification badge */
+.cart-btn {
+    color: white; /* High contrast on dark background */
+    text-decoration: none; /* Removes underline */
+    position: relative; /* For positioning cart count badge */
+    font-size: 20px; /* Appropriate icon size */
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Cart Count Badge - Notification indicator for items in cart */
+.cart-count {
+    position: absolute; /* Positioned relative to cart button */
+    top: -8px; /* Slightly above the cart icon */
+    right: -8px; /* Slightly to the right of cart icon */
+    background: #ff6161; /* Attention-grabbing red color */
+    color: white; /* High contrast text */
+    border-radius: 50%; /* Perfect circle shape */
+    width: 18px; /* Fixed dimensions */
+    height: 18px; /* Fixed dimensions */
+    display: flex; /* For centering content */
+    align-items: center; /* Vertical center alignment */
+    justify-content: center; /* Horizontal center alignment */
+    font-size: 12px; /* Small, readable text */
+    font-weight: 600; /* Semi-bold for visibility */
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.4);
+    -webkit-font-smoothing: antialiased; /* Better text rendering */
+    -moz-osx-font-smoothing: grayscale; /* Better text rendering */
+}
+
+/* ========================================
+   NAVIGATION STYLES - Category menu bar
+   ======================================== */
+/* Main Navigation Container - Secondary navigation below header */
+.nav {
+    background: white; /* Clean white background */
+    border-bottom: 1px solid #e0e0e0; /* Subtle separator line */
+    padding: 8px 0; /* Compact vertical spacing */
+}
+
+/* Navigation Content Layout - Consistent with main container */
+.nav-container {
+    max-width: 1200px; /* Same width as header and main content */
+    margin: 0 auto; /* Center alignment */
+    padding: 0 20px; /* Horizontal spacing for mobile */
+}
+
+/* Navigation Menu List - Horizontal category navigation */
+.nav-menu {
+    list-style: none; /* Removes default bullet points */
+    display: flex; /* Horizontal layout */
+    gap: 30px; /* Consistent spacing between menu items */
+}
+
+/* Navigation Menu Links - Interactive category navigation items */
+.nav-menu a {
+    text-decoration: none; /* Removes underline */
+    color: #2d3748; /* Dark gray for readability */
+    font-weight: 600; /* Semi-bold for emphasis */
+    padding: 12px 20px; /* Comfortable clickable area */
+    transition: all 0.3s ease; /* Smooth state transitions */
+    font-family: 'Inter', sans-serif; /* Consistent with brand typography */
+    border-radius: 20px; /* Rounded corners for modern look */
+    position: relative; /* For positioning hover effects */
+    overflow: hidden; /* Hides overflow for animations */
+    -webkit-font-smoothing: antialiased; /* Better text rendering */
+    -moz-osx-font-smoothing: grayscale; /* Better text rendering */
+}
+
+/* Icon + label inside nav link */
+.nav-link { display: inline-flex; align-items: center; gap: 8px; }
+.nav-link i { color: var(--brand-end); }
+
+/* Floating annotation for nav links */
+.nav-link::after {
+    content: attr(data-note);
+    position: absolute;
+    left: 50%;
+    top: -18px;
+    transform: translateX(-50%) translateY(-6px);
+    background: rgba(255,255,255,0.9);
+    color: #0f172a;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    border: 1px solid rgba(0,0,0,0.06);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.nav-link:hover::after, .nav-link:focus-visible::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-2px);
+}
+
+/* Navigation Link Underline - Animated bottom border effect */
+.nav-menu a::before {
+    content: ''; /* Creates pseudo-element for underline */
+    position: absolute; /* Positioned relative to link */
+    bottom: 0; /* At bottom of link */
+    left: 50%; /* Centered horizontally */
+    width: 0; /* Starts with no width */
+    height: 3px; /* Thick underline */
+    background: linear-gradient(135deg, var(--brand-start) 0%, var(--brand-end) 100%); /* Brand gradient */
+    transition: all 0.3s ease; /* Smooth width animation */
+    transform: translateX(-50%); /* Centers the underline */
+}
+
+/* Navigation Link Hover Underline - Expands to show active state */
+.nav-menu a:hover::before {
+    width: 80%; /* Expands to 80% width on hover for visual feedback */
+}
+
+/* Navigation Link Hover State - Color change and background highlight */
+.nav-menu a:hover {
+    color: var(--brand-start); /* Changes to brand cyan on hover */
+    background: rgba(6, 182, 212, 0.1); /* Subtle cyan background tint */
+}
+
+/* ========================================
+   HERO SECTION - Main landing area
+   ======================================== */
+/* Hero Container - Eye-catching introduction section */
+.hero {
+    background: linear-gradient(135deg, var(--brand-start) 0%, var(--brand-end) 50%, #90e0ef 100%); /* Brand gradient */
+    color: white; /* High contrast text on dark background */
+    padding: 92px 0; /* Reduced padding for compact design */
+    text-align: center; /* Centered content layout */
+    position: relative; /* For positioning background elements */
+    overflow: hidden; /* Hides any background overflow */
+}
+
+/* Hero Background Pattern - Subtle texture overlay */
+.hero::before {
+    content: ''; /* Creates pseudo-element for background pattern */
+    position: absolute; /* Covers entire hero section */
+    top: 0; /* Full coverage */
+    left: 0; /* Full coverage */
+    right: 0; /* Full coverage */
+    bottom: 0; /* Full coverage */
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>'); /* SVG dot pattern */
+    opacity: 0.3; /* Subtle visibility for texture */
+}
+
+/* Hero Main Heading - Large, impactful title */
+.hero-content h2 {
+    font-size: 56px; /* Large size for maximum impact */
+    margin-bottom: 20px; /* Spacing below heading */
+    font-weight: 800; /* Extra bold for prominence */
+    font-family: 'Inter', sans-serif; /* Modern, professional font */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3); /* 3D depth effect */
+    letter-spacing: 2px; /* Wide letter spacing for elegance */
+    position: relative; /* For z-index positioning */
+    z-index: 1; /* Ensures text appears above background pattern */
+    -webkit-font-smoothing: antialiased; /* Better text rendering */
+    -moz-osx-font-smoothing: grayscale; /* Better text rendering */
+}
+
+/* Remove marquee styles and add static gradient heading */
+.welcome-marquee, .welcome-text { display: none; }
+
+/* Hero Subtitle - Supporting description text */
+.hero-content p {
+    font-size: 22px; /* Large enough for readability */
+    margin-bottom: 42px; /* Reduced spacing for compact design */
+    opacity: 0.95; /* Slightly transparent for hierarchy */
+    font-weight: 400; /* Regular weight for body text */
+    font-family: 'Poppins', sans-serif; /* Secondary font for variety */
+    position: relative; /* For z-index positioning */
+    z-index: 1; /* Ensures text appears above background pattern */
+    -webkit-font-smoothing: antialiased; /* Better text rendering */
+    -moz-osx-font-smoothing: grayscale; /* Better text rendering */
+}
+
+/* Hero Statistics Container - Key metrics display */
+.hero-stats {
+    display: flex; /* Horizontal layout for stats */
+    justify-content: center; /* Center alignment */
+    gap: 52px; /* Reduced spacing between stats for compact design */
+    margin-top: 32px; /* Reduced spacing above stats section */
+}
+
+/* Individual Stat Item - Single metric display */
+.stat {
+    text-align: center; /* Center alignment for each stat */
+}
+
+/* Stat Number - Large, prominent metric value */
+.stat-number {
+    display: block; /* Block display for proper spacing */
+    font-size: 42px; /* Large size for impact */
+    font-weight: 800; /* Extra bold for emphasis */
+    margin-bottom: 10px; /* Spacing below number */
+    font-family: 'Inter', sans-serif; /* Consistent with main heading */
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3); /* Subtle 3D effect */
+    position: relative; /* For z-index positioning */
+    z-index: 1; /* Ensures text appears above background pattern */
+    -webkit-font-smoothing: antialiased; /* Better text rendering */
+    -moz-osx-font-smoothing: grayscale; /* Better text rendering */
+}
+
+/* Stat Label - Descriptive text below metric value */
+.stat-label {
+    font-size: 18px; /* Readable size for description */
+    opacity: 0.9; /* Slightly transparent for hierarchy */
+    font-weight: 500; /* Medium weight for readability */
+    font-family: 'Poppins', sans-serif; /* Secondary font for variety */
+    position: relative; /* For z-index positioning */
+    z-index: 1; /* Ensures text appears above background pattern */
+    -webkit-font-smoothing: antialiased; /* Better text rendering */
+    -moz-osx-font-smoothing: grayscale; /* Better text rendering */
+}
+
+/* Categories Section */
+.categories {
+    padding: 92px 0;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    position: relative;
+}
+
+.categories::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="%23667eea" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
+}
+
+.section-title {
+    text-align: center;
+    font-size: 42px;
+    margin-bottom: 52px;
+    color: #2d3748;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    position: relative;
+    letter-spacing: 1px;
+    -webkit-font-smoothing: antialiased; /* Better text rendering */
+    -moz-osx-font-smoothing: grayscale; /* Better text rendering */
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(135deg, var(--brand-start) 0%, var(--brand-end) 100%);
+    border-radius: 2px;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 22px;
+}
+
+.category-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    padding: 42px 17px;
+    text-align: center;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    transition: all 0.4s ease;
+    cursor: pointer;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.category-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+}
+
+.category-card:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    border-color: var(--brand-start);
+}
+
+.category-card:hover::before {
+    opacity: 0.05;
+}
+
+.category-card i {
+    font-size: 40px;
+    color: var(--brand-end);
+    margin-bottom: 17px;
+    position: relative;
+    z-index: 1;
+    transition: all 0.4s ease;
+}
+
+.category-card:hover i {
+    color: var(--brand-start);
+    transform: scale(1.1);
+}
+
+.category-card h3 {
+    font-size: 26px;
+    margin-bottom: 7px;
+    color: #2d3748;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    position: relative;
+    z-index: 1;
+    -webkit-font-smoothing: antialiased; /* Better text rendering */
+    -moz-osx-font-smoothing: grayscale; /* Better text rendering */
+}
+
+.category-card p {
+    color: #718096;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+    z-index: 1;
+    -webkit-font-smoothing: antialiased; /* Better text rendering */
+    -moz-osx-font-smoothing: grayscale; /* Better text rendering */
+}
+
+/* Products Section */
+.products {
+    padding: 92px 0;
+    background: linear-gradient(135deg, #f1f3f6 0%, #e2e8f0 100%);
+    position: relative;
+}
+
+.products::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="waves" width="100" height="20" patternUnits="userSpaceOnUse"><path d="M0,10 Q25,0 50,10 T100,10" stroke="%2306b6d4" stroke-width="0.5" fill="none" opacity="0.12"/></pattern></defs><rect width="100" height="100" fill="url(%23waves)"/></svg>');
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 24px 24px; /* row and column gap */
+    margin-top: 12px;
+}
+
+.product-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    transition: all 0.4s ease;
+    cursor: pointer;
+    border: 2px solid transparent;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+}
+
+.product-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    border-color: var(--brand-start);
+}
+
+.product-card:hover::before {
+    opacity: 0.03;
+}
+
+.product-image {
+    width: 100%;
+    height: 130px;
+    object-fit: contain;
+    object-position: center;
+    background: #ffffff;
+    padding: 10px;
+    border-bottom: 1px solid #edf2f7;
+    display: block;
+}
+
+.product-info {
+    padding: 12px 14px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.product-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 7px;
+    line-height: 1.4;
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+    position: relative;
+    z-index: 1;
+    -webkit-font-smoothing: antialiased; /* Better text rendering */
+    -moz-osx-font-smoothing: grayscale; /* Better text rendering */
+}
+
+.product-category {
+    color: #718096;
+    font-size: 15px;
+    margin-bottom: 7px;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+    z-index: 1;
+    -webkit-font-smoothing: antialiased; /* Better text rendering */
+    -moz-osx-font-smoothing: grayscale; /* Better text rendering */
+}
+
+.product-price {
+    font-size: 20px;
+    font-weight: 800;
+    color: #3b82f6;
+    margin-bottom: 7px;
+    font-family: 'Inter', sans-serif;
+    position: relative;
+    z-index: 1;
+    -webkit-font-smoothing: antialiased; /* Better text rendering */
+    -moz-osx-font-smoothing: grayscale; /* Better text rendering */
+}
+
+.product-price-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.product-original-price {
+    color: #a0aec0;
+    text-decoration: line-through;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.product-quantity {
+    color: #718096;
+    font-size: 13px;
+}
+
+.product-rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f6f8ff;
+    color: #2d3748;
+    padding: 4px 8px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 13px;
+    margin-top: 6px;
+}
+
+.product-rating i {
+    color: #f6ad55;
+}
+
+.product-price-no-price {
+    font-size: 17px;
+    font-weight: 600;
+    color: #718096;
+    margin-bottom: 7px;
+    font-style: italic;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+    z-index: 1;
+    -webkit-font-smoothing: antialiased; /* Better text rendering */
+    -moz-osx-font-smoothing: grayscale; /* Better text rendering */
+}
+
+.product-offer {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 25px;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+    position: relative;
+    z-index: 1;
+    -webkit-font-smoothing: antialiased; /* Better text rendering */
+    -moz-osx-font-smoothing: grayscale; /* Better text rendering */
+}
+
+.add-to-cart {
+    width: 100%;
+    background: linear-gradient(135deg, var(--brand-start) 0%, var(--brand-end) 100%);
+    color: white;
+    border: none;
+    padding: 7px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 12px;
+    font-family: 'Inter', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    position: relative;
+    z-index: 1;
+}
+
+.add-to-cart:hover {
+    background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+/* Footer Styles */
+.footer {
+    background: #172337;
+    color: white;
+    padding: 60px 0 20px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-section h3 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #878787;
+    -webkit-font-smoothing: antialiased; /* Better text rendering */
+    -moz-osx-font-smoothing: grayscale; /* Better text rendering */
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section ul li {
+    margin-bottom: 12px;
+}
+
+.footer-section ul li a {
+    color: white;
+    text-decoration: none;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+    -webkit-font-smoothing: antialiased; /* Better text rendering */
+    -moz-osx-font-smoothing: grayscale; /* Better text rendering */
+}
+
+.footer-section ul li a:hover {
+    opacity: 1;
+}
+
+.social-links {
+    display: flex;
+    gap: 20px;
+}
+
+.social-links a {
+    color: white;
+    font-size: 20px;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.social-links a:hover {
+    opacity: 1;
+}
+
+.footer-bottom {
+    border-top: 1px solid #454d5e;
+    padding-top: 20px;
+    text-align: center;
+    color: #878787;
+    -webkit-font-smoothing: antialiased; /* Better text rendering */
+    -moz-osx-font-smoothing: grayscale; /* Better text rendering */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .search-bar {
+        margin: 0;
+        max-width: 100%;
+    }
+    
+    .nav-menu {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    
+    .hero-content h2 {
+        font-size: 36px;
+    }
+    
+    .hero-stats {
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    .category-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+    
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .hero {
+        padding: 60px 0;
+    }
+    
+    .hero-content h2 {
+        font-size: 28px;
+    }
+    
+    .section-title {
+        font-size: 28px;
+    }
+    
+    .category-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Loading Animation */
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+.loading::after {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #2874f0;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+} 

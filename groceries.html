@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axzora Groceries</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="index.html" class="brand" aria-label="Axzora home">
+                    <span class="brand-glyph"><span class="brand-letter">A</span></span>
+                    <span class="brand-name">Axzora</span>
+                </a>
+            </div>
+            <h1 style="color:#fff; font-family:Inter, sans-serif; font-weight:800;">Groceries</h1>
+        </div>
+    </header>
+
+    <main id="main-content" role="main">
+        <section class="products" id="products" aria-labelledby="products-title">
+            <div class="container">
+                <h2 class="section-title" id="products-title">Groceries</h2>
+                <div class="product-grid" id="productGrid" role="list" aria-label="Product items" aria-busy="true"></div>
+                <div id="fallback" style="display:none; text-align:center; margin:24px 0;">
+                    <button id="loadJsonBtn">Load Groceries Data</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+    // Sample groceries data
+    const inlineGroceriesData = [
+        {
+  "Product Name" : "Tata Sampann Unpolished Toor Dal | Arhar Dal",
+  "Product URL" : "https://www.zeptonow.com/pn/tata-sampann-unpolished-toor-dal-arhar-dal/pvid/b112aa30-e6ab-4f7c-9326-16c1733a057a",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1200-1200,pr-true,f-auto,q-80/cms/product_variant/06e24ca7-b039-42c9-abfc-11eb81cdc3f9.jpeg",
+  "Price (INR)" : "86",
+  "Original Price (INR)" : "113",
+  "Quantity" : "1 pack (500 g)",
+  "Rating (Max 5)" : "4.7",
+  "Number of Reviews" : "34400"
+}, {
+  "Product Name" : "Del Monte Olive Pomace Oil",
+  "Product URL" : "https://www.zeptonow.com/pn/del-monte-olive-pomace-oil/pvid/c1043992-fa1a-4469-b0df-802243b60a8e",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1080-1080,pr-true,f-auto,q-80/cms/product_variant/2a594887-d668-4516-9ca3-e8568d4dc4f6.jpeg",
+  "Price (INR)" : "658",
+  "Original Price (INR)" : "1100",
+  "Quantity" : "1 pc (1 L)",
+  "Rating (Max 5)" : "4.6",
+  "Number of Reviews" : "145"
+}, {
+  "Product Name" : "Daily Good Unpolished Urad Dal | Split White",
+  "Product URL" : "https://www.zeptonow.com/pn/daily-good-unpolished-urad-dal-split-white/pvid/d37a3cfd-ddbc-44df-8a3d-de1c40f0ae90",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1200-1200,pr-true,f-auto,q-80/cms/product_variant/34807953-951d-4387-a6a2-17b611cd90fe.jpeg",
+  "Price (INR)" : "83",
+  "Original Price (INR)" : "130",
+  "Quantity" : "1 pack (500 g)",
+  "Rating (Max 5)" : "4.6",
+  "Number of Reviews" : "11300"
+}, {
+  "Product Name" : "Popular Essentials Toor Dal | Un-Polished",
+  "Product URL" : "https://www.zeptonow.com/pn/popular-essentials-toor-dal-un-polished/pvid/0d1c3cbe-9f51-413f-ad7f-73218b4d9969",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-4167-4168,pr-true,f-auto,q-80/cms/product_variant/3ea06683-4d02-4ea4-8104-62e9b1d7f7b0.jpeg",
+  "Price (INR)" : "73",
+  "Original Price (INR)" : "120",
+  "Quantity" : "1 pack (500 g)",
+  "Rating (Max 5)" : "4.7",
+  "Number of Reviews" : "1300"
+}, {
+  "Product Name" : "Del Monte Extra Virgin Olive Oil",
+  "Product URL" : "https://www.zeptonow.com/pn/del-monte-extra-virgin-olive-oil/pvid/8682040c-ab61-4399-a03f-b8b0bcd4c734",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1080-1080,pr-true,f-auto,q-80/cms/product_variant/148e595d-ef75-443b-b974-9c8002d6bf39.jpeg",
+  "Price (INR)" : "720",
+  "Original Price (INR)" : "1499",
+  "Quantity" : "1 pc (500 ml)",
+  "Rating (Max 5)" : "4.2",
+  "Number of Reviews" : "125"
+}, {
+  "Product Name" : "KLF Tilnad Sesame Oil - Bottle",
+  "Product URL" : "https://www.zeptonow.com/pn/klf-tilnad-sesame-oil-bottle/pvid/b5e906f6-199d-4e49-9788-251c4a38e05a",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/fb99f2d5-e17d-4de2-b999-f23c79a39f55.jpg",
+  "Price (INR)" : "351",
+  "Original Price (INR)" : "430",
+  "Quantity" : "1 pc (1 L)",
+  "Rating (Max 5)" : "4.9",
+  "Number of Reviews" : "315"
+}, {
+  "Product Name" : "KLF Coconad 100% Pure Coconut Oil | Bottle",
+  "Product URL" : "https://www.zeptonow.com/pn/klf-coconad-100-pure-coconut-oil-bottle/pvid/dfd809bd-950e-4f1b-82db-28b53448729b",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/8fd96238-5810-43a5-a8a1-bd718c517aeb.jpeg",
+  "Price (INR)" : "271",
+  "Original Price (INR)" : "350",
+  "Quantity" : "1 pc (500 ml)",
+  "Rating (Max 5)" : "4.4",
+  "Number of Reviews" : "2300"
+}, {
+  "Product Name" : "Gemini Pure It Refined Sunflower Oil | Pouch",
+  "Product URL" : "https://www.zeptonow.com/pn/gemini-pure-it-refined-sunflower-oil-pouch/pvid/44843ea7-4795-4003-803e-9f32793c5381",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/7b9aabfb-f146-4ee3-8604-895840729763.jpeg",
+  "Price (INR)" : "155",
+  "Original Price (INR)" : "185",
+  "Quantity" : "1 pack (1 L)",
+  "Rating (Max 5)" : "4.7",
+  "Number of Reviews" : "928"
+}, {
+  "Product Name" : "Daily Good Medium Poha | Avalakki | Indori Poha",
+  "Product URL" : "https://www.zeptonow.com/pn/daily-good-medium-poha-avalakki-indori-poha/pvid/72078697-ffd4-475f-a883-611f99a14198",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1200-1200,pr-true,f-auto,q-80/cms/product_variant/24adfb42-68e3-40a2-ab37-465ee1bb61f9.jpeg",
+  "Price (INR)" : "46",
+  "Original Price (INR)" : "80",
+  "Quantity" : "1 pack (500 g)",
+  "Rating (Max 5)" : "4.7",
+  "Number of Reviews" : "4700"
+}, {
+  "Product Name" : "Organic Tattva Cold Pressed Mustard Oil",
+  "Product URL" : "https://www.zeptonow.com/pn/organic-tattva-cold-pressed-mustard-oil/pvid/255ec39f-7889-4ec6-9010-850150d93c2f",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1500-1500,pr-true,f-auto,q-80/cms/product_variant/36e6c9a8-d797-4c98-882d-6c3b6bd74382.jpeg",
+  "Price (INR)" : "267",
+  "Original Price (INR)" : "349",
+  "Quantity" : "1 pc (1 L)",
+  "Rating (Max 5)" : "4",
+  "Number of Reviews" : "451"
+}, {
+  "Product Name" : "Daily Good Unpolished Masoor Dal",
+  "Product URL" : "https://www.zeptonow.com/pn/daily-good-unpolished-masoor-dal/pvid/3b54c4ea-b4d6-4e65-858c-fe25e8bc4b10",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/1b55599e-c551-4d0e-89d3-4ec899cc96ed.jpeg",
+  "Price (INR)" : "139",
+  "Original Price (INR)" : "165",
+  "Quantity" : "1 pack (1 kg)",
+  "Rating (Max 5)" : "4.6",
+  "Number of Reviews" : "10400"
+}, {
+  "Product Name" : "Freedom Refined Sunflower Oil",
+  "Product URL" : "https://www.zeptonow.com/pn/freedom-refined-sunflower-oil/pvid/5cc3aaf5-8b2d-43d2-9c6b-42a901d8e785",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-954-954,pr-true,f-auto,q-80/cms/product_variant/0418b5e9-bcfc-4e9d-a8d3-fe5b3b3da6b3.jpeg",
+  "Price (INR)" : "299",
+  "Original Price (INR)" : "396",
+  "Quantity" : "1 pc (2 L)",
+  "Rating (Max 5)" : "4.8",
+  "Number of Reviews" : "2700"
+}, {
+  "Product Name" : "Dehaat Honest Farms Unpolished Chana Dal",
+  "Product URL" : "https://www.zeptonow.com/pn/dehaat-honest-farms-unpolished-chana-dal/pvid/1868d27f-e131-4925-a952-bc9aaf9af9b4",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/6b9d69a3-3d10-4f03-9536-3c658d3e7e3f.jpg",
+  "Price (INR)" : "68",
+  "Original Price (INR)" : "105",
+  "Quantity" : "1 pack (500 g)",
+  "Rating (Max 5)" : "4.9",
+  "Number of Reviews" : "1200"
+}, {
+  "Product Name" : "Daily Good Small Sabudana | Sago",
+  "Product URL" : "https://www.zeptonow.com/pn/daily-good-small-sabudana-sago/pvid/0730cb65-3a66-4ba0-9cec-791b15f93960",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/b9876ad1-c794-4f50-a333-edb5ef459335.jpg",
+  "Price (INR)" : "47",
+  "Original Price (INR)" : "100",
+  "Quantity" : "1 pack (500 g)",
+  "Rating (Max 5)" : "4.3",
+  "Number of Reviews" : "4300"
+}, {
+  "Product Name" : "Klf Nirmal Tilnad Gingelly/ Sesame Oil Pouch",
+  "Product URL" : "https://www.zeptonow.com/pn/klf-nirmal-tilnad-gingelly-sesame-oil-pouch/pvid/55e4d651-06f4-426d-adc5-e80b94b91456",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2500-2500,pr-true,f-auto,q-80/cms/product_variant/e6a57c10-9b1a-4ad1-b486-51e21330fd9d.jpg",
+  "Price (INR)" : "351",
+  "Original Price (INR)" : "420",
+  "Quantity" : "1 pack (1 L)",
+  "Rating (Max 5)" : "4.6",
+  "Number of Reviews" : "174"
+}, {
+  "Product Name" : "Gramiyaa Sesame - Gingelly Oil - Wood Cold Pressed",
+  "Product URL" : "https://www.zeptonow.com/pn/gramiyaa-sesame-gingelly-oil-wood-cold-pressed/pvid/6782a7d8-5047-47c5-b4fe-a7dc3c9ca994",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1080-1080,pr-true,f-auto,q-80/cms/product_variant/7d730101-3587-4ebf-a29a-711c86a1dd96.jpeg",
+  "Price (INR)" : "549",
+  "Original Price (INR)" : "690",
+  "Quantity" : "1 pc (1 L)",
+  "Rating (Max 5)" : "4.5",
+  "Number of Reviews" : "326"
+}, {
+  "Product Name" : "Tata Simply Better Cold Pressed Sesame-Gingelly-Til Oil",
+  "Product URL" : "https://www.zeptonow.com/pn/tata-simply-better-cold-pressed-sesame-gingelly-til-oil/pvid/9012a1d3-3726-40dd-b454-ad238198f933",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/f9764082-31c5-41eb-b60a-5a98b887bb03.jpeg",
+  "Price (INR)" : "479",
+  "Original Price (INR)" : "649",
+  "Quantity" : "1 pc (1 L)",
+  "Rating (Max 5)" : "4.9",
+  "Number of Reviews" : "819"
+}, {
+  "Product Name" : "Sundrop Super Lite Advanced - Sunflower Oil | Pouch",
+  "Product URL" : "https://www.zeptonow.com/pn/sundrop-super-lite-advanced-sunflower-oil-pouch/pvid/95982346-e006-459f-b90d-3691e87329da",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/bfe9a2a2-dafc-4221-a933-97fdf47705f7.jpeg",
+  "Price (INR)" : "217",
+  "Original Price (INR)" : "230",
+  "Quantity" : "1 pack (1 L)",
+  "Rating (Max 5)" : "4.9",
+  "Number of Reviews" : "1800"
+}, {
+  "Product Name" : "Tata Sampann Organic Toor Dal/Togari Bele",
+  "Product URL" : "https://www.zeptonow.com/pn/tata-sampann-organic-toor-daltogari-bele/pvid/8ac39629-0d08-453d-8048-d725d13aa307",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1000-1000,pr-true,f-auto,q-80/inventory/product/8ac39629-0d08-453d-8048-d725d13aa307-14JdNIJcyfrsqIS-qjUW33B4UdkGJCXnt.jpeg",
+  "Price (INR)" : "117",
+  "Original Price (INR)" : "140",
+  "Quantity" : "1 pack (500 g)",
+  "Rating (Max 5)" : "4.7",
+  "Number of Reviews" : "412"
+}, {
+  "Product Name" : "Dehaat Honest Farms Unpolished Toor Dal | Arhar Dal",
+  "Product URL" : "https://www.zeptonow.com/pn/dehaat-honest-farms-unpolished-toor-dal-arhar-dal/pvid/77996009-de73-4aad-a183-cb82a3830882",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-900-900,pr-true,f-auto,q-80/inventory/product/b5bf0605-87bd-41a2-8b7d-6537b36325d9-/tmp/20230425-1314261.jpeg",
+  "Price (INR)" : "182",
+  "Original Price (INR)" : "280",
+  "Quantity" : "1 pack (1 kg)",
+  "Rating (Max 5)" : "4.6",
+  "Number of Reviews" : "660"
+}, {
+  "Product Name" : "Jivika Natural Cold Pressed Sesame Oil | Til Cooking Oil",
+  "Product URL" : "https://www.zeptonow.com/pn/jivika-natural-cold-pressed-sesame-oil-til-cooking-oil/pvid/40d48943-cdb6-417c-bd9a-ab1e6418d49d",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/53e1e218-490e-4691-b38f-72cb0932f296.jpeg",
+  "Price (INR)" : "339",
+  "Original Price (INR)" : "525",
+  "Quantity" : "1 pc (1 L)",
+  "Rating (Max 5)" : "4.2",
+  "Number of Reviews" : "253"
+}, {
+  "Product Name" : "Tata Sampann Unpolished Gulbarga Toor Dal",
+  "Product URL" : "https://www.zeptonow.com/pn/tata-sampann-unpolished-gulbarga-toor-dal/pvid/96889412-a885-4049-99c8-0163cacfc9d6",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1200-1200,pr-true,f-auto,q-80/cms/product_variant/880112f2-ba99-4d04-b485-1f45e419ecf5.jpeg",
+  "Price (INR)" : "221",
+  "Original Price (INR)" : "246",
+  "Quantity" : "1 pack (1 kg)",
+  "Rating (Max 5)" : "4.3",
+  "Number of Reviews" : "197"
+}, {
+  "Product Name" : "Sunpure Sunflower Cooking Oil Hdpe Can",
+  "Product URL" : "https://www.zeptonow.com/pn/sunpure-sunflower-cooking-oil-hdpe-can/pvid/e81f3ef1-3e42-4adf-9834-1ca79fa2c200",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/0d71223a-d704-486a-8291-e54cfdc17776.jpeg",
+  "Price (INR)" : "748",
+  "Original Price (INR)" : "900",
+  "Quantity" : "1 pc (5 L)",
+  "Rating (Max 5)" : "4.7",
+  "Number of Reviews" : "684"
+}, {
+  "Product Name" : "Borges Extra Light Olive Oil",
+  "Product URL" : "https://www.zeptonow.com/pn/borges-extra-light-olive-oil/pvid/ff36eb28-0dd6-48fc-bcb0-13416c30ab7d",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/7f5dabaa-a37d-4ea7-b089-61e09299f646.jpeg",
+  "Price (INR)" : "609",
+  "Original Price (INR)" : "1300",
+  "Quantity" : "1 pc (500 ml)",
+  "Rating (Max 5)" : "4.7",
+  "Number of Reviews" : "228"
+}, {
+  "Product Name" : "Sunpure Kachi Ghani Mustard Oil",
+  "Product URL" : "https://www.zeptonow.com/pn/sunpure-kachi-ghani-mustard-oil/pvid/289c440c-aa75-404d-a93e-6df9431721d7",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1200-1200,pr-true,f-auto,q-80/cms/product_variant/e08675d4-805c-4b7b-82bd-6d05f6b81f95.jpg",
+  "Price (INR)" : "98",
+  "Original Price (INR)" : "125",
+  "Quantity" : "1 pc (500 g)",
+  "Rating (Max 5)" : "4.7",
+  "Number of Reviews" : "402"
+}, {
+  "Product Name" : "Sundrop Heart Oil - Vegetable | Jar",
+  "Product URL" : "https://www.zeptonow.com/pn/sundrop-heart-oil-vegetable-jar/pvid/534d92dc-1b3d-4749-a1cd-fdd7002a22e7",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/6fc49477-65a2-41dc-956a-799f44753510.jpeg",
+  "Price (INR)" : "550",
+  "Original Price (INR)" : "589",
+  "Quantity" : "1 pc (3 L)",
+  "Rating (Max 5)" : "4.1",
+  "Number of Reviews" : "534"
+}, {
+  "Product Name" : "Gold Winner Refined Sunflower Oil Pet Bottle",
+  "Product URL" : "https://www.zeptonow.com/pn/gold-winner-refined-sunflower-oil-pet-bottle/pvid/85cc8943-9b18-42a0-b28e-ebded4b69e90",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/d1c4f356-ea70-427e-96b7-76fbd3d1abba.jpeg",
+  "Price (INR)" : "308",
+  "Original Price (INR)" : "359",
+  "Quantity" : "1 pc (2 L)",
+  "Rating (Max 5)" : "4.4",
+  "Number of Reviews" : "176"
+}, {
+  "Product Name" : "Sunpure Sunflower Oil",
+  "Product URL" : "https://www.zeptonow.com/pn/sunpure-sunflower-oil/pvid/94476aca-ddd2-49b4-a328-7f333085213a",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1985-2807,pr-true,f-auto,q-80/cms/product_variant/1caa6463-44eb-456c-becb-a4a5fc686fc2.jpg",
+  "Price (INR)" : "150",
+  "Original Price (INR)" : "185",
+  "Quantity" : "1 pc (1 L)",
+  "Rating (Max 5)" : "4.5",
+  "Number of Reviews" : "281"
+}, {
+  "Product Name" : "Anveshan Wood Pressed Black Sesame Oil",
+  "Product URL" : "https://www.zeptonow.com/pn/anveshan-wood-pressed-black-sesame-oil/pvid/c9902bf3-8c04-4f13-b1ed-636a8444f5e5",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1500-1500,pr-true,f-auto,q-80/cms/product_variant/9896085b-6206-49b5-8488-f35065185f43.jpeg",
+  "Price (INR)" : "569",
+  "Original Price (INR)" : "645",
+  "Quantity" : "1 pc (1 L)",
+  "Rating (Max 5)" : "4.2",
+  "Number of Reviews" : "302"
+}, {
+  "Product Name" : "Dabur Virgin Coconut Oil",
+  "Product URL" : "https://www.zeptonow.com/pn/dabur-virgin-coconut-oil/pvid/cf52d753-ce2f-477d-b773-71cc7d60536c",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1500-1500,pr-true,f-auto,q-80/inventory/product/1c0eeef8-6883-4ab7-a0b1-7512375b9593-/tmp/20230718-0637111.jpeg",
+  "Price (INR)" : "260",
+  "Original Price (INR)" : "399",
+  "Quantity" : "1 pc (500 ml)",
+  "Rating (Max 5)" : "4.3",
+  "Number of Reviews" : "161"
+}, {
+  "Product Name" : "Akshayakalpa Organic Cold Pressed Coconut Oil",
+  "Product URL" : "https://www.zeptonow.com/pn/akshayakalpa-organic-cold-pressed-coconut-oil/pvid/84c36720-6b0f-4937-a541-8e2c0c519711",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1000-1000,pr-true,f-auto,q-80/cms/product_variant/3fb0acbd-9ab3-48c9-af8d-2e4b35c01e4e.jpg",
+  "Price (INR)" : "665",
+  "Original Price (INR)" : "700",
+  "Quantity" : "1 pc (1 L)",
+  "Rating (Max 5)" : "4.7",
+  "Number of Reviews" : "65"
+}, {
+  "Product Name" : "Vimal Wellness Cold Pressed Groundnut Oil",
+  "Product URL" : "https://www.zeptonow.com/pn/vimal-wellness-cold-pressed-groundnut-oil/pvid/aeb62b00-26af-4ea9-a252-0387dd47f799",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1504-1504,pr-true,f-auto,q-80/cms/product_variant/b82579e1-9af3-4f14-8885-b97770a69bd9.jpeg",
+  "Price (INR)" : "269",
+  "Original Price (INR)" : "490",
+  "Quantity" : "1 pc (1 L)",
+  "Rating (Max 5)" : "4.7",
+  "Number of Reviews" : "192"
+}, {
+  "Product Name" : "Aashirvaad Organic Arhar/Tur Dal | 100% Organic Arhar/Tur Dal Rich in Protein",
+  "Product URL" : "https://www.zeptonow.com/pn/aashirvaad-organic-arhartur-dal-100-organic-arhartur-dal-rich-in-protein/pvid/c39ccbe5-bd16-47c7-a697-b802141d6694",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/93733696-0546-4e56-bb44-76b341de2369.jpg",
+  "Price (INR)" : "145",
+  "Original Price (INR)" : "195",
+  "Quantity" : "1 pack (500 g)",
+  "Rating (Max 5)" : "4.8",
+  "Number of Reviews" : "941"
+}, {
+  "Product Name" : "Fortune Sunlite Refined Sunflower Oil | Jar",
+  "Product URL" : "https://www.zeptonow.com/pn/fortune-sunlite-refined-sunflower-oil-jar/pvid/e29f5028-b7a0-4b9a-a33d-e5af1b3df583",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1200-1200,pr-true,f-auto,q-80/cms/product_variant/76c6b48b-c30d-4c8c-b69d-d881f582223e.jpeg",
+  "Price (INR)" : "732",
+  "Original Price (INR)" : "930",
+  "Quantity" : "1 pc (4.35 Kg)",
+  "Rating (Max 5)" : "4.7",
+  "Number of Reviews" : "11700"
+}, {
+  "Product Name" : "Del Monte Extra Light Olive Oil",
+  "Product URL" : "https://www.zeptonow.com/pn/del-monte-extra-light-olive-oil/pvid/b0e71139-54bf-4f06-b75c-1f92c1c066a1",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1080-1080,pr-true,f-auto,q-80/cms/product_variant/c0e9d1ee-17ed-4b28-9897-64125244df4b.jpeg",
+  "Price (INR)" : "2269",
+  "Original Price (INR)" : "3999",
+  "Quantity" : "1 pc (2 L)",
+  "Rating (Max 5)" : "5",
+  "Number of Reviews" : "63"
+}, {
+  "Product Name" : "Borges Extra Light Olive Oil",
+  "Product URL" : "https://www.zeptonow.com/pn/borges-extra-light-olive-oil/pvid/0eec54ea-bc04-419e-997f-728f5f4e5b41",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/025efe8a-474e-4a6e-8c92-2b17fa255bf9.jpeg",
+  "Price (INR)" : "1274",
+  "Original Price (INR)" : "2200",
+  "Quantity" : "1 pc (1 L)",
+  "Rating (Max 5)" : "4.3",
+  "Number of Reviews" : "217"
+}, {
+  "Product Name" : "Smart One Arhar Dal-Toor Dal",
+  "Product URL" : "https://www.zeptonow.com/pn/smart-one-arhar-dal-toor-dal/pvid/311e704b-9684-4202-b34a-e2c9be2e3192",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1500-1500,pr-true,f-auto,q-80/cms/product_variant/9425c0b3-eba8-4df0-b650-3e8e975906e7.jpg",
+  "Price (INR)" : "133",
+  "Original Price (INR)" : "265",
+  "Quantity" : "1 pack (1 kg)",
+  "Rating (Max 5)" : "4.4",
+  "Number of Reviews" : "8500"
+}, {
+  "Product Name" : "Natureland Organics Chana Dal",
+  "Product URL" : "https://www.zeptonow.com/pn/natureland-organics-chana-dal/pvid/c4537238-1512-40dc-856b-f441694784a1",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2300-2958,pr-true,f-auto,q-80/inventory/product/dab9b16e-b961-4654-a44c-1aaa15bf21ac-/tmp/20230810-1937521.jpeg",
+  "Price (INR)" : "98",
+  "Original Price (INR)" : "120",
+  "Quantity" : "1 pack (500 g)",
+  "Rating (Max 5)" : "4.2",
+  "Number of Reviews" : "162"
+}, {
+  "Product Name" : "Being Bania Moong Dal Wadi | Mangodi",
+  "Product URL" : "https://www.zeptonow.com/pn/being-bania-moong-dal-wadi-mangodi/pvid/f7255aae-ec85-41e0-af08-f6b815692891",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/7410ec06-db1f-44e9-8b84-1a0930faedad.jpg",
+  "Price (INR)" : "338",
+  "Original Price (INR)" : "399",
+  "Quantity" : "1 pack (500 g)",
+  "Rating (Max 5)" : "4.9",
+  "Number of Reviews" : "105"
+}, {
+  "Product Name" : "Fortune Kachi Ghani Mustard Oil | Bottle",
+  "Product URL" : "https://www.zeptonow.com/pn/fortune-kachi-ghani-mustard-oil-bottle/pvid/d442ea2f-fd6c-45c9-8a02-44b6c9e74361",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/146167aa-45ac-45c8-a3bc-55087e0099b7.jpeg",
+  "Price (INR)" : "206",
+  "Original Price (INR)" : "245",
+  "Quantity" : "1 pc (1 L)",
+  "Rating (Max 5)" : "4.7",
+  "Number of Reviews" : "357900"
+}, {
+  "Product Name" : "Sunpure Filtered Groundnut Oil | Pouch",
+  "Product URL" : "https://www.zeptonow.com/pn/sunpure-filtered-groundnut-oil-pouch/pvid/fc459811-fb9b-4de8-bbbe-55f3a8b59f3e",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/4ea17871-9fea-4b16-b585-8125109c98b7.jpeg",
+  "Price (INR)" : "150",
+  "Original Price (INR)" : "200",
+  "Quantity" : "1 pack (1 L)",
+  "Rating (Max 5)" : "4.6",
+  "Number of Reviews" : "1900"
+}, {
+  "Product Name" : "KLF Nirmal Virgin Coconut Oil",
+  "Product URL" : "https://www.zeptonow.com/pn/klf-nirmal-virgin-coconut-oil/pvid/70973f42-79e0-4617-9380-0a05c44f8d9a",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/dacb684f-3581-4e58-b9c3-4c8e1f409706.jpeg",
+  "Price (INR)" : "758",
+  "Original Price (INR)" : "765",
+  "Quantity" : "1 pc (1 L)",
+  "Rating (Max 5)" : "3.9",
+  "Number of Reviews" : "238"
+}, {
+  "Product Name" : "Saffola Active Rice Bran & Soyabean Oil | Rich in Omega 3 & Oryzanol",
+  "Product URL" : "https://www.zeptonow.com/pn/saffola-active-rice-bran-soyabean-oil-rich-in-omega-3-oryzanol/pvid/78579bf1-1e88-4094-8181-d3a2ced0b045",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1500-1500,pr-true,f-auto,q-80/cms/product_variant/557f1fca-96aa-4e29-ac59-ed3442fb72ce.jpeg",
+  "Price (INR)" : "750",
+  "Original Price (INR)" : "935",
+  "Quantity" : "1 pack (4.25 kg)",
+  "Rating (Max 5)" : "4.2",
+  "Number of Reviews" : "2000"
+}, {
+  "Product Name" : "Satvyk Stoneground Unpolished Toor Dal",
+  "Product URL" : "https://www.zeptonow.com/pn/satvyk-stoneground-unpolished-toor-dal/pvid/7eed49aa-8f43-4635-8f30-c560b9e87fc0",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/1fcc1f34-be16-4cbc-bd95-d9e0a29c0b5b.jpeg",
+  "Price (INR)" : "208",
+  "Original Price (INR)" : "320",
+  "Quantity" : "1 pack (1 kg)",
+  "Rating (Max 5)" : "5",
+  "Number of Reviews" : "69"
+}, {
+  "Product Name" : "KLF Coconad Pure Coconut Cooking Oil | Pouch",
+  "Product URL" : "https://www.zeptonow.com/pn/klf-coconad-pure-coconut-cooking-oil-pouch/pvid/1d015506-79d3-4227-8f1e-7879201daad5",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/b15fc23c-4dc9-4cff-84da-7f8a85f5db36.jpeg",
+  "Price (INR)" : "523",
+  "Original Price (INR)" : "675",
+  "Quantity" : "1 pack (1 L)",
+  "Rating (Max 5)" : "4.7",
+  "Number of Reviews" : "2600"
+}, {
+  "Product Name" : "Dhara Groundnut Oil | Pouch",
+  "Product URL" : "https://www.zeptonow.com/pn/dhara-groundnut-oil-pouch/pvid/4870b340-4eec-4473-b044-7c14ffe3a53a",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/29e9da3b-b367-47a0-8fb6-413400db9338.jpg",
+  "Price (INR)" : "180",
+  "Original Price (INR)" : "240",
+  "Quantity" : "1 pack (1 L)",
+  "Rating (Max 5)" : "4.6",
+  "Number of Reviews" : "9000"
+}, {
+  "Product Name" : "Amul Organic Toor Dal",
+  "Product URL" : "https://www.zeptonow.com/pn/amul-organic-toor-dal/pvid/57be1f38-2f41-42f6-b060-8480be1211f7",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1200-1200,pr-true,f-auto,q-80/cms/product_variant/93ba5dab-17b4-4440-9078-b638915ecbaf.jpeg",
+  "Price (INR)" : "129",
+  "Original Price (INR)" : "130",
+  "Quantity" : "1 pack (500 g)",
+  "Rating (Max 5)" : "4.9",
+  "Number of Reviews" : "100"
+}, {
+  "Product Name" : "FreshMill oils Cold Pressed Groundnut Oil",
+  "Product URL" : "https://www.zeptonow.com/pn/freshmill-oils-cold-pressed-groundnut-oil/pvid/49afd0ff-04c1-4b5d-ae82-cc8946ccb03d",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2048-2048,pr-true,f-auto,q-80/cms/product_variant/114d1279-3d2f-47af-8cfb-89aa98112b27.jpeg",
+  "Price (INR)" : "360",
+  "Original Price (INR)" : "480",
+  "Quantity" : "1 pc (1 L)",
+  "Rating (Max 5)" : "4.2",
+  "Number of Reviews" : "603"
+}, {
+  "Product Name" : "Borges Extra Virgin Olive Oil",
+  "Product URL" : "https://www.zeptonow.com/pn/borges-extra-virgin-olive-oil/pvid/8546b13c-dc23-41bc-beaf-5f48baf28ac4",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2000-2000,pr-true,f-auto,q-80/cms/product_variant/61253db9-d800-4937-add2-7d32f03e6e12.jpeg",
+  "Price (INR)" : "1348",
+  "Original Price (INR)" : "2300",
+  "Quantity" : "1 pc (500 ml)",
+  "Rating (Max 5)" : "5",
+  "Number of Reviews" : "74"
+}, {
+  "Product Name" : "Fortune Unpolished Chana Dal",
+  "Product URL" : "https://www.zeptonow.com/pn/fortune-unpolished-chana-dal/pvid/303d3de6-3116-412b-8f5f-2cca1247648e",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/64b4c981-4ec7-4677-bf8f-dafa3bf461d4.jpeg",
+  "Price (INR)" : "67",
+  "Original Price (INR)" : "79",
+  "Quantity" : "1 pack (500 g)",
+  "Rating (Max 5)" : "4.6",
+  "Number of Reviews" : "3200"
+}, {
+  "Product Name" : "Tata Sampann Unpolished Urad Dal Whole",
+  "Product URL" : "https://www.zeptonow.com/pn/tata-sampann-unpolished-urad-dal-whole/pvid/31fdc8f2-657b-4396-a1a2-8c6010d03de3",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1200-1200,pr-true,f-auto,q-80/cms/product_variant/96fd69b1-200f-4cd4-a726-d5ec860947d4.jpeg",
+  "Price (INR)" : "195",
+  "Original Price (INR)" : "222",
+  "Quantity" : "1 pack (1 kg)",
+  "Rating (Max 5)" : "4.7",
+  "Number of Reviews" : "1100"
+}, {
+  "Product Name" : "Tata Sampann Organic Toor /Arhar Dal",
+  "Product URL" : "https://www.zeptonow.com/pn/tata-sampann-organic-toor-arhar-dal/pvid/49e9d348-c2c4-4e39-97d2-1423e0eed04c",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1500-1500,pr-true,f-auto,q-80/cms/product_variant/b96f669f-ba6f-4d15-ac46-d1499443f737.jpg",
+  "Price (INR)" : "226",
+  "Original Price (INR)" : "275",
+  "Quantity" : "1 pack (1 kg)",
+  "Rating (Max 5)" : "4.8",
+  "Number of Reviews" : "384"
+}, {
+  "Product Name" : "Freedom Refined Sunflower Oil Bottle",
+  "Product URL" : "https://www.zeptonow.com/pn/freedom-refined-sunflower-oil-bottle/pvid/92d8b288-b206-46e7-9a4c-09401fd5252c",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-954-954,pr-true,f-auto,q-80/cms/product_variant/7a943664-9f32-4fa6-aed3-356ac9220b9a.jpeg",
+  "Price (INR)" : "147",
+  "Original Price (INR)" : "183",
+  "Quantity" : "1 pc (1 L)",
+  "Rating (Max 5)" : "4.7",
+  "Number of Reviews" : "56100"
+}, {
+  "Product Name" : "Oleev Pomace Olive Oil",
+  "Product URL" : "https://www.zeptonow.com/pn/oleev-pomace-olive-oil/pvid/b90a826a-c179-44eb-abd8-a959ff8722a3",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/9ec1e135-43b6-4829-8785-e93b838147fa.jpeg",
+  "Price (INR)" : "394",
+  "Original Price (INR)" : "1200",
+  "Quantity" : "1 pc (1 L)",
+  "Rating (Max 5)" : "4.5",
+  "Number of Reviews" : "414"
+}, {
+  "Product Name" : "Borges Extra Light Olive Oil",
+  "Product URL" : "https://www.zeptonow.com/pn/borges-extra-light-olive-oil/pvid/e143005a-dabf-4655-ace5-2977d241032a",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2352-2352,pr-true,f-auto,q-80/cms/product_variant/b3237357-63fb-497a-afe2-c37a095123f2.jpeg",
+  "Price (INR)" : "5300",
+  "Original Price (INR)" : "7600",
+  "Quantity" : "1 pc (5 L)",
+  "Rating (Max 5)" : "4.2",
+  "Number of Reviews" : "97"
+}, {
+  "Product Name" : "Natureland Organics Arhar Dal",
+  "Product URL" : "https://www.zeptonow.com/pn/natureland-organics-arhar-dal/pvid/0179b2dd-ccaa-4a6b-97ab-6c834aba46ff",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1200-1200,pr-true,f-auto,q-80/cms/product_variant/b470d79d-fbf5-4897-ad6a-ca56b35f0292.jpeg",
+  "Price (INR)" : "130",
+  "Original Price (INR)" : "185",
+  "Quantity" : "1 pack (500 g)",
+  "Rating (Max 5)" : "4.6",
+  "Number of Reviews" : "216"
+}, {
+  "Product Name" : "Daily Good Unpolished Masoor Dal",
+  "Product URL" : "https://www.zeptonow.com/pn/daily-good-unpolished-masoor-dal/pvid/4ef249e4-c823-47a7-842b-a81402e3fba4",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1200-1200,pr-true,f-auto,q-80/cms/product_variant/1e8475a1-240f-4864-953e-2e154a9e7c0a.jpeg",
+  "Price (INR)" : "74",
+  "Original Price (INR)" : "90",
+  "Quantity" : "1 pack (500 g)",
+  "Rating (Max 5)" : "4.7",
+  "Number of Reviews" : "30400"
+}, {
+  "Product Name" : "Fortune Sunlite Refined Sunflower Oil | Pouch",
+  "Product URL" : "https://www.zeptonow.com/pn/fortune-sunlite-refined-sunflower-oil-pouch/pvid/a83155e4-81b3-49c4-8121-a6cc86e3b0ce",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1100-1100,pr-true,f-auto,q-80/cms/product_variant/342f2aaf-9153-402b-b629-65c08ddd1bb1.jpg",
+  "Price (INR)" : "130",
+  "Original Price (INR)" : "180",
+  "Quantity" : "1 pack (800 g)",
+  "Rating (Max 5)" : "4.8",
+  "Number of Reviews" : "199400"
+}, {
+  "Product Name" : "Anveshan Cold Pressed Virgin Coconut Oil",
+  "Product URL" : "https://www.zeptonow.com/pn/anveshan-cold-pressed-virgin-coconut-oil/pvid/958d7c22-0f6f-42f9-8b0c-e03dc7732e15",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2048-2048,pr-true,f-auto,q-80/cms/product_variant/d3b1f4cb-9a62-46ed-901a-7c833cd66169.jpeg",
+  "Price (INR)" : "431",
+  "Original Price (INR)" : "440",
+  "Quantity" : "1 pc (250 ml)",
+  "Rating (Max 5)" : "5",
+  "Number of Reviews" : "191"
+}, {
+  "Product Name" : "Freedom Refined Sunflower Oil",
+  "Product URL" : "https://www.zeptonow.com/pn/freedom-refined-sunflower-oil/pvid/e069e1ad-fd71-46cb-b700-4ec05ff7f76e",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-954-954,pr-true,f-auto,q-80/cms/product_variant/456f5285-2b1d-47f5-b6f7-adf2ece7e6e9.jpeg",
+  "Price (INR)" : "145",
+  "Original Price (INR)" : "173",
+  "Quantity" : "1 pack (1 L)",
+  "Rating (Max 5)" : "4.7",
+  "Number of Reviews" : "260400"
+}, {
+  "Product Name" : "Organic Tattva Mix Dal",
+  "Product URL" : "https://www.zeptonow.com/pn/organic-tattva-mix-dal/pvid/224abba2-023b-4d76-a988-671bbb510799",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1500-1500,pr-true,f-auto,q-80/cms/product_variant/83e3f7db-47b4-4eb0-add9-585577d978aa.jpeg",
+  "Price (INR)" : "151",
+  "Original Price (INR)" : "175",
+  "Quantity" : "1 pack (500 g)",
+  "Rating (Max 5)" : "4.7",
+  "Number of Reviews" : "303"
+}, {
+  "Product Name" : "Borges Extra Light Olive Oil",
+  "Product URL" : "https://www.zeptonow.com/pn/borges-extra-light-olive-oil/pvid/8ee6be52-eec0-49a6-b42f-9b39b4323ee6",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/085f2f0e-dc72-48ee-bd79-30c3d9cf82cb.jpeg",
+  "Price (INR)" : "2413",
+  "Original Price (INR)" : "4200",
+  "Quantity" : "1 pc (2 L)",
+  "Rating (Max 5)" : "4.3",
+  "Number of Reviews" : "239"
+}, {
+  "Product Name" : "Daily Good Big Nylon Sabudana|Sago",
+  "Product URL" : "https://www.zeptonow.com/pn/daily-good-big-nylon-sabudanasago/pvid/72641744-cb8d-4543-8361-739f8e240239",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1600-1600,pr-true,f-auto,q-80/cms/product_variant/095606da-8dd1-4ae9-8050-21166e219a14.jpeg",
+  "Price (INR)" : "56",
+  "Original Price (INR)" : "100",
+  "Quantity" : "1 pack (500 g)",
+  "Rating (Max 5)" : "4.7",
+  "Number of Reviews" : "975"
+}, {
+  "Product Name" : "Jivo So-Olive Blend Of Rice Bran and Olive Oil",
+  "Product URL" : "https://www.zeptonow.com/pn/jivo-so-olive-blend-of-rice-bran-and-olive-oil/pvid/dc9c5857-5d89-45c7-895a-373097239ff7",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1500-1500,pr-true,f-auto,q-80/cms/product_variant/0924eb15-95d7-42bd-bc0b-937f63ccb71c.jpeg",
+  "Price (INR)" : "245",
+  "Original Price (INR)" : "325",
+  "Quantity" : "1 pc (1 L)",
+  "Rating (Max 5)" : "5",
+  "Number of Reviews" : "144"
+}, {
+  "Product Name" : "Sundrop Superlite Advanced Refined Sunflower Oil | Jar",
+  "Product URL" : "https://www.zeptonow.com/pn/sundrop-superlite-advanced-refined-sunflower-oil-jar/pvid/dde337b5-609e-44d6-a730-d9b0cd03cd94",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/2525944f-6107-4b52-be8c-b6f29fb4157e.jpg",
+  "Price (INR)" : "570",
+  "Original Price (INR)" : "609",
+  "Quantity" : "1 pc (3 L)",
+  "Rating (Max 5)" : "4.6",
+  "Number of Reviews" : "926"
+}, {
+  "Product Name" : "Satvyk Stoneground Unpolished Chana Dal",
+  "Product URL" : "https://www.zeptonow.com/pn/satvyk-stoneground-unpolished-chana-dal/pvid/e5c672fe-3828-4194-a978-25d29f5c5fe5",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-667-1000,pr-true,f-auto,q-80/cms/product_variant/e03fd1aa-9d70-4bac-8e9e-544ffbc758c5.jpeg",
+  "Price (INR)" : "141",
+  "Original Price (INR)" : "220",
+  "Quantity" : "1 pack (1 kg)",
+  "Rating (Max 5)" : "4.8",
+  "Number of Reviews" : "97"
+}, {
+  "Product Name" : "Sri Bhagyalakshmi Toor Dal",
+  "Product URL" : "https://www.zeptonow.com/pn/sri-bhagyalakshmi-toor-dal/pvid/39315c35-2084-48d4-ad10-3378f6d3b7c2",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/e10dc6ec-8e6d-4c41-a856-ea7a2cb88c91.jpg",
+  "Price (INR)" : "90",
+  "Original Price (INR)" : "100",
+  "Quantity" : "1 pack (500 g)",
+  "Rating (Max 5)" : "4.8",
+  "Number of Reviews" : "1100"
+}, {
+  "Product Name" : "Sunpure Refined Sunflower Oil - Pouch",
+  "Product URL" : "https://www.zeptonow.com/pn/sunpure-refined-sunflower-oil-pouch/pvid/ca3b745b-c324-4940-8e3a-81d2894d5786",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-2400-2400,pr-true,f-auto,q-80/cms/product_variant/1533e26a-4299-4148-a520-23653352f74a.jpeg",
+  "Price (INR)" : "145",
+  "Original Price (INR)" : "180",
+  "Quantity" : "1 pack (1 L)",
+  "Rating (Max 5)" : "4.8",
+  "Number of Reviews" : "154900"
+}, {
+  "Product Name" : "Fortune Unpolished Arhar Dal",
+  "Product URL" : "https://www.zeptonow.com/pn/fortune-unpolished-arhar-dal/pvid/ad55222c-5d4e-4a69-965c-373894458cf0",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-679-679,pr-true,f-auto,q-80/cms/product_variant/5fafdf8e-6cb1-4276-8e52-cfe5e23f0c19.jpg",
+  "Price (INR)" : "68",
+  "Original Price (INR)" : "115",
+  "Quantity" : "500 g",
+  "Rating (Max 5)" : "4.4",
+  "Number of Reviews" : "3100"
+}, {
+  "Product Name" : "Aashirvaad Organic Chana Dal (Split) | 100% Organic Chana Dal Rich in Protein",
+  "Product URL" : "https://www.zeptonow.com/pn/aashirvaad-organic-chana-dal-split-100-organic-chana-dal-rich-in-protein/pvid/7b8d618d-b4ec-464c-aca6-4603f710076d",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-750-750,pr-true,f-auto,q-80/cms/product_variant/930812e8-4fa9-4a09-a61f-9c520e05b777.jpeg",
+  "Price (INR)" : "181",
+  "Original Price (INR)" : "240",
+  "Quantity" : "1 pack (1 kg)",
+  "Rating (Max 5)" : "5",
+  "Number of Reviews" : "161"
+}, {
+  "Product Name" : "Organic Tattva Arhar Tur Dal",
+  "Product URL" : "https://www.zeptonow.com/pn/organic-tattva-arhar-tur-dal/pvid/f050edbf-2f5e-4f97-a558-3b0fc7a99ad2",
+  "Product Image" : "https://cdn.zeptonow.com/production/tr:w-1280,ar-1500-1500,pr-true,f-auto,q-80/cms/product_variant/6e68db2e-3789-4a2d-a96c-62e0a6baacd4.jpeg",
+  "Price (INR)" : "132",
+  "Original Price (INR)" : "185",
+  "Quantity" : "1 pack (500 g)",
+  "Rating (Max 5)" : "4.9",
+  "Number of Reviews" : "378"
+} 
+    ];
+
+    function createCard(item) {
+        const price = item['Price (INR)'] || '';
+        const mrp = item['Original Price (INR)'] || '';
+        const rating = item['Rating (Max 5)'] || '';
+        const url = item['Product URL'] || '#';
+        const discount = item['Discount Percentage'] || '';
+        // Format price with commas for Indian rupees
+        const formatPrice = (price) => {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        };
+        return `
+        <article class="product-card" role="listitem">
+            <a href="${url}" target="_blank" rel="noopener">
+                <img src="${item['Product Image']}" alt="${item['Product Name']}" class="product-image" onerror="this.src='https://via.placeholder.com/320x200?text=Image'" loading="lazy">
+            </a>
+            <div class="product-info">
+                <h3 class="product-name">${item['Product Name']}</h3>
+                <div class="product-price-row">
+                    ${price ? `<span class="product-price">₹${formatPrice(price)}</span>` : ''}
+                    ${mrp ? `<span class="product-original-price">₹${formatPrice(mrp)}</span>` : ''}
+                    ${discount ? `<span class="product-discount">${discount}% off</span>` : ''}
+                </div>
+                ${rating ? `
+                <div class="product-rating">
+                    <div class="stars">
+                        ${'<i class="fas fa-star"></i>'.repeat(Math.floor(rating))}
+                        ${rating % 1 >= 0.5 ? '<i class="fas fa-star-half-alt"></i>' : ''}
+                        ${'<i class="far fa-star"></i>'.repeat(5 - Math.ceil(rating))}
+                    </div>
+                    <span>${rating}</span>
+                </div>` : ''}
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </article>`;
+    }
+
+    // Load groceries data
+    async function loadGroceries() {
+        const grid = document.getElementById('productGrid');
+        try {
+            const res = await fetch('./groceries.json');
+            const data = await res.json();
+            grid.innerHTML = data.map(createCard).join('');
+        } catch (e) {
+            console.log("Using inline data as fallback");
+            grid.innerHTML = inlineGroceriesData.map(createCard).join('');
+        }
+        grid.setAttribute('aria-busy', 'false');
+    }
+
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', () => {
+        loadGroceries();
+        // Fallback button handler
+        document.getElementById('loadJsonBtn')?.addEventListener('click', loadGroceries);
+    });
+    </script>
+
+    <style>
+    /* Basic styling - you can expand this in your styles.css */
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+    .product-card {
+        border: 1px solid #e1e1e1;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+        background: white;
+    }
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .product-image {
+        width: 100%;
+        height: 200px;
+        object-fit: contain;
+        background: #f5f5f5;
+        padding: 10px;
+    }
+    .product-info {
+        padding: 15px;
+    }
+    .product-name {
+        font-size: 14px;
+        margin: 0 0 10px 0;
+        height: 40px;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+    .product-price-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 8px;
+        flex-wrap: wrap;
+    }
+    .product-price {
+        font-weight: bold;
+        font-size: 18px;
+        color: #B12704;
+    }
+    .product-original-price {
+        text-decoration: line-through;
+        color: #565959;
+        font-size: 14px;
+    }
+    .product-discount {
+        color: #067D62;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    .product-rating {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: 10px;
+    }
+    .product-rating .stars {
+        color: #FFA41C;
+    }
+    .add-to-cart {
+        width: 100%;
+        padding: 8px;
+        background: #FFD814;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background 0.3s;
+    }
+    .add-to-cart:hover {
+        background: #F7CA00;
+    }
+    </style>
+</body>
+</html>

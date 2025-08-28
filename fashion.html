@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axzora Fashion</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="index.html" class="brand" aria-label="Axzora home">
+                    <span class="brand-glyph"><span class="brand-letter">A</span></span>
+                    <span class="brand-name">Axzora</span>
+                </a>
+            </div>
+            <h1 style="color:#fff; font-family:Inter, sans-serif; font-weight:800;">Fashion</h1>
+        </div>
+    </header>
+
+    <main id="main-content" role="main">
+        <section class="products" id="products" aria-labelledby="products-title">
+            <div class="container">
+                <h2 class="section-title" id="products-title">Fashion</h2>
+                <div class="product-grid" id="productGrid" role="list" aria-label="Product items" aria-busy="true"></div>
+                <div id="fallback" style="display:none; text-align:center; margin:24px 0;">
+                    
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+    // Simple reader for fashion.json (or inline fallback when using file://)
+    const grid = document.getElementById('productGrid');
+    const title = document.getElementById('products-title');
+
+    // Inline fallback data from your message
+    const inlineFashionData = [
+         {
+  "Product Name" : "Men Jogger Fit Mid Rise Grey Jeans",
+  "Product URL" : "https://www.flipkart.com/jaar-fashion-jogger-fit-men-grey-jeans/p/itm0a3fa7f9c8547?pid=JEAH39GVAHJNZAF6&lid=LSTJEAH39GVAHJNZAF618KP6Z&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_1&otracker=search&otracker1=search&fm=Search&iid=en_bjsWr_Rs2P7iGVW6ZRwNwtaRuyKcbeBho1ElHulH6ZB5GffnsgfOvTJXl1OAmi5ylppwZDGbOkBZH2v-fVYGjA%3D%3D&ppt=sp&ppn=sp&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/jean/s/r/l/28-jean-slim-003-noah-original-imah52sybrszhgyu.jpeg?q=70",
+  "Brand Name" : "JAAR FASHION",
+  "Selling Price (INR)" : "458",
+  "Original Price (INR)" : "1999",
+  "Discount Percentage" : "77",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Men Solid Mandarin Collar Cotton Blend Dark Green, Blac...",
+  "Product URL" : "https://www.flipkart.com/tripr-solid-men-mandarin-collar-dark-green-black-t-shirt/p/itm0d79233a1f312?pid=TSHH25F6SAC7XATZ&lid=LSTTSHH25F6SAC7XATZB6TZR4&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_2&otracker=search&otracker1=search&fm=Search&iid=en_bjsWr_Rs2P7iGVW6ZRwNwtaRuyKcbeBho1ElHulH6ZDQftIYzwpJLIQ70_eNYmKpUx3XB79N-pv1HzHrXYsFKfUFjCTyOHoHZs-Z5_PS_w0%3D&ppt=sp&ppn=sp&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/t-shirt/a/8/w/s-tpgrblhn-dp-d145-tripr-original-imahcgggbmzpvcs3.jpeg?q=70",
+  "Brand Name" : "TRIPR",
+  "Selling Price (INR)" : "242",
+  "Original Price (INR)" : "1999",
+  "Discount Percentage" : "87",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Women Silk Blend Kurta Pant Dupatta Set",
+  "Product URL" : "https://www.flipkart.com/dishwa-fashion-women-kurta-pant-dupatta-set/p/itm02cdafe1c498f?pid=ETHHFVD7YFZYHFFW&lid=LSTETHHFVD7YFZYHFFWMOFISO&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_3&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.ETHHFVD7YFZYHFFW.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/ethnic-set/u/t/y/-original-imahey94ggxqyhhg.jpeg?q=70",
+  "Brand Name" : "DISHWA FASHION",
+  "Selling Price (INR)" : "726",
+  "Original Price (INR)" : "2999",
+  "Discount Percentage" : "75",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Boys Casual T-shirt Shorts",
+  "Product URL" : "https://www.flipkart.com/bharath-fashion-boys-casual-t-shirt-shorts/p/itm2751102ee53dd?pid=KPBH3AGJ5ZTPTRHY&lid=LSTKPBH3AGJ5ZTPTRHYYUMGDX&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_4&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.KPBH3AGJ5ZTPTRHY.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/kids-apparel-combo/o/d/t/9-10-years-manohunt-boys-set-emoji-bharath-fashion-original-imah3agga48njtfx.jpeg?q=70",
+  "Brand Name" : "BHARATH FASHION",
+  "Selling Price (INR)" : "243",
+  "Original Price (INR)" : "799",
+  "Discount Percentage" : "69",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Men Self Design Polo Neck Cotton Blend White, Black T-S...",
+  "Product URL" : "https://www.flipkart.com/tripr-self-design-men-polo-neck-white-black-t-shirt/p/itmf3a2616e6f678?pid=TSHH9K38KBZTYWW8&lid=LSTTSHH9K38KBZTYWW81YINMC&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_5&otracker=search&otracker1=search&fm=organic&iid=en_bjsWr_Rs2P7iGVW6ZRwNwtaRuyKcbeBho1ElHulH6ZCoyIg9BYGMG_hCdCYsmhNZXlfnTP5qx0ytf8WP1tslr-vN4Mn-dv-pi277bRzMbnY%3D&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/t-shirt/v/a/r/l-twtblpolofull-p35-tripr-original-imah9k38fy3gfynh.jpeg?q=70",
+  "Brand Name" : "TRIPR",
+  "Selling Price (INR)" : "302",
+  "Original Price (INR)" : "999",
+  "Discount Percentage" : "69",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Pack of 2 Men Solid Silver, Grey Track Pants",
+  "Product URL" : "https://www.flipkart.com/foxter-solid-men-silver-grey-track-pants/p/itm26a98f70be0cc?pid=TKPH4VYY228NVZE3&lid=LSTTKPH4VYY228NVZE3JOSQET&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_6&otracker=search&otracker1=search&fm=Search&iid=en_bjsWr_Rs2P7iGVW6ZRwNwtaRuyKcbeBho1ElHulH6ZBRuXoeXqdfVQYZD6BXycdKXATTFwY8Gvz5LAZTMG8suA%3D%3D&ppt=sp&ppn=sp&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/track-pant/f/e/c/xxl-tintin-black-track-pants-foxter-original-imah8vhqr53zxchh.jpeg?q=70",
+  "Brand Name" : "FOXTER",
+  "Selling Price (INR)" : "379",
+  "Original Price (INR)" : "2499",
+  "Discount Percentage" : "84",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Women Silk Blend Kurta Pant Dupatta Set",
+  "Product URL" : "https://www.flipkart.com/dishwa-fashion-women-kurta-pant-dupatta-set/p/itm40942bc4ffaa9?pid=ETHH4KYWDHGHHHGE&lid=LSTETHH4KYWDHGHHHGE9H83AG&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_7&otracker=search&otracker1=search&fm=Search&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.ETHH4KYWDHGHHHGE.SEARCH&ppt=sp&ppn=sp&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/ethnic-set/y/f/u/-original-imaheybnmehmya9j.jpeg?q=70",
+  "Brand Name" : "DISHWA FASHION",
+  "Selling Price (INR)" : "863",
+  "Original Price (INR)" : "2999",
+  "Discount Percentage" : "71",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Women Chanderi Kurta Pant Dupatta Set",
+  "Product URL" : "https://www.flipkart.com/dishwa-fashion-women-kurta-pant-dupatta-set/p/itm57cffcfa031d0?pid=ETHGR6RXAUHCCUPG&lid=LSTETHGR6RXAUHCCUPGOWSBP6&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_8&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.ETHGR6RXAUHCCUPG.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/ethnic-set/8/o/o/-original-imahey96yhqhkwec.jpeg?q=70",
+  "Brand Name" : "DISHWA FASHION",
+  "Selling Price (INR)" : "719",
+  "Original Price (INR)" : "2099",
+  "Discount Percentage" : "65",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Men Printed Round Neck Cotton Blend Dark Blue T-Shirt",
+  "Product URL" : "https://www.flipkart.com/lgr-fashion-printed-men-round-neck-dark-blue-t-shirt/p/itm7fb45a6d4873e?pid=TSHH37FSKBHZJHDV&lid=LSTTSHH37FSKBHZJHDVTDULXF&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_9&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.TSHH37FSKBHZJHDV.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/sweatshirt/p/j/d/xl-stw-messi-navy-xl-manly-tees-original-imah36zfrrjh9thh.jpeg?q=70",
+  "Brand Name" : "LGR FASHION",
+  "Selling Price (INR)" : "225",
+  "Original Price (INR)" : "1799",
+  "Discount Percentage" : "87",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Men Printed Round Neck Polyester Black T-Shirt",
+  "Product URL" : "https://www.flipkart.com/fashion-globe-printed-men-round-neck-black-t-shirt/p/itmff3094f881da1?pid=TSHHDDS5ZGKKYXCZ&lid=LSTTSHHDDS5ZGKKYXCZ1E5DMB&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_10&otracker=search&otracker1=search&fm=Search&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.TSHHDDS5ZGKKYXCZ.SEARCH&ppt=sp&ppn=sp&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/t-shirt/p/9/w/xl-fg-black-a-print-half-fashion-globe-original-imahdds5dwt7edgw.jpeg?q=70",
+  "Brand Name" : "fashion globe",
+  "Selling Price (INR)" : "128",
+  "Original Price (INR)" : "799",
+  "Discount Percentage" : "83",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Oversized Men Printed Round Neck Polycotton Black T-Shi...",
+  "Product URL" : "https://www.flipkart.com/stockton-printed-men-round-neck-black-t-shirt/p/itm4fcff0ff40bf7?pid=TSHGZF2NTSJHAQSX&lid=LSTTSHGZF2NTSJHAQSXJDVSOS&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_11&otracker=search&otracker1=search&fm=Search&iid=en_bjsWr_Rs2P7iGVW6ZRwNwtaRuyKcbeBho1ElHulH6ZCSUp7uyzJnvNjcOHlv4PSHrY8O8dJVc9MMHdowxoQ8jg%3D%3D&ppt=sp&ppn=sp&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/t-shirt/r/y/j/m-tsrt-22-kajaru-original-imahfb8bnh3zrrrw.jpeg?q=70",
+  "Brand Name" : "Stockton",
+  "Selling Price (INR)" : "255",
+  "Original Price (INR)" : "1199",
+  "Discount Percentage" : "78",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Men Self Design Polo Neck Polyester Brown T-Shirt",
+  "Product URL" : "https://www.flipkart.com/kajaru-self-design-men-polo-neck-brown-t-shirt/p/itm1d6c610229586?pid=TSHH6CMUGHKFFZGD&lid=LSTTSHH6CMUGHKFFZGDDP1M9V&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_12&otracker=search&otracker1=search&fm=Search&iid=en_bjsWr_Rs2P7iGVW6ZRwNwtaRuyKcbeBho1ElHulH6ZDRZu8Vfr_xH_VRRKJZKzMAid1ve_Xe0GHfgRkFb0v4HQ%3D%3D&ppt=sp&ppn=sp&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/t-shirt/a/x/w/xl-vmts-06-006-veyniz-original-imaheb3vszygcqd7.jpeg?q=70",
+  "Brand Name" : "KAJARU",
+  "Selling Price (INR)" : "259",
+  "Original Price (INR)" : "999",
+  "Discount Percentage" : "74",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Boys Casual T-shirt Shorts",
+  "Product URL" : "https://www.flipkart.com/kh-fashion-boys-casual-t-shirt-shorts/p/itm77396b00629fe?pid=KPBGSZCTKQWJBDHD&lid=LSTKPBGSZCTKQWJBDHDR9YB6S&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_13&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.KPBGSZCTKQWJBDHD.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/kids-apparel-combo/9/j/r/12-13-years-blkstrpset-kh-fashion-original-imagszb8xegyrxmk.jpeg?q=70",
+  "Brand Name" : "KH Fashion",
+  "Selling Price (INR)" : "871",
+  "Original Price (INR)" : "1799",
+  "Discount Percentage" : "51",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Girls Casual Top Capri",
+  "Product URL" : "https://www.flipkart.com/ang-fashion-girls-casual-top-capri/p/itmf58f9ba49a640?pid=KPBG7QV3TKZ5HSEW&lid=LSTKPBG7QV3TKZ5HSEWBU8M7X&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_14&otracker=search&otracker1=search&fm=Search&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.KPBG7QV3TKZ5HSEW.SEARCH&ppt=sp&ppn=sp&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/kuof5ow0/kids-apparel-combo/t/2/x/8-9-years-ptbb-102021-ang-fashion-original-imag7qv3qtk6vhcx.jpeg?q=70",
+  "Brand Name" : "ANG FASHION",
+  "Selling Price (INR)" : "488",
+  "Original Price (INR)" : "1299",
+  "Discount Percentage" : "62",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Men Printed Round Neck Polyester Black T-Shirt",
+  "Product URL" : "https://www.flipkart.com/fashion-globe-printed-men-round-neck-black-t-shirt/p/itm40444648afa38?pid=TSHHDDS5MDZTF8DF&lid=LSTTSHHDDS5MDZTF8DFZHWNVK&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_15&otracker=search&otracker1=search&fm=Search&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.TSHHDDS5MDZTF8DF.SEARCH&ppt=sp&ppn=sp&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/t-shirt/p/9/w/xl-fg-black-a-print-half-fashion-globe-original-imahdds5dwt7edgw.jpeg?q=70",
+  "Brand Name" : "fashion globe",
+  "Selling Price (INR)" : "128",
+  "Original Price (INR)" : "799",
+  "Discount Percentage" : "83",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Boys Casual T-shirt Shorts",
+  "Product URL" : "https://www.flipkart.com/sms-fashion-boys-casual-t-shirt-shorts/p/itm871b4c7fe65d6?pid=KPBHDERDTBNGXZNU&lid=LSTKPBHDERDTBNGXZNUXKF8Z2&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_16&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.KPBHDERDTBNGXZNU.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/kids-apparel-combo/0/f/z/6-12-months-sms-redfun-sms-fashion-original-imahderdhavhsgyz.jpeg?q=70",
+  "Brand Name" : "sms fashion",
+  "Selling Price (INR)" : "169",
+  "Original Price (INR)" : "699",
+  "Discount Percentage" : "75",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Women Viscose Rayon Kurta Pant Dupatta Set",
+  "Product URL" : "https://www.flipkart.com/upsara-fashion-women-kurta-pant-dupatta-set/p/itm6e8d5c9f64dec?pid=ETHGWH4YWBQXRANH&q=fashions+&store=clo&srno=s_1_17&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.ETHGWH4YWBQXRANH.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/ethnic-set/n/e/k/xxl-anu2200-upsara-fashion-original-imahdyhgeg7qz9gy.jpeg?q=70",
+  "Brand Name" : "upsara fashion",
+  "Selling Price (INR)" : "",
+  "Original Price (INR)" : "",
+  "Discount Percentage" : "",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Women Pure Cotton Kurta Pant Set",
+  "Product URL" : "https://www.flipkart.com/teena-fashion-women-kurta-pant-set/p/itm032a6954d5622?pid=ETHH4DCBHDTKNZYM&lid=LSTETHH4DCBHDTKNZYMSMTUDC&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_18&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.ETHH4DCBHDTKNZYM.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/shopsy-ethnic-set/p/9/1/l-shop403-charvi-creation-original-imah4b7nr99qxwrg.jpeg?q=70",
+  "Brand Name" : "teena fashion",
+  "Selling Price (INR)" : "407",
+  "Original Price (INR)" : "1999",
+  "Discount Percentage" : "79",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Men Solid Round Neck Cotton Blend Maroon T-Shirt",
+  "Product URL" : "https://www.flipkart.com/bs-fashion-solid-men-round-neck-maroon-t-shirt/p/itm126034fc06629?pid=TSHGGHE4S2TPJVSM&lid=LSTTSHGGHE4S2TPJVSMA1KQBD&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_19&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.TSHGGHE4S2TPJVSM.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/t-shirt/e/s/n/m-est1892-bs-fashion-original-imagghbynpefgzxt.jpeg?q=70",
+  "Brand Name" : "BS FASHION",
+  "Selling Price (INR)" : "195",
+  "Original Price (INR)" : "1500",
+  "Discount Percentage" : "87",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Men Printed, Typography Round Neck Cotton Blend Black T...",
+  "Product URL" : "https://www.flipkart.com/fashiontherapy-printed-typography-men-round-neck-black-t-shirt/p/itm808dbcb844089?pid=TSHGRM6UH2F24YP5&lid=LSTTSHGRM6UH2F24YP5C4TWQO&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_20&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.TSHGRM6UH2F24YP5.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/t-shirt/j/b/c/xl-tshirt-fashion-therapy-original-imagrm6u2g2n2vtg.jpeg?q=70",
+  "Brand Name" : "fashiontherapy",
+  "Selling Price (INR)" : "599",
+  "Original Price (INR)" : "799",
+  "Discount Percentage" : "25",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Men Printed Round Neck Pure Cotton Dark Blue T-Shirt",
+  "Product URL" : "https://www.flipkart.com/fashionbeast-printed-men-round-neck-dark-blue-t-shirt/p/itmcc333ab10d87e?pid=TSHGZBF9ZSQJTNAZ&lid=LSTTSHGZBF9ZSQJTNAZXG1JFT&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_21&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.TSHGZBF9ZSQJTNAZ.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/t-shirt/4/9/r/s-mo7-fashion-beast-original-imagzbf9hbyyqep4.jpeg?q=70",
+  "Brand Name" : "Fashionbeast",
+  "Selling Price (INR)" : "799",
+  "Original Price (INR)" : "1899",
+  "Discount Percentage" : "57",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Men Printed, Typography Round Neck Polyester White T-Sh...",
+  "Product URL" : "https://www.flipkart.com/vdas-fashion-printed-typography-men-round-neck-white-t-shirt/p/itmee2a65b40caaf?pid=TSHH9VYK5KQ9GYPT&lid=LSTTSHH9VYK5KQ9GYPTJXU8ZH&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_22&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.TSHH9VYK5KQ9GYPT.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/t-shirt/u/x/o/s-vd-mn-hs-print-march-25-vdas-fashion-original-imah9vyjrz4bf5bk.jpeg?q=70",
+  "Brand Name" : "VDAS FASHION",
+  "Selling Price (INR)" : "208",
+  "Original Price (INR)" : "899",
+  "Discount Percentage" : "76",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Men Printed Round Neck Pure Cotton Black T-Shirt",
+  "Product URL" : "https://www.flipkart.com/fashionbeast-printed-men-round-neck-black-t-shirt/p/itmc0fbc1d40581f?pid=TSHHB4XBJNW4ZH3G&lid=LSTTSHHB4XBJNW4ZH3GR0VPVC&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_23&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.TSHHB4XBJNW4ZH3G.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/t-shirt/b/c/1/m-mo12-fashion-beast-original-imahckrdt9xqqfdz.jpeg?q=70",
+  "Brand Name" : "Fashionbeast",
+  "Selling Price (INR)" : "989",
+  "Original Price (INR)" : "",
+  "Discount Percentage" : "",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Men Printed Round Neck Pure Cotton Black T-Shirt",
+  "Product URL" : "https://www.flipkart.com/fashionbeast-printed-men-round-neck-black-t-shirt/p/itm7455601c82830?pid=TSHHB4ZE7ZZBEC7V&lid=LSTTSHHB4ZE7ZZBEC7VAHIIXC&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_24&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.TSHHB4ZE7ZZBEC7V.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/t-shirt/y/d/p/xl-mo18-fashion-beast-original-imahcjtymrkmdzhf.jpeg?q=70",
+  "Brand Name" : "Fashionbeast",
+  "Selling Price (INR)" : "989",
+  "Original Price (INR)" : "",
+  "Discount Percentage" : "",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Men Solid Round Neck Pure Cotton Grey T-Shirt",
+  "Product URL" : "https://www.flipkart.com/fashionbeast-solid-men-round-neck-grey-t-shirt/p/itm793fa37038c8f?pid=TSHGZZ7T4ERSUFBF&lid=LSTTSHGZZ7T4ERSUFBFEGGUVO&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_25&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.TSHGZZ7T4ERSUFBF.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/t-shirt/p/k/q/l-mso3-fashion-beast-original-imahb3xzmzvh8vzf.jpeg?q=70",
+  "Brand Name" : "Fashionbeast",
+  "Selling Price (INR)" : "699",
+  "Original Price (INR)" : "1799",
+  "Discount Percentage" : "61",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Men Printed Round Neck Pure Cotton Navy Blue T-Shirt",
+  "Product URL" : "https://www.flipkart.com/fashionbeast-printed-men-round-neck-navy-blue-t-shirt/p/itm7ce77755e3f2d?pid=TSHH2WE3TM2PFAR6&lid=LSTTSHH2WE3TM2PFAR6OPZIJU&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_26&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.TSHH2WE3TM2PFAR6.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/t-shirt/v/q/q/s-mo8-fashion-beast-original-imah2we3bdrsuegj.jpeg?q=70",
+  "Brand Name" : "Fashionbeast",
+  "Selling Price (INR)" : "799",
+  "Original Price (INR)" : "1899",
+  "Discount Percentage" : "57",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Men Printed Round Neck Polyester White T-Shirt",
+  "Product URL" : "https://www.flipkart.com/vdas-fashion-printed-men-round-neck-white-t-shirt/p/itmba486d70c59bd?pid=TSHHA859N5ZANX7T&lid=LSTTSHHA859N5ZANX7T63FGWC&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_27&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.TSHHA859N5ZANX7T.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/t-shirt/c/4/a/m-vd-mn-rnhs-white-march-vdas-fashion-original-imaha859xrzzuf6w.jpeg?q=70",
+  "Brand Name" : "VDAS FASHION",
+  "Selling Price (INR)" : "205",
+  "Original Price (INR)" : "899",
+  "Discount Percentage" : "77",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Men Solid Round Neck Pure Cotton Black T-Shirt",
+  "Product URL" : "https://www.flipkart.com/fashionbeast-solid-men-round-neck-black-t-shirt/p/itm237fc9bd6ccd9?pid=TSHGZRQ2G2MZRPSH&lid=LSTTSHGZRQ2G2MZRPSHLJI3SS&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_28&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.TSHGZRQ2G2MZRPSH.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/t-shirt/w/e/d/s-mso2-fashion-beast-original-imagzz7uysazzj7m.jpeg?q=70",
+  "Brand Name" : "Fashionbeast",
+  "Selling Price (INR)" : "699",
+  "Original Price (INR)" : "1699",
+  "Discount Percentage" : "58",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Men Printed, Typography Round Neck Pure Cotton Red T-Sh...",
+  "Product URL" : "https://www.flipkart.com/fashionbeast-printed-typography-men-round-neck-red-t-shirt/p/itmfe12e7a52f862?pid=TSHGYJMJS9NHJJUH&lid=LSTTSHGYJMJS9NHJJUHXMM4LD&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_29&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.TSHGYJMJS9NHJJUH.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/t-shirt/j/2/7/m-001-fashionbeast-original-imagxatajgjm5tzf.jpeg?q=70",
+  "Brand Name" : "Fashionbeast",
+  "Selling Price (INR)" : "454",
+  "Original Price (INR)" : "999",
+  "Discount Percentage" : "54",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Women Viscose Rayon Kurta Pant Set",
+  "Product URL" : "https://www.flipkart.com/fa-fashion-women-kurta-pant-set/p/itm52e25e03e2b46?pid=ETHGT7BCZCZNDCZA&lid=LSTETHGT7BCZCZNDCZACCSS97&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_30&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.ETHGT7BCZCZNDCZA.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/ethnic-set/3/z/t/s-embroidery-fa-fashion-original-imagt78wnxm8mhws.jpeg?q=70",
+  "Brand Name" : "FA FASHION",
+  "Selling Price (INR)" : "740",
+  "Original Price (INR)" : "2500",
+  "Discount Percentage" : "70",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Women Viscose Rayon Kurta Pant Set",
+  "Product URL" : "https://www.flipkart.com/fa-fashion-women-kurta-pant-set/p/itm5411aadda0e3f?pid=ETHGTJ64KHVKQJYA&lid=LSTETHGTJ64KHVKQJYAIQR7TS&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_31&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.ETHGTJ64KHVKQJYA.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/ethnic-set/y/t/c/3xl-embroidery-fa-fashion-original-imagtj64wxnrmkny.jpeg?q=70",
+  "Brand Name" : "FA FASHION",
+  "Selling Price (INR)" : "912",
+  "Original Price (INR)" : "2500",
+  "Discount Percentage" : "63",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Boys Casual T-shirt Shorts",
+  "Product URL" : "https://www.flipkart.com/fashion-boy-boys-casual-t-shirt-shorts/p/itm1d059a494b8f6?pid=KPBGEXH7ZJ5DV3KH&lid=LSTKPBGEXH7ZJ5DV3KHZLO4XF&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_32&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.KPBGEXH7ZJ5DV3KH.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/l3xcr680/kids-apparel-combo/y/v/x/1-2-years-fb767-fashion-boy-original-imagexh6yhqrh6ta.jpeg?q=70",
+  "Brand Name" : "FASHION BOY",
+  "Selling Price (INR)" : "670",
+  "Original Price (INR)" : "999",
+  "Discount Percentage" : "32",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Men Typography Round Neck Cotton Blend Grey T-Shirt",
+  "Product URL" : "https://www.flipkart.com/fasionica-mart-typography-men-round-neck-grey-t-shirt/p/itm4c3f7d8f1a45f?pid=TSHGN3YYDYDNMXH3&lid=LSTTSHGN3YYDYDNMXH3EMQPI0&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_33&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.TSHGN3YYDYDNMXH3.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/t-shirt/v/y/a/xl-enginner-2-fasionica-mart-original-imagn2zzh8bfhzrk.jpeg?q=70",
+  "Brand Name" : "Fasionica Mart",
+  "Selling Price (INR)" : "379",
+  "Original Price (INR)" : "799",
+  "Discount Percentage" : "52",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Boys Casual T-shirt Shorts",
+  "Product URL" : "https://www.flipkart.com/fashion-boy-boys-casual-t-shirt-shorts/p/itm04160a02bd50c?pid=KPBGGGEHZZZ5FSTB&lid=LSTKPBGGGEHZZZ5FSTBGIQOMG&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_34&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.KPBGGGEHZZZ5FSTB.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/kids-apparel-combo/t/x/q/2-3-years-fb787-fashion-boy-original-imagggegcyrsrwyf.jpeg?q=70",
+  "Brand Name" : "FASHION BOY",
+  "Selling Price (INR)" : "549",
+  "Original Price (INR)" : "999",
+  "Discount Percentage" : "45",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Women Cotton Rayon Kurta Palazzo Set",
+  "Product URL" : "https://www.flipkart.com/fashions-360-women-kurta-palazzo-set/p/itm6b0110fee574e?pid=ETHGGHYYQFGXGVGQ&lid=LSTETHGGHYYQFGXGVGQGSGBMF&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_35&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.ETHGGHYYQFGXGVGQ.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/ethnic-set/v/z/7/l-819-fashions360-original-imaggkzza8papfpe.jpeg?q=70",
+  "Brand Name" : "FASHIONS 360",
+  "Selling Price (INR)" : "750",
+  "Original Price (INR)" : "2199",
+  "Discount Percentage" : "65",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Women Viscose Rayon Kurta Pant Dupatta Set",
+  "Product URL" : "https://www.flipkart.com/fashions-360-women-kurta-pant-dupatta-set/p/itme67245b7ef761?pid=ETHHY9KVX5AXKBZ9&lid=LSTETHHY9KVX5AXKBZ9QKIFC6&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_36&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.ETHHY9KVX5AXKBZ9.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/ethnic-set/l/m/5/m-mdfj2421-fashions-360-original-imahy9kvzq9abryq.jpeg?q=70",
+  "Brand Name" : "FASHIONS 360",
+  "Selling Price (INR)" : "1099",
+  "Original Price (INR)" : "2999",
+  "Discount Percentage" : "63",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Pack of 2 Faizaan Men Solid Round Neck Cotton Blend Mul...",
+  "Product URL" : "https://www.flipkart.com/beyou-fashion-solid-men-round-neck-multicolor-t-shirt/p/itm02649103e96d9?pid=TSHFZS6R3YHHWBMG&lid=LSTTSHFZS6R3YHHWBMG8EECS2&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_37&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.TSHFZS6R3YHHWBMG.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/kk8mcnk0/t-shirt/6/r/0/l-811-815-trendfull-original-imafzmq58zxqyxeh.jpeg?q=70",
+  "Brand Name" : "BEYOU FASHION",
+  "Selling Price (INR)" : "558",
+  "Original Price (INR)" : "1099",
+  "Discount Percentage" : "49",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Women Cotton Blend Ethnic Top Pant Attached Dupatta Set",
+  "Product URL" : "https://www.flipkart.com/ang-fashion-women-ethnic-top-pant-attached-dupatta-set/p/itm404b25e0869d2?pid=ETHH3UG7GTHYRHSX&lid=LSTETHH3UG7GTHYRHSXTVGZFK&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_38&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.ETHH3UG7GTHYRHSX.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/ethnic-set/j/w/w/xl-swara-ang-fashion-original-imah3ufvpzfdyrjv.jpeg?q=70",
+  "Brand Name" : "ANG FASHION",
+  "Selling Price (INR)" : "894",
+  "Original Price (INR)" : "1499",
+  "Discount Percentage" : "40",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Women Cotton Blend Ethnic Top Pant Attached Dupatta Set",
+  "Product URL" : "https://www.flipkart.com/ang-fashion-women-ethnic-top-pant-attached-dupatta-set/p/itm3cf7eb69bfbfc?pid=ETHH3UGHMMH9SGKH&lid=LSTETHH3UGHMMH9SGKHNLVHKO&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_39&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.ETHH3UGHMMH9SGKH.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/ethnic-set/v/c/f/xl-skswara06-ang-fashion-original-imah3ughw26qjfgr.jpeg?q=70",
+  "Brand Name" : "ANG FASHION",
+  "Selling Price (INR)" : "943",
+  "Original Price (INR)" : "1499",
+  "Discount Percentage" : "37",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "Women Cotton Blend Ethnic Top Pant Attached Dupatta Set",
+  "Product URL" : "https://www.flipkart.com/ang-fashion-women-ethnic-top-pant-attached-dupatta-set/p/itm69c5288166554?pid=ETHH3UFHKSZGHBH2&lid=LSTETHH3UFHKSZGHBH2G1BVAM&marketplace=FLIPKART&q=fashions+&store=clo&srno=s_1_40&otracker=search&otracker1=search&fm=organic&iid=275bb1e0-b5b3-4399-a278-7f89147b9ee0.ETHH3UFHKSZGHBH2.SEARCH&ppt=hp&ppn=homepage&ssid=hs0zpga20w0000001755083481167&qH=3990e49c017e8fa1",
+  "Product Image" : "https://rukminim2.flixcart.com/image/612/612/xif0q/ethnic-set/5/t/w/xl-swara-ang-fashion-original-imah3ufhz6b9p3z4.jpeg?q=70",
+  "Brand Name" : "ANG FASHION",
+  "Selling Price (INR)" : "1140",
+  "Original Price (INR)" : "1499",
+  "Discount Percentage" : "23",
+  "Customer Rating (Max 5)" : ""
+}, {
+  "Product Name" : "FA FASHION Women Kurta Pant...",
+  "Product URL" : "https://www.flipkart.com/fa-fashion-women-kurta-pant-set/p/itm5411aadda0e3f?pid=ETHGTJ64KHVKQJYA&marketplace=FLIPKART",
+  "Product Image" : "https://rukminim2.flixcart.com/image/300/300/xif0q/ethnic-set/y/t/c/3xl-embroidery-fa-fashion-original-imagtj64wxnrmkny.jpeg?q=90",
+  "Brand Name" : "FA FASHION",
+  "Selling Price (INR)" : "912",
+  "Original Price (INR)" : "",
+  "Discount Percentage" : "63",
+  "Customer Rating (Max 5)" : "4"
+}, {
+  "Product Name" : "TRIPR Solid Men Mandarin Co...",
+  "Product URL" : "https://www.flipkart.com/tripr-solid-men-mandarin-collar-dark-green-black-t-shirt/p/itm0d79233a1f312?pid=TSHH25F6SAC7XATZ&marketplace=FLIPKART",
+  "Product Image" : "https://rukminim2.flixcart.com/image/300/300/xif0q/t-shirt/a/8/w/s-tpgrblhn-dp-d145-tripr-original-imahcgggbmzpvcs3.jpeg?q=90",
+  "Brand Name" : "TRIPR",
+  "Selling Price (INR)" : "242",
+  "Original Price (INR)" : "",
+  "Discount Percentage" : "87",
+  "Customer Rating (Max 5)" : "3.8"
+}, {
+  "Product Name" : "DISHWA FASHION Women Kurta ...",
+  "Product URL" : "https://www.flipkart.com/dishwa-fashion-women-kurta-pant-dupatta-set/p/itm02cdafe1c498f?pid=ETHHFVD7YFZYHFFW&marketplace=FLIPKART",
+  "Product Image" : "https://rukminim2.flixcart.com/image/300/300/xif0q/ethnic-set/u/t/y/-original-imahey94ggxqyhhg.jpeg?q=90",
+  "Brand Name" : "DISHWA FASHION",
+  "Selling Price (INR)" : "726",
+  "Original Price (INR)" : "",
+  "Discount Percentage" : "75",
+  "Customer Rating (Max 5)" : "4"
+}, {
+  "Product Name" : "Stockton Printed Men Round ...",
+  "Product URL" : "https://www.flipkart.com/stockton-printed-men-round-neck-black-t-shirt/p/itm4fcff0ff40bf7?pid=TSHGZF2NTSJHAQSX&marketplace=FLIPKART",
+  "Product Image" : "https://rukminim2.flixcart.com/image/300/300/xif0q/t-shirt/r/y/j/m-tsrt-22-kajaru-original-imahfb8bnh3zrrrw.jpeg?q=90",
+  "Brand Name" : "Stockton",
+  "Selling Price (INR)" : "255",
+  "Original Price (INR)" : "",
+  "Discount Percentage" : "78",
+  "Customer Rating (Max 5)" : "3.8"
+}, {
+  "Product Name" : "TRIPR Self Design Men Polo ...",
+  "Product URL" : "https://www.flipkart.com/tripr-self-design-men-polo-neck-white-black-t-shirt/p/itmf3a2616e6f678?pid=TSHH9K38KBZTYWW8&marketplace=FLIPKART",
+  "Product Image" : "https://rukminim2.flixcart.com/image/300/300/xif0q/t-shirt/v/a/r/l-twtblpolofull-p35-tripr-original-imah9k38fy3gfynh.jpeg?q=90",
+  "Brand Name" : "TRIPR",
+  "Selling Price (INR)" : "302",
+  "Original Price (INR)" : "",
+  "Discount Percentage" : "69",
+  "Customer Rating (Max 5)" : "3.9"
+} 
+       
+    ];
+
+    function createCard(item){
+        const price = item['Selling Price (INR)'] || '';
+        const mrp = item['Original Price (INR)'] || item['Original Price'] || '';
+        const rating = item['Customer Rating (Max 5)'] || '';
+        const url = item['Product URL'] || '#';
+        return `
+        <article class="product-card" role="listitem">
+            <a href="${url}" target="_blank" rel="noopener">
+                <img src="${item['Product Image']}" alt="${item['Product Name']}" class="product-image" onerror="this.src='https://via.placeholder.com/320x200?text=Image'" loading="lazy">
+            </a>
+            <div class="product-info">
+                <h3 class="product-name">${item['Product Name']}</h3>
+                <div class="product-price-row">
+                    ${price ? `<span class="product-price">₹${price}</span>` : ''}
+                    ${mrp ? `<span class="product-original-price">₹${mrp}</span>` : ''}
+                </div>
+                ${rating ? `<div class="product-rating"><i class='fas fa-star'></i><span>${rating}</span></div>` : ''}
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+        </article>`;
+    }
+
+    async function loadFashion(){
+        // If opened via file:// just render inline dataset immediately
+        if (location.protocol === 'file:') {
+            grid.innerHTML = inlineFashionData.map(createCard).join('');
+            grid.setAttribute('aria-busy','false');
+            return;
+        }
+        try{
+            const res = await fetch('./fashion.json?ts=' + Date.now());
+            if(!res.ok) throw new Error('http');
+            const data = await res.json();
+            if(Array.isArray(data) && data.length){
+                grid.innerHTML = data.map(createCard).join('');
+                grid.setAttribute('aria-busy','false');
+                return;
+            }
+            throw new Error('empty');
+        }catch(e){
+            // Fallback: render inline dataset if available
+            if (inlineFashionData.length) {
+                grid.innerHTML = inlineFashionData.map(createCard).join('');
+                grid.setAttribute('aria-busy','false');
+            }
+            // Also show user-gesture-based picker
+            const fb = document.getElementById('fallback');
+            const btn = document.getElementById('loadJsonBtn');
+            fb.style.display = 'block';
+            btn.addEventListener('click', ()=>{
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'application/json,.json';
+                input.addEventListener('change', ()=>{
+                    const f = input.files && input.files[0];
+                    if(!f) return;
+                    const r = new FileReader();
+                    r.onload = ()=>{
+                        try{
+                            const parsed = JSON.parse(String(r.result));
+                            if(Array.isArray(parsed)){
+                                grid.innerHTML = parsed.map(createCard).join('');
+                                grid.setAttribute('aria-busy','false');
+                                fb.style.display = 'none';
+                            }
+                        }catch{}
+                    };
+                    r.readAsText(f);
+                });
+                input.click();
+            }, { once: true });
+        }
+    }
+
+    loadFashion();
+    </script>
+</body>
+</html>
