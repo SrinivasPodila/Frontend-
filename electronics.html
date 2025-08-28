@@ -1355,9 +1355,9 @@
     }
 
     function createProductCard(item){
-        const price = item['Selling Price (INR)'] || '';
+        const price = item['Price (INR)'] || '';
         const mrp = item['Original Price (INR)'] || '';
-        const rating = item['Customer Rating (Max 5)'] || '';
+        const rating = item['Rating (Max 5)'] || '';
         const url = item['Product URL'] || '#';
         const safeId = (item['Product Name'] || 'item').toLowerCase().replace(/[^a-z0-9]+/g, '-');
         
@@ -1432,7 +1432,7 @@
             brand.style.display = brandName ? 'block' : 'none';
         }
 
-        const ratingValue = product['Customer Rating (Max 5)'] || '';
+        const ratingValue = product['Rating (Max 5)'] || '';
         if (rating) {
             if (ratingValue) {
                 rating.innerHTML = `
@@ -1447,7 +1447,7 @@
             }
         }
 
-        const currentPrice = product['Selling Price (INR)'] || '';
+        const currentPrice = product['Price (INR)'] || '';
         const originalPriceValue = product['Original Price (INR)'] || '';
         const discountValue = product['Discount Percentage'] || '';
 
@@ -1538,7 +1538,7 @@
             const product = JSON.parse(productData);
             cart.push({
                 name: product['Product Name'],
-                price: product['Selling Price (INR)'],
+                price: product['Price (INR)'],
                 image: product['Product Image'],
                 quantity: 1
             });
@@ -1597,7 +1597,7 @@
                 if (currentDetailProduct) {
                     cart.push({
                         name: currentDetailProduct['Product Name'],
-                        price: currentDetailProduct['Selling Price (INR)'],
+                        price: currentDetailProduct['Price (INR)'],
                         image: currentDetailProduct['Product Image'],
                         quantity: 1
                     });
@@ -1626,4 +1626,3 @@
     </script>
 </body>
 </html>
-
